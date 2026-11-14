@@ -1,10 +1,10 @@
 // ============================================================================
-// 1. KONFIGURASI ENDPOINT GOOGLE DRIVE (GANTI ID DEPLOYMENT ANDA DI BARIS INI)
+// 1. KONFIGURASI ENDPOINT GOOGLE DRIVE (TEMPEL URL /EXEC ANDA DI BARIS INI)
 // ============================================================================
 const DRIVE_API_URL = 'https://script.google.com/macros/s/AKfycbzrQ8NM9zL704M6IxDGBVfSuoYNz-66npZH3d9oH-g2lmbYZPThwexujHwQ_nGU2YFc/exec';
 
 // ============================================================================
-// 2. INISIALISASI PETA LEAFLET & BASEMAP EDITORIAL
+// 2. INISIALISASI PETA LEAFLET & BASEMAP TERANG
 // ============================================================================
 const map = L.map('map', {
   center: [3.55, 97.45],
@@ -14,21 +14,25 @@ const map = L.map('map', {
 
 const cartoLight = L.tileLayer(
   'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-  { attribution: 'CARTO Positron' }
+  { subdomains: 'abcd', maxZoom: 19, attribution: '© OpenStreetMap © CARTO' }
 ).addTo(map);
+
+const esriTopo = L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+  { maxZoom: 18, attribution: '© Esri World Topo' }
+);
 
 const esriSat = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-  { attribution: 'Esri World Imagery' }
-);
-
-const osmMap = L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  { attribution: 'OpenStreetMap' }
+  { maxZoom: 18, attribution: '© Esri World Imagery' }
 );
 
 const layerControl = L.control.layers(
-  { 'Peta Editorial (Terang)': cartoLight, 'Citra Satelit (Esri)': esriSat, 'OpenStreetMap': osmMap },
+  {
+    'Peta Terang (CARTO Positron)': cartoLight,
+    'Peta Topografi Terang (Esri)': esriTopo,
+    'Citra Satelit (Esri)': esriSat
+  },
   {},
   { collapsed: true }
 ).addTo(map);
@@ -67,7 +71,7 @@ const DRIVE_SPECS = {
 };
 
 // ============================================================================
-// 4. ENGINE PENCOCOKAN KATALOG & PEMUATAN GEOJSON GOOGLE DRIVE
+// 4. ENGINE DIAGNOSTIK & PEMUATAN GEOJSON GOOGLE DRIVE
 // ============================================================================
 const geojsonCache = {};
 const layerInstances = {};
@@ -76,19 +80,42 @@ let activeDataLayers = [];
 let currentYear = '2025';
 let currentChapter = 'sampul';
 let currentSublayer = null;
+let apiDiagnosticError = null;
 
 const loaderToast = document.getElementById('loader-toast');
+
+function setApiStatusError(shortTitle, detailMsg) {
+  apiDiagnosticError = detailMsg;
+  const brandEl = document.getElementById('brand-title');
+  const dotEl = document.getElementById('sync-dot');
+  if (brandEl) brandEl.textContent = `STORYMAP TNGL • ${shortTitle}`;
+  if (dotEl) {
+    dotEl.style.background = '#dc2626';
+    dotEl.style.boxShadow = '0 0 8px rgba(220, 38, 38, 0.7)';
+  }
+}
+
+async function fetchAppsScriptJSON(url) {
+  const res = await fetch(url, { method: 'GET', redirect: 'follow' });
+  const rawText = await res.text();
+  const trimmed = rawText.trim();
+
+  if (trimmed.startsWith('<')) {
+    throw new Error(
+      'API mengembalikan halaman HTML Login Google. Pastikan: (1) URL di app.js berakhiran /exec (bukan /dev), (2) Deploy Apps Script diatur Who has access = Anyone dengan New version, dan (3) gunakan akun @gmail.com biasa jika akun kampus memblokir akses publik.'
+    );
+  }
+  return JSON.parse(trimmed);
+}
 
 function resolveFileFromCatalog(spec) {
   if (!spec) return null;
   const list = catalogByFolder[spec.folder] || [];
   if (list.length === 0) return [spec.folder, spec.file];
 
-  // 1. Cek kecocokan nama file persis
   const exact = list.find((f) => f.filename.toLowerCase() === spec.file.toLowerCase());
   if (exact) return [spec.folder, exact.filename];
 
-  // 2. Cek kecocokan nomor urut awalan (mis. "01_") + tahun jika ada
   const prefix = spec.file.slice(0, 3).toLowerCase();
   const byPrefix = list.find((f) => {
     const fn = f.filename.toLowerCase();
@@ -96,12 +123,8 @@ function resolveFileFromCatalog(spec) {
   });
   if (byPrefix) return [spec.folder, byPrefix.filename];
 
-  // 3. Cek kecocokan kata kunci parameter di dalam folder tersebut
   if (spec.kw && spec.kw.length > 0) {
-    const byKw = list.find((f) => {
-      const fn = f.filename.toLowerCase();
-      return spec.kw.some((k) => fn.includes(k.toLowerCase()));
-    });
+    const byKw = list.find((f) => spec.kw.some((k) => f.filename.toLowerCase().includes(k.toLowerCase())));
     if (byKw) return [spec.folder, byKw.filename];
   }
 
@@ -138,8 +161,12 @@ function buildPopupHTML(props) {
 
 async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
   if (!specOrTuple) return null;
-  if (DRIVE_API_URL.includes('PASTE_ID_DEPLOYMENT')) {
-    document.getElementById('brand-title').textContent = 'STORYMAP TNGL • TEMPEL URL /EXEC DI APP.JS';
+
+  if (DRIVE_API_URL.includes('PASTE_ID_DEPLOYMENT') || !DRIVE_API_URL.includes('/exec')) {
+    setApiStatusError(
+      'URL /EXEC BELUM DIISI DI APP.JS',
+      'Buka file app.js di GitHub dan tempel Web App URL Google Apps Script berakhiran /exec pada baris ke-4.'
+    );
     return null;
   }
 
@@ -156,8 +183,7 @@ async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
   try {
     if (!geojsonCache[cacheKey]) {
       const apiUrl = `${DRIVE_API_URL}?action=getFile&folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`;
-      const res = await fetch(apiUrl);
-      const data = await res.json();
+      const data = await fetchAppsScriptJSON(apiUrl);
       if (data.error) throw new Error(data.error);
       geojsonCache[cacheKey] = data;
     }
@@ -195,7 +221,7 @@ async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
     layer._rawGeoJSON = gjData;
     return layer;
   } catch (err) {
-    console.warn(`Gagal memuat ${cacheKey}:`, err);
+    setApiStatusError('KONEKSI DRIVE TERKENDALA', err.message);
     return null;
   } finally {
     loaderToast.classList.add('hidden');
@@ -203,12 +229,20 @@ async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
 }
 
 async function syncDriveCatalog() {
-  if (DRIVE_API_URL.includes('PASTE_ID_DEPLOYMENT')) return;
+  if (DRIVE_API_URL.includes('PASTE_ID_DEPLOYMENT') || !DRIVE_API_URL.includes('/exec')) {
+    setApiStatusError(
+      'URL /EXEC BELUM DIISI DI APP.JS',
+      'Buka file app.js di GitHub dan tempel Web App URL Google Apps Script berakhiran /exec pada baris ke-4.'
+    );
+    return;
+  }
+
   try {
-    const res = await fetch(`${DRIVE_API_URL}?action=catalog`);
-    const meta = await res.json();
+    const meta = await fetchAppsScriptJSON(`${DRIVE_API_URL}?action=catalog`);
+    if (meta.error) throw new Error(meta.error);
     if (meta.status !== 'ok' || !meta.files) return;
 
+    apiDiagnosticError = null;
     meta.files.forEach((item) => {
       if (!catalogByFolder[item.folder]) catalogByFolder[item.folder] = [];
       catalogByFolder[item.folder].push(item);
@@ -226,13 +260,13 @@ async function syncDriveCatalog() {
       layerControl.addOverlay(proxyLayer, label);
     });
 
-    if (meta.files.length > 0) {
-      const latestDate = meta.files.map((f) => new Date(f.lastUpdated)).sort((a, b) => b - a)[0];
-      const tglStr = latestDate.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
-      document.getElementById('brand-title').textContent = `STORYMAP TNGL • DRIVE SYNC (${meta.total} FILE • ${tglStr.toUpperCase()})`;
-    }
+    const latestDate = meta.files.length > 0
+      ? meta.files.map((f) => new Date(f.lastUpdated)).sort((a, b) => b - a)[0].toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase()
+      : 'AKTIF';
+
+    document.getElementById('brand-title').textContent = `STORYMAP TNGL • DRIVE SYNC (${meta.total} FILE • ${latestDate})`;
   } catch (err) {
-    console.warn('Katalog Drive belum tersinkron:', err);
+    setApiStatusError('API DRIVE TERKUNCI', err.message);
   }
 }
 
@@ -319,7 +353,11 @@ function initChartsAndLightbox() {
 function updateLegendFromGeoJSON(gjData, fallbackTitle = 'Legenda Peta') {
   const box = document.getElementById('map-legend');
   if (!gjData || !gjData.features || gjData.features.length === 0) {
-    box.innerHTML = `<h4>${fallbackTitle}</h4><small>Pilih layer dari ikon kontrol kanan atas peta.</small>`;
+    if (apiDiagnosticError) {
+      box.innerHTML = `<h4 style="color:#dc2626">Status Koneksi Drive API</h4><small style="color:#334155;line-height:1.45">${apiDiagnosticError}</small>`;
+    } else {
+      box.innerHTML = `<h4>${fallbackTitle}</h4><small>Pilih layer dari ikon kontrol kanan atas peta.</small>`;
+    }
     return;
   }
 
