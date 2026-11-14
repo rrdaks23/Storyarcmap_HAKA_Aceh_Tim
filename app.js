@@ -1,26 +1,26 @@
 // ============================================================================
-// 1. KONFIGURASI GOOGLE DRIVE (TANPA BATAS UKURAN FILE & TANPA UPLOAD ULANG)
+// 1. KONFIGURASI GOOGLE DRIVE (ISI 2 BARIS INI SAJA)
 // ============================================================================
-// Cara A (Disarankan untuk file >25 MB): Isi ID Folder "Geojson lomba" & API Key Google Drive
 const DRIVE_FOLDER_ID = '1cShz78J7EnXJ8tngWHnU2W7dzcO7uuPc';
 const DRIVE_API_KEY   = 'AIzaSyCsL4Gs00TIkvItUOhFp2mCmOkhdgPN4Ak';
 
-// Cara B (Cadangan Apps Script /exec jika API Key di atas belum diisi):
+// Cadangan Google Apps Script /exec (otomatis terlewati jika API Key di atas diisi)
 const DRIVE_API_URL   = 'https://script.google.com/macros/s/AKfycbzrQ8NM9zL704M6IxDGBVfSuoYNz-66npZH3d9oH-g2lmbYZPThwexujHwQ_nGU2YFc/exec';
 
-// Tingkat penyederhanaan koordinat otomatis di browser (0.0004 derajat ≈ 44 meter)
+// Toleransi kompresi geometri otomatis di browser (0.0004 derajat ≈ 44 meter)
 const SIMPLIFY_TOLERANCE = 0.0004;
 
 // ============================================================================
-// 2. INISIALISASI PETA LEAFLET CANVAS & BASEMAP ESRI ONLY
+// 2. INISIALISASI PETA LEAFLET CANVAS & 100% BASEMAP RESMI ESRI
 // ============================================================================
 const map = L.map('map', {
   center: [3.55, 97.45],
   zoom: 8,
   zoomControl: true,
-  preferCanvas: true // Merender puluhan ribu poligon pada HTML5 Canvas agar ringan
+  preferCanvas: true // Merender poligon besar pada HTML5 Canvas agar ringan di browser
 });
 
+// Basemap Utama: Esri World Gray Canvas (Terang Editorial + Label Wilayah)
 const esriGrayBase = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
   { maxZoom: 16, attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ' }
@@ -31,16 +31,19 @@ const esriGrayRef = L.tileLayer(
 );
 const esriCanvasTerang = L.layerGroup([esriGrayBase, esriGrayRef]).addTo(map);
 
+// Basemap Alternatif 2: Esri World Topo Map
 const esriTopo = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
   { maxZoom: 18, attribution: 'Tiles &copy; Esri &mdash; Esri, Garmin, USGS, NPS' }
 );
 
+// Basemap Alternatif 3: Esri World Imagery (Citra Satelit)
 const esriSat = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
   { maxZoom: 18, attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics' }
 );
 
+// Basemap Alternatif 4: Esri National Geographic World Map
 const esriNatGeo = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
   { maxZoom: 16, attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme' }
@@ -63,15 +66,18 @@ const layerControl = L.control.layers(
 const paramFolder = (yr) => (yr === '2019' ? '03_Parameter_2019' : yr === '2021' ? '04_Parameter_2021' : '05_Parameter_2025');
 
 const DRIVE_SPECS = {
+  // Folder 01: Batas & Data Pendukung
   batas_tngl: { folder: '01_Batas_Dan_Data_Pendukung', file: '01_Batas_Kawasan_Inti_TNGL.geojson', kw: ['batas', 'inti', 'tngl'] },
   buffer_luar: { folder: '01_Batas_Dan_Data_Pendukung', file: '02_Zona_Buffer_100km_Luar_TNGL.geojson', kw: ['buffer', 'luar'] },
   elevasi: { folder: '01_Batas_Dan_Data_Pendukung', file: '06_Klasifikasi_Elevasi_DEM.geojson', kw: ['elevasi', 'dem'] },
   lereng: { folder: '01_Batas_Dan_Data_Pendukung', file: '07_Klasifikasi_Kemiringan_Lereng.geojson', kw: ['lereng', 'slope'] },
   zonasi_jarak: { folder: '01_Batas_Dan_Data_Pendukung', file: '10_Klasifikasi_Zonasi_Jarak_TNGL.geojson', kw: ['zonasi', 'jarak'] },
 
+  // Folder 02: Tutupan Hutan & Permukiman
   dinamika_hutan: { folder: '02_Tutupan_Hutan_Dan_Permukiman', file: '02_Dinamika_Perubahan_Hutan_2019_2025.geojson', kw: ['dinamika', 'kehilangan', 'deforestasi'] },
   status_hutan: (yr) => ({ folder: '02_Tutupan_Hutan_Dan_Permukiman', file: `01_Status_Tutupan_Hutan_${yr}.geojson`, kw: ['status', 'tutupan', yr], year: yr }),
 
+  // Folder 03, 04, 05: Parameter Biofisik Multi-Tahun (2019, 2021, 2025)
   carbon_stock: (yr) => ({ folder: paramFolder(yr), file: `01_Cadangan_Karbon_${yr}.geojson`, kw: ['karbon', 'carbon_stock'], year: yr }),
   agb: (yr) => ({ folder: paramFolder(yr), file: `02_Biomassa_AGB_${yr}.geojson`, kw: ['biomassa', 'agb'], year: yr }),
   lst: (yr) => ({ folder: paramFolder(yr), file: `03_Suhu_Permukaan_LST_${yr}.geojson`, kw: ['suhu', 'lst'], year: yr }),
@@ -81,17 +87,19 @@ const DRIVE_SPECS = {
   sar: (yr) => ({ folder: paramFolder(yr), file: `14_Radar_Kanopi_SAR_VH_${yr}.geojson`, kw: ['sar', 'radar'], year: yr }),
   carbon_rate: { folder: '05_Parameter_2025', file: '15_Laju_Carbon_Rate_2019_2025.geojson', kw: ['rate', 'laju'] },
 
+  // Folder 06: Delta Perubahan 2025 vs 2019
   delta_carbon: { folder: '06_Delta_Perubahan_2019_2025', file: '01_Delta_Carbon_Stock_2025_vs_2019.geojson', kw: ['carbon', 'karbon'] },
   delta_lst: { folder: '06_Delta_Perubahan_2019_2025', file: '02_Delta_Suhu_LST_2025_vs_2019.geojson', kw: ['lst', 'suhu'] },
   delta_ndvi: { folder: '06_Delta_Perubahan_2019_2025', file: '05_Delta_Vegetasi_NDVI_2025_vs_2019.geojson', kw: ['ndvi', 'vegetasi'] },
   delta_ndbi: { folder: '06_Delta_Perubahan_2019_2025', file: '08_Delta_Terbangun_NDBI_2025_vs_2019.geojson', kw: ['ndbi', 'terbangun'] },
 
+  // Folder 07: Titik Sampel Validasi Statistik
   sampel_dalam: { folder: '07_Titik_Sampel_Dan_Ringkasan', file: '01_Titik_Sampel_Dalam_TNGL.geojson', kw: ['dalam', 'tngl'] },
   sampel_luar: { folder: '07_Titik_Sampel_Dan_Ringkasan', file: '02_Titik_Sampel_Permukiman_Buffer.geojson', kw: ['luar', 'buffer', 'permukiman'] }
 };
 
 // ============================================================================
-// 4. KOMPRESOR GEOJSON DI MEMORI BROWSER (ITERATIVE DOUGLAS-PEUCKER)
+// 4. KOMPRESOR GEOJSON REAL-TIME DI BROWSER (ITERATIVE DOUGLAS-PEUCKER)
 // ============================================================================
 const ALLOWED_PROPS = new Set([
   'Kategori', 'Parameter', 'Tahun', 'Rentang_Nilai', 'Luas_Ha',
@@ -215,7 +223,7 @@ function compressGeoJSONInMemory(rawGj, tolerance = SIMPLIFY_TOLERANCE) {
 }
 
 // ============================================================================
-// 5. ENGINE PENGAMBILAN DATA DRIVE (DIRECT API V3 & FALLBACK APPS SCRIPT)
+// 5. ENGINE PENGAMBILAN DATA GOOGLE DRIVE (DIRECT API V3 & FALLBACK SCRIPT)
 // ============================================================================
 const geojsonCache = {};
 const layerInstances = {};
@@ -251,13 +259,20 @@ function setApiStatusError(shortTitle, detailMsg) {
 async function fetchJSONSafe(url) {
   const res = await fetch(url, { method: 'GET', redirect: 'follow' });
   if (!res.ok) {
-    throw new Error(`HTTP ${res.status}: Pastikan folder "Geojson lomba" sudah dibagikan publik (Anyone with the link).`);
+    let extraMsg = '';
+    try {
+      const errBody = await res.json();
+      if (errBody && errBody.error && errBody.error.message) {
+        extraMsg = ` (${errBody.error.message})`;
+      }
+    } catch (_) {}
+    throw new Error(`HTTP ${res.status}${extraMsg}: Pastikan Google Drive API aktif & folder "Geojson lomba" dibagikan publik (Anyone with the link).`);
   }
   const rawText = await res.text();
   const trimmed = rawText.trim();
   if (trimmed.startsWith('<')) {
     throw new Error(
-      'Google mengembalikan halaman HTML Login. Isi DRIVE_FOLDER_ID & DRIVE_API_KEY di baris 5–6 app.js untuk baca langsung tanpa batas ukuran.'
+      'Google mengembalikan halaman HTML Login. Isi DRIVE_FOLDER_ID & DRIVE_API_KEY di baris 4–5 app.js untuk akses langsung tanpa batas ukuran.'
     );
   }
   return JSON.parse(trimmed);
@@ -326,7 +341,7 @@ async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
   const cacheKey = `${item.folder}/${item.filename}`;
   if (layerInstances[cacheKey]) return layerInstances[cacheKey];
 
-  loaderToast.textContent = `Mengunduh & mengompresi [${item.folder.slice(0, 2)}]: ${item.filename}...`;
+  loaderToast.textContent = `Memuat & mengompresi [${item.folder.slice(0, 2)}]: ${item.filename}...`;
   loaderToast.classList.remove('hidden');
 
   try {
@@ -337,14 +352,14 @@ async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
         rawData = await fetchJSONSafe(directUrl);
       } else {
         if (DRIVE_API_URL.includes('PASTE_ID_DEPLOYMENT') || !DRIVE_API_URL.includes('/exec')) {
-          throw new Error('Isi DRIVE_FOLDER_ID & DRIVE_API_KEY (atau DRIVE_API_URL) pada baris 5–9 app.js.');
+          throw new Error('Isi DRIVE_FOLDER_ID & DRIVE_API_KEY di baris 4–5 app.js untuk memuat seluruh GeoJSON.');
         }
         const apiUrl = `${DRIVE_API_URL}?action=getFile&folder=${encodeURIComponent(item.folder)}&file=${encodeURIComponent(item.filename)}`;
         rawData = await fetchJSONSafe(apiUrl);
         if (rawData.error) throw new Error(rawData.error);
       }
 
-      // Kompresi geometri & atribut otomatis di memori sebelum masuk ke peta
+      // Kompresi geometri & atribut otomatis di memori browser sebelum dirender ke peta
       geojsonCache[cacheKey] = compressGeoJSONInMemory(rawData);
     }
 
@@ -431,7 +446,7 @@ async function syncDriveCatalog() {
       if (DRIVE_API_URL.includes('PASTE_ID_DEPLOYMENT') || !DRIVE_API_URL.includes('/exec')) {
         setApiStatusError(
           'KONFIGURASI DRIVE BELUM DIISI',
-          'Isi DRIVE_FOLDER_ID & DRIVE_API_KEY di baris 5–6 file app.js di GitHub untuk memuat seluruh file GeoJSON besar tanpa batas ukuran.'
+          'Isi DRIVE_FOLDER_ID & DRIVE_API_KEY di baris 4–5 file app.js di GitHub untuk memuat seluruh file GeoJSON besar tanpa batas ukuran.'
         );
         return;
       }
@@ -474,7 +489,7 @@ async function syncDriveCatalog() {
 }
 
 // ============================================================================
-// 6. GRAFIK STATISTIK & LIGHTBOX ZOOM
+// 6. GRAFIK STATISTIK & LIGHTBOX ZOOM (GRAFIK + GALERI FOTO ACEH)
 // ============================================================================
 function initChartsAndLightbox() {
   const ctxKomp = document.getElementById('chartKomparasi');
@@ -534,7 +549,7 @@ function initChartsAndLightbox() {
 
       if (canvas) {
         modalImg.src = canvas.toDataURL('image/png');
-      } else if (img) {
+      } else if (img && img.style.display !== 'none') {
         modalImg.src = img.src;
       } else {
         return;
@@ -545,13 +560,22 @@ function initChartsAndLightbox() {
     });
   });
 
-  document.getElementById('lightbox-close').addEventListener('click', () => {
-    modal.hidden = true;
+  const closeBtn = document.getElementById('lightbox-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.hidden = true;
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.hidden) {
+      modal.hidden = true;
+    }
   });
 }
 
 // ============================================================================
-// 7. LEGENDA DINAMIS & PENGATURAN BAB PETA
+// 7. LEGENDA DINAMIS & KONTROL SCENE BAB STORYMAP
 // ============================================================================
 function updateLegendFromGeoJSON(gjData, fallbackTitle = 'Legenda Peta') {
   const box = document.getElementById('map-legend');
