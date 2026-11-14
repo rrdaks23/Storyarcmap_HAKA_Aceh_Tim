@@ -6,7 +6,7 @@
   <title>Benteng Ekologis TNGL (2019–2025) • TIM High Ground Solid</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Merriweather:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -17,13 +17,13 @@
     <div class="top-bar-inner">
       <div class="brand-info">
         <div class="nav-logos">
-          <img src="assets/logo-univ.png" alt="Logo Universitas" class="nav-logo-img" onerror="this.style.display='none'" />
           <img src="assets/logo-haka.png" alt="Logo HAKA Aceh" class="nav-logo-img" onerror="this.style.display='none'" />
+          <img src="assets/logo-univ.png" alt="Logo IPB University" class="nav-logo-img" onerror="this.style.display='none'" />
         </div>
         <span class="status-dot" id="sync-dot"></span>
         <div class="brand-text-stack">
           <span id="brand-title">STORYMAP TNGL • 2019–2025</span>
-          <span class="nav-team-tag">TIM High Ground Solid • <em>“Veni, vidi, vici”</em></span>
+          <span class="nav-team-tag">TIM High Ground Solid • <em class="slogan-script">“Veni, vidi, vici”</em></span>
         </div>
       </div>
 
@@ -50,16 +50,8 @@
     <div class="hero-grid-pattern" aria-hidden="true"></div>
     <div class="hero-content">
 
-      <!-- BARIS LOGO UNIVERSITAS & HAKA ACEH -->
+      <!-- BARIS LOGO MITRA KONSERVASI & UNIVERSITAS -->
       <div class="hero-partners-bar">
-        <div class="partner-badge">
-          <img src="assets/logo-univ.png" alt="Logo Universitas" class="partner-logo" onerror="this.style.display='none'" />
-          <div class="partner-label">
-            <small>INSTITUSI AKADEMIK</small>
-            <span>Universitas</span>
-          </div>
-        </div>
-        <span class="partner-divider" aria-hidden="true">×</span>
         <div class="partner-badge">
           <img src="assets/logo-haka.png" alt="Logo HAKA Aceh" class="partner-logo" onerror="this.style.display='none'" />
           <div class="partner-label">
@@ -67,17 +59,25 @@
             <span>HAKA Aceh</span>
           </div>
         </div>
+        <span class="partner-divider" aria-hidden="true">×</span>
+        <div class="partner-badge">
+          <img src="assets/logo-univ.png" alt="Logo IPB University" class="partner-logo" onerror="this.style.display='none'" />
+          <div class="partner-label">
+            <small>INSTITUSI AKADEMIK</small>
+            <span>IPB University</span>
+          </div>
+        </div>
       </div>
 
-      <!-- IDENTITAS TIM, SLOGAN & KICKER KAJIAN -->
+      <!-- IDENTITAS TIM, SLOGAN KLASIK & KICKER KAJIAN -->
       <div class="hero-identity-row">
         <span class="team-pill">
           <span class="team-pulse"></span>
-          TIM High Ground Solid
+          TIM HIGH GROUND SOLID
           <span class="team-slogan-sep">•</span>
-          <em class="team-slogan">“Veni, vidi, vici”</em>
+          <em class="team-slogan slogan-script">“Veni, vidi, vici”</em>
         </span>
-        <span class="hero-kicker">WEBGIS STORYMAP • PENGINDERAAN JAUH &amp; AI (2019–2025)</span>
+        <span class="hero-kicker">LEUSER GEOSTORY CHALLENGE • FESTIVAL RIMBA LEUSER 2026</span>
       </div>
 
       <h1>Benteng Ekologis Taman Nasional Gunung Leuser</h1>
@@ -248,11 +248,14 @@
 
           <div class="doc-gallery">
             <figure class="figure-box doc-card" title="Klik untuk memperbesar foto dokumentasi">
-              <span class="doc-badge">01 • PERAMBAHAN HUTAN</span>
+              <div class="doc-card-top">
+                <span class="doc-badge">01 • PERAMBAHAN HUTAN</span>
+                <span class="doc-zoom-hint">🔍 Perbesar</span>
+              </div>
               <div class="doc-img-wrap">
                 <img
                   src="assets/deforestasi-aceh-1.jpg"
-                  alt="Dokumentasi Pembukaan Lahan dan Perambahan di Zona Penyangga Aceh"
+                  alt="Dokumentasi Pembukaan Lahan di Zona Transisi Aceh"
                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                 />
                 <div class="doc-placeholder">
@@ -261,16 +264,19 @@
                 </div>
               </div>
               <figcaption class="figure-caption">
-                <strong>Pembukaan Lahan &amp; Perambahan Zona Transisi Aceh:</strong> Konversi tutupan hutan sekunder menjadi lahan terbuka dan kebun campuran di batas Kawasan Ekosistem Leuser.
+                <strong>Pembukaan Lahan Zona Transisi Aceh:</strong> Konversi tutupan hutan sekunder menjadi lahan terbuka dan kebun campuran di tepi Kawasan Ekosistem Leuser.
               </figcaption>
             </figure>
 
             <figure class="figure-box doc-card" title="Klik untuk memperbesar foto dokumentasi">
-              <span class="doc-badge">02 • AKSES JALAN &amp; FRAGMENTASI</span>
+              <div class="doc-card-top">
+                <span class="doc-badge">02 • EROSI &amp; LONGSOR LERENG</span>
+                <span class="doc-zoom-hint">🔍 Perbesar</span>
+              </div>
               <div class="doc-img-wrap">
                 <img
                   src="assets/deforestasi-aceh-2.jpg"
-                  alt="Dokumentasi Pembukaan Akses Jalan dan Fragmentasi Hutan Leuser Aceh"
+                  alt="Dokumentasi Degradasi dan Longsor Lereng Hutan Aceh"
                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                 />
                 <div class="doc-placeholder">
@@ -279,16 +285,19 @@
                 </div>
               </div>
               <figcaption class="figure-caption">
-                <strong>Fragmentasi Koridor Ekologis &amp; Jaringan Jalan:</strong> Pembukaan koridor akses mempercepat tekanan antropogenik (<code>Dist_Road</code>) menuju tepi kawasan inti TNGL.
+                <strong>Degradasi Lereng &amp; Erosi Tanah Terbuka:</strong> Hilangnya pengikat akar vegetasi pada lereng curam memicu longsoran tanah dan meningkatkan risiko banjir bandang hilir.
               </figcaption>
             </figure>
 
             <figure class="figure-box doc-card" title="Klik untuk memperbesar foto dokumentasi">
-              <span class="doc-badge">03 • LERENG HULU DAS</span>
+              <div class="doc-card-top">
+                <span class="doc-badge">03 • AKSES JALAN &amp; TERASERING</span>
+                <span class="doc-zoom-hint">🔍 Perbesar</span>
+              </div>
               <div class="doc-img-wrap">
                 <img
                   src="assets/deforestasi-aceh-3.jpg"
-                  alt="Dokumentasi Degradasi Lereng Hulu Daerah Aliran Sungai Aceh"
+                  alt="Dokumentasi Pembukaan Jalan Kebun dan Fragmentasi Perbukitan"
                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                 />
                 <div class="doc-placeholder">
@@ -297,16 +306,19 @@
                 </div>
               </div>
               <figcaption class="figure-caption">
-                <strong>Degradasi Tutupan Tajuk pada Lereng Hulu:</strong> Hilangnya vegetasi rapat melemahkan kapasitas resapan hidrologi dan meningkatkan risiko banjir bandang serta longsor hilir.
+                <strong>Pembukaan Jalur Akses &amp; Fragmentasi Perbukitan:</strong> Jaringan jalan kebun berkelok mempercepat tekanan antropogenik (<code>Dist_Road</code>) di hulu daerah aliran sungai.
               </figcaption>
             </figure>
 
             <figure class="figure-box doc-card" title="Klik untuk memperbesar foto dokumentasi">
-              <span class="doc-badge">04 • EKSPANSI PERKEBUNAN</span>
+              <div class="doc-card-top">
+                <span class="doc-badge">04 • ALIH FUNGSI &amp; PEMUKIMAN</span>
+                <span class="doc-zoom-hint">🔍 Perbesar</span>
+              </div>
               <div class="doc-img-wrap">
                 <img
                   src="assets/deforestasi-aceh-4.jpg"
-                  alt="Dokumentasi Alih Fungsi Lahan Hutan Menjadi Perkebunan di Aceh"
+                  alt="Dokumentasi Alih Fungsi Hutan Menjadi Kebun dan Bangunan Perintis"
                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                 />
                 <div class="doc-placeholder">
@@ -315,7 +327,7 @@
                 </div>
               </div>
               <figcaption class="figure-caption">
-                <strong>Alih Fungsi Menjadi Perkebunan &amp; Lahan Terbangun:</strong> Memicu pelepasan cadangan karbon (<em>carbon deficit</em>) serta kenaikan suhu permukaan lokal (LST).
+                <strong>Alih Fungsi Menjadi Kebun &amp; Bangunan Perintis:</strong> Pembukaan tegakan hutan untuk perkebunan dan pondok memicu defisit karbon serta kenaikan suhu permukaan (LST).
               </figcaption>
             </figure>
           </div>
@@ -628,17 +640,65 @@
 
   </main>
 
-  <!-- FOOTER PENUTUP DENGAN LOGO, TIM, SLOGAN & NAMA PENYUSUN -->
-  <footer class="story-footer">
-    <div class="footer-inner">
-      <div class="footer-logos">
-        <img src="assets/logo-univ.png" alt="Logo Universitas" class="footer-logo-img" onerror="this.style.display='none'" />
-        <img src="assets/logo-haka.png" alt="Logo HAKA Aceh" class="footer-logo-img" onerror="this.style.display='none'" />
+  <!-- BAGIAN PENUTUP EDITORIAL 3 KOLOM + BILAH KREDIT BAWAH -->
+  <footer class="editorial-closing">
+    <div class="closing-grid">
+
+      <!-- KOLOM KIRI: KEGIATAN, SUBTEMA & SLOGAN KLASIK -->
+      <div class="closing-col-left">
+        <div class="closing-meta-block">
+          <span class="closing-label">KEGIATAN</span>
+          <p class="closing-value">Leuser GeoStory Challenge | Festival Rimba Leuser 2026</p>
+        </div>
+        <div class="closing-meta-block">
+          <span class="closing-label">SUBTEMA</span>
+          <p class="closing-value">Benteng Penyerapan Karbon &amp; Penyangga Iklim Mikro Leuser</p>
+        </div>
+        <div class="closing-slogan-wrap">
+          <span class="closing-label">SLOGAN TIM</span>
+          <blockquote class="closing-slogan">“Veni, vidi, vici”</blockquote>
+        </div>
       </div>
-      <span class="footer-team-badge">TIM High Ground Solid • <em>“Veni, vidi, vici”</em></span>
-      <p class="footer-authors">Penyusun: <strong>Muhammad Luthfan Nabil</strong> &amp; <strong>Harun Al Rasyid</strong></p>
-      <strong>Benteng Ekologis Taman Nasional Gunung Leuser (2019–2025)</strong>
-      <p>Integrasi Penginderaan Jauh Multi-Sensor (Sentinel-2 SR, Landsat 8/9, Sentinel-1 SAR, VIIRS DNB, NASADEM), Uji Statistik Welch’s T-Test, OLS Spasial, Random Forest Terkalibrasi LiDAR NASA GEDI L4B, dan Deep Learning LSTM 8-Fitur.</p>
+
+      <!-- KOLOM TENGAH: LOGO HAKA ACEH & UNIVERSITAS -->
+      <div class="closing-col-center">
+        <div class="closing-emblem-circle">
+          <img src="assets/logo-haka.png" alt="Logo HAKA Aceh" onerror="this.style.display='none'" />
+        </div>
+        <div class="closing-emblem-crest">
+          <img src="assets/logo-univ.png" alt="Logo IPB University" onerror="this.style.display='none'" />
+        </div>
+      </div>
+
+      <!-- KOLOM KANAN: IDENTITAS TIM, PENYUSUN & UNIVERSITAS -->
+      <div class="closing-col-right">
+        <div class="closing-team-heading">TIM HIGH GROUND SOLID</div>
+        <div class="closing-roster">
+          <div class="roster-row">
+            <span class="roster-role">PENYUSUN</span>
+            <span class="roster-name">Muhammad Luthfan Nabil</span>
+          </div>
+          <div class="roster-row">
+            <span class="roster-role"></span>
+            <span class="roster-name">Harun Al Rasyid</span>
+          </div>
+        </div>
+        <div class="closing-univ">IPB University</div>
+      </div>
+
+    </div>
+
+    <!-- GARIS PENUTUP BAWAH (SEJAJAR KIRI & KANAN) -->
+    <div class="closing-bottom-bar">
+      <div class="closing-bottom-left">
+        <span class="bottom-team-name">Tim High Ground Solid</span>
+        <span class="bottom-sep">•</span>
+        <em class="bottom-slogan-script">“Veni, vidi, vici”</em>
+      </div>
+      <div class="closing-bottom-right">
+        <span class="bottom-univ">IPB University</span>
+        <span class="bottom-event">Leuser GeoStory Challenge | Festival Rimba Leuser 2026</span>
+      </div>
     </div>
   </footer>
 
