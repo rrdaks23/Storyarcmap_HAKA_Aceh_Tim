@@ -1,1 +1,0 @@
-# Storyarcmap_HAKA_Aceh_Tim
