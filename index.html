@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benteng Ekologis TNGL (2019–2025) • WebGIS StoryMap</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Bilah Navigasi & Pengalih Tahun di Bagian Atas -->
+  <header id="top-bar">
+    <div class="brand">
+      <span class="dot"></span>
+      <span>STORYMAP GEOSPASIAL • TNGL (2019–2025)</span>
+    </div>
+
+    <div class="controls-right">
+      <div id="year-switcher" class="year-group" title="Pilih Tahun Layer">
+        <button class="year-btn" data-year="2019">2019</button>
+        <button class="year-btn" data-year="2021">2021</button>
+        <button class="year-btn active" data-year="2025">2025</button>
+      </div>
+      <div class="progress-badge">
+        <span id="chapter-label">Sampul</span>
+        <span id="chapter-counter">00 / 06</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Indikator Status Pemuatan GeoJSON -->
+  <div id="loader-toast" class="hidden">Memuat layer GeoJSON...</div>
+
+  <!-- Kanvas Peta Leaflet Layar Penuh -->
+  <div id="map"></div>
+
+  <!-- Kotak Legenda Dinamis Otomatis dari Atribut GeoJSON -->
+  <aside id="map-legend" class="legend-box"></aside>
+
+  <!-- Kontainer Narasi Scrollytelling -->
+  <main id="story-container">
+    <section class="step active" id="bab-0" data-step="sampul">
+      <span class="tag">PORTAL WEBGIS INTERAKTIF • 2019–2025</span>
+      <h1>Benteng Ekologis Taman Nasional Gunung Leuser</h1>
+      <p>Evaluasi spasial-temporal efektivitas kawasan inti TNGL sebagai penyerap karbon alami dan penyangga iklim mikro lokal di tengah dinamika perubahan lahan pada zona penyangga radius 100 km.</p>
+      <div class="hint-box">Klik poligon mana pun pada peta untuk melihat detail luas (Ha), proporsi wilayah, dan interpretasi ekologis.</div>
+      <div class="scroll-hint">Gulir ke bawah untuk menelusuri temuan spasial ↓</div>
+    </section>
+
+    <section class="step" id="bab-1" data-step="deliniasi">
+      <span class="tag">01 • DESAIN SPASIAL & FISIOGRAFI</span>
+      <h2>Kawasan Inti TNGL vs Zona Penyangga 100 km</h2>
+      <p>Kajian membandingkan ekosistem hutan di dalam batas kawasan inti TNGL dengan kawasan non-hutan dan permukiman pada zona buffer 100 km dengan mempertimbangkan variasi elevasi (DEM), kelerengan, serta aksesibilitas jalan.</p>
+      <div class="layer-pills">
+        <button class="pill-btn active" data-sublayer="batas">Batas & Zona Buffer</button>
+        <button class="pill-btn" data-sublayer="elevasi">Elevasi (DEM)</button>
+        <button class="pill-btn" data-sublayer="lereng">Kemiringan Lereng</button>
+      </div>
+    </section>
+
+    <section class="step" id="bab-2" data-step="hutan">
+      <span class="tag">02 • TUTUPAN LAHAN & DEFORESTASI</span>
+      <h2>Dinamika Tutupan Hutan (2019–2025)</h2>
+      <p>Pemantauan multi-temporal mengidentifikasi kawasan hutan yang berhasil dipertahankan di dalam inti TNGL dibandingkan area yang mengalami kehilangan tutupan hutan maupun suksesi alami di zona penyangga.</p>
+      <div class="layer-pills">
+        <button class="pill-btn active" data-sublayer="dinamika_hutan">Dinamika 2019–2025</button>
+        <button class="pill-btn" data-sublayer="status_hutan">Status Hutan (Per Tahun)</button>
+      </div>
+    </section>
+
+    <section class="step" id="bab-3" data-step="karbon">
+      <span class="tag">03 • NERACA KARBON & BIOMASSA</span>
+      <h2>Cadangan Karbon & Laju Sekuestrasi</h2>
+      <p>Integrasi indeks spektral optik (Sentinel-2) dan hamburan balik radar (Sentinel-1 SAR VH) memetakan distribusi stok karbon (Ton/Ha) serta laju perubahan karbon tahunan. Gunakan tombol tahun di kanan atas untuk membandingkan tahun 2019, 2021, dan 2025.</p>
+      <div class="layer-pills">
+        <button class="pill-btn active" data-sublayer="carbon_stock">Cadangan Karbon</button>
+        <button class="pill-btn" data-sublayer="agb">Biomassa (AGB)</button>
+        <button class="pill-btn" data-sublayer="carbon_rate">Laju Carbon Rate</button>
+      </div>
+    </section>
+
+    <section class="step" id="bab-4" data-step="termal">
+      <span class="tag">04 • IKLIM MIKRO & STRES TERMAL</span>
+      <h2>Efek Pendinginan Suhu Permukaan (LST)</h2>
+      <p>Evapotranspirasi dan kerapatan tajuk hutan TNGL mempertahankan suhu permukaan (LST) yang sejuk, kontras dengan fenomena Pulau Bahang (UHI) dan indeks stres termal (UTFVI) pada kawasan terbangun di zona luar.</p>
+      <div class="layer-pills">
+        <button class="pill-btn active" data-sublayer="lst">Suhu Permukaan (LST)</button>
+        <button class="pill-btn" data-sublayer="uhi">Pulau Bahang (UHI)</button>
+        <button class="pill-btn" data-sublayer="utfvi">Stres Termal (UTFVI)</button>
+      </div>
+    </section>
+
+    <section class="step" id="bab-5" data-step="delta">
+      <span class="tag">05 • PERUBAHAN SPASIAL (2025 vs 2019)</span>
+      <h2>Peta Delta Karbon, Suhu & Urbanisasi</h2>
+      <p>Analisis selisih piksel antara tahun 2025 dan 2019 memperlihatkan keterkaitan spasial antara ekspansi kawasan terbangun (Delta NDBI), penurunan kerapatan vegetasi (Delta NDVI), defisit karbon, serta kenaikan suhu permukaan.</p>
+      <div class="layer-pills">
+        <button class="pill-btn active" data-sublayer="delta_carbon">Delta Karbon</button>
+        <button class="pill-btn" data-sublayer="delta_lst">Delta Suhu LST</button>
+        <button class="pill-btn" data-sublayer="delta_ndvi">Delta NDVI</button>
+        <button class="pill-btn" data-sublayer="delta_ndbi">Delta NDBI</button>
+      </div>
+    </section>
+
+    <section class="step" id="bab-6" data-step="eksplorasi">
+      <span class="tag">06 • VALIDASI TITIK & EKSPLORASI BEBAS</span>
+      <h2>Sampel Observasi & Kontrol Layer Mandiri</h2>
+      <p>Klik titik sampel hijau (Dalam TNGL) atau merah (Permukiman Buffer) untuk memeriksa seluruh nilai parameter biofisik mentah pada lokasi tersebut, atau gunakan panel kontrol layer di pojok kanan atas peta untuk mengombinasikan layer secara bebas.</p>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
