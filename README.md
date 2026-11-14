@@ -1,6 +1,6 @@
 # 🌿 Benteng Ekologis Taman Nasional Gunung Leuser (2019–2025)
 
-**WebGIS StoryMap Interaktif — Evaluasi Efektivitas Kawasan Inti TNGL sebagai Benteng Penyerapan Karbon dan Penyangga Perubahan Iklim Mikro Lokal**
+**WebGIS StoryMap Interaktif — Evaluasi Efektivitas Kawasan Ekosistem Leuser sebagai Benteng Penyerapan Karbon dan Penyangga Perubahan Iklim Mikro Lokal**
 
 [![Live Demo](https://img.shields.io/badge/Live_StoryMap-GitHub_Pages-15803d?style=for-the-badge&logo=github)](https://rrdaks23.github.io/Storyarcmap_HAKA_Aceh_Tim/)
 [![Tim Penyusun](https://img.shields.io/badge/Tim-TIM_Hard_Ground_Solid-d97706?style=for-the-badge)](#identitas-tim)
@@ -11,7 +11,7 @@
 ## 👥 Identitas Tim & Mitra
 
 * **Tim Penyusun:** **TIM Hard Ground Solid**
-* ** Muhammad Luthfan Nabil & Harun Al Rasyid**
+* **Muhammad Luthfan Nabil & Harun Al Rasyid**
 * **Kemitraan & Kolaborasi:** Universitas & **HAKA Aceh** (Hutan, Alam dan Lingkungan Aceh)
 * **Tautan Publikasi WebGIS:** [https://rrdaks23.github.io/Storyarcmap_HAKA_Aceh_Tim/](https://rrdaks23.github.io/Storyarcmap_HAKA_Aceh_Tim/)
 
