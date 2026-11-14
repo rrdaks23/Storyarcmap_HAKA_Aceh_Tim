@@ -4,7 +4,7 @@
 const DRIVE_API_URL = 'https://script.google.com/macros/s/AKfycbzrQ8NM9zL704M6IxDGBVfSuoYNz-66npZH3d9oH-g2lmbYZPThwexujHwQ_nGU2YFc/exec';
 
 // ============================================================================
-// 2. INISIALISASI PETA LEAFLET & BASEMAP TERANG
+// 2. INISIALISASI PETA LEAFLET & BASEMAP ESRI ONLY (TANPA CARTO & TANPA OSM)
 // ============================================================================
 const map = L.map('map', {
   center: [3.55, 97.45],
@@ -12,26 +12,41 @@ const map = L.map('map', {
   zoomControl: true
 });
 
-const cartoLight = L.tileLayer(
-  'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-  { subdomains: 'abcd', maxZoom: 19, attribution: '© OpenStreetMap © CARTO' }
-).addTo(map);
+// Basemap Utama: Esri World Gray Canvas (Terang Editorial + Label Wilayah)
+const esriGrayBase = L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+  { maxZoom: 16, attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ' }
+);
+const esriGrayRef = L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
+  { maxZoom: 16, pane: 'overlayPane' }
+);
+const esriCanvasTerang = L.layerGroup([esriGrayBase, esriGrayRef]).addTo(map);
 
+// Basemap Alternatif 2: Esri World Topo Map (Topografi Terang Pegunungan Leuser)
 const esriTopo = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
-  { maxZoom: 18, attribution: '© Esri World Topo' }
+  { maxZoom: 18, attribution: 'Tiles &copy; Esri &mdash; Esri, Garmin, USGS, NPS' }
 );
 
+// Basemap Alternatif 3: Esri World Imagery (Citra Satelit Resolusi Tinggi)
 const esriSat = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-  { maxZoom: 18, attribution: '© Esri World Imagery' }
+  { maxZoom: 18, attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics' }
+);
+
+// Basemap Alternatif 4: Esri National Geographic World Map
+const esriNatGeo = L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
+  { maxZoom: 16, attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme' }
 );
 
 const layerControl = L.control.layers(
   {
-    'Peta Terang (CARTO Positron)': cartoLight,
-    'Peta Topografi Terang (Esri)': esriTopo,
-    'Citra Satelit (Esri)': esriSat
+    'Esri Canvas Terang (Utama)': esriCanvasTerang,
+    'Esri Topografi Leuser': esriTopo,
+    'Esri Citra Satelit': esriSat,
+    'Esri NatGeo Map': esriNatGeo
   },
   {},
   { collapsed: true }
@@ -85,7 +100,9 @@ let apiDiagnosticError = null;
 const loaderToast = document.getElementById('loader-toast');
 
 function setApiStatusError(shortTitle, detailMsg) {
-  apiDiagnosticError = detailMsg;
+  if (!apiDiagnosticError) {
+    apiDiagnosticError = detailMsg;
+  }
   const brandEl = document.getElementById('brand-title');
   const dotEl = document.getElementById('sync-dot');
   if (brandEl) brandEl.textContent = `STORYMAP TNGL • ${shortTitle}`;
@@ -102,7 +119,7 @@ async function fetchAppsScriptJSON(url) {
 
   if (trimmed.startsWith('<')) {
     throw new Error(
-      'API mengembalikan halaman HTML Login Google. Pastikan: (1) URL di app.js berakhiran /exec (bukan /dev), (2) Deploy Apps Script diatur Who has access = Anyone dengan New version, dan (3) gunakan akun @gmail.com biasa jika akun kampus memblokir akses publik.'
+      'Google mengembalikan halaman Login (bukan JSON). Pastikan Web App Apps Script dibuat dari akun @gmail.com pribadi (bukan email kampus) dengan akses "Anyone" dan Version "New version".'
     );
   }
   return JSON.parse(trimmed);
