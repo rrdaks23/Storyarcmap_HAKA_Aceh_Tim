@@ -2,6 +2,7 @@
 // 1. KONFIGURASI GOOGLE DRIVE (ISI 2 BARIS INI SAJA)
 // ============================================================================
 const DRIVE_FOLDER_ID = '1cShz78J7EnXJ8tngWHnU2W7dzcO7uuPc';
+// PENTING: batasi key ini di Google Cloud (HTTP referrer github.io + Drive API saja) & ganti key lama.
 const DRIVE_API_KEY   = 'AIzaSyCsL4Gs00TIkvItUOhFp2mCmOkhdgPN4Ak';
 
 // Cadangan Google Apps Script /exec (otomatis terlewati jika API Key di atas diisi)
@@ -20,6 +21,11 @@ const map = L.map('map', {
   preferCanvas: true // Merender poligon besar pada HTML5 Canvas agar ringan di browser
 });
 
+// Pane khusus label: di atas data, tapi tidak menangkap klik
+map.createPane('labels');
+map.getPane('labels').style.zIndex = 650;
+map.getPane('labels').style.pointerEvents = 'none';
+
 // Basemap Utama: Esri World Gray Canvas (Terang Editorial + Label Wilayah)
 const esriGrayBase = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
@@ -27,7 +33,7 @@ const esriGrayBase = L.tileLayer(
 );
 const esriGrayRef = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
-  { maxZoom: 16, pane: 'overlayPane' }
+  { maxZoom: 16, pane: 'labels' }
 );
 const esriCanvasTerang = L.layerGroup([esriGrayBase, esriGrayRef]).addTo(map);
 
@@ -109,6 +115,11 @@ const ALLOWED_PROPS = new Set([
 ]);
 
 const round5 = (n) => Math.round(n * 1e5) / 1e5;
+
+// Helper aman untuk HTML (cegah XSS dari atribut GeoJSON) & angka kosong
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const safeColor = (c, fallback) => (typeof c === 'string' && /^#[0-9a-f]{3,8}$/i.test(c.trim()) ? c.trim() : fallback);
+const fmtNum = (v, d) => (v === null || v === undefined || v === '' || Number.isNaN(Number(v)) ? '-' : Number(v).toFixed(d));
 
 function perpDistanceSq(p, a, b) {
   let x = a[0], y = a[1];
@@ -233,6 +244,7 @@ let currentYear = '2025';
 let currentChapter = 'sampul';
 let currentSublayer = null;
 let apiDiagnosticError = null;
+let pendingLoads = 0;
 
 const loaderToast = document.getElementById('loader-toast');
 
@@ -296,11 +308,11 @@ function resolveCatalogItem(specOrTuple) {
     const fn = f.filename.toLowerCase();
     return fn.startsWith(prefix) && (!specOrTuple.year || fn.includes(specOrTuple.year));
   });
-  if (byPrefix) return byPrefix;
+  if (byPrefix) { console.warn('[Drive] Nama file tidak persis, memakai kecocokan prefix:', byPrefix.filename); return byPrefix; }
 
   if (specOrTuple.kw && specOrTuple.kw.length > 0) {
     const byKw = list.find((f) => specOrTuple.kw.some((k) => f.filename.toLowerCase().includes(k.toLowerCase())));
-    if (byKw) return byKw;
+    if (byKw) { console.warn('[Drive] Nama file tidak persis, memakai kecocokan kata kunci:', byKw.filename); return byKw; }
   }
 
   return { folder: specOrTuple.folder, filename: specOrTuple.file, fileId: null };
@@ -309,27 +321,27 @@ function resolveCatalogItem(specOrTuple) {
 function buildPopupHTML(props) {
   if (props.Zona) {
     return `
-      <strong>${props.Zona}</strong>
+      <strong>${esc(props.Zona)}</strong>
       <table class="popup-table">
-        <tr><td>Carbon Stock</td><td>${Number(props.Carbon_Stock || 0).toFixed(2)} Ton/Ha</td></tr>
-        <tr><td>Suhu LST</td><td>${Number(props.LST || 0).toFixed(2)} °C</td></tr>
-        <tr><td>UHI / UTFVI</td><td>${Number(props.UHI || 0).toFixed(2)} / ${Number(props.UTFVI || 0).toFixed(4)}</td></tr>
-        <tr><td>NDVI / NDMI</td><td>${Number(props.NDVI || 0).toFixed(3)} / ${Number(props.NDMI || 0).toFixed(3)}</td></tr>
-        <tr><td>NDBI / SAR VH</td><td>${Number(props.NDBI || 0).toFixed(3)} / ${Number(props.SAR_VH || 0).toFixed(2)} dB</td></tr>
-        <tr><td>Elevasi / Lereng</td><td>${Number(props.Elevation || 0).toFixed(0)} mdpl / ${Number(props.Slope || 0).toFixed(1)}°</td></tr>
+        <tr><td>Carbon Stock</td><td>${fmtNum(props.Carbon_Stock, 2)} Ton/Ha</td></tr>
+        <tr><td>Suhu LST</td><td>${fmtNum(props.LST, 2)} °C</td></tr>
+        <tr><td>UHI / UTFVI</td><td>${fmtNum(props.UHI, 2)} / ${fmtNum(props.UTFVI, 4)}</td></tr>
+        <tr><td>NDVI / NDMI</td><td>${fmtNum(props.NDVI, 3)} / ${fmtNum(props.NDMI, 3)}</td></tr>
+        <tr><td>NDBI / SAR VH</td><td>${fmtNum(props.NDBI, 3)} / ${fmtNum(props.SAR_VH, 2)} dB</td></tr>
+        <tr><td>Elevasi / Lereng</td><td>${fmtNum(props.Elevation, 0)} mdpl / ${fmtNum(props.Slope, 1)}°</td></tr>
       </table>
     `;
   }
 
   const luasFmt = props.Luas_Ha ? Number(props.Luas_Ha).toLocaleString('id-ID') + ' Ha' : '-';
-  const pctFmt = props.Persentase_Area ? props.Persentase_Area + ' %' : '-';
+  const pctFmt = props.Persentase_Area ? esc(props.Persentase_Area) + ' %' : '-';
   return `
-    <strong style="color:${props.Warna_Hex || '#15803d'}">${props.Kategori || props.Name || 'Objek Spasial'}</strong>
+    <strong style="color:${safeColor(props.Warna_Hex, '#15803d')}">${esc(props.Kategori || props.Name || 'Objek Spasial')}</strong>
     <table class="popup-table">
-      <tr><td>Parameter</td><td>${props.Parameter || '-'} (${props.Tahun || '-'})</td></tr>
-      <tr><td>Kriteria</td><td>${props.Rentang_Nilai || '-'}</td></tr>
+      <tr><td>Parameter</td><td>${esc(props.Parameter || '-')} (${esc(props.Tahun || '-')})</td></tr>
+      <tr><td>Kriteria</td><td>${esc(props.Rentang_Nilai || '-')}</td></tr>
       <tr><td>Luas Area</td><td>${luasFmt} (${pctFmt})</td></tr>
-      <tr><td>Keterangan</td><td>${props.Interpretasi || '-'}</td></tr>
+      <tr><td>Keterangan</td><td>${esc(props.Interpretasi || '-')}</td></tr>
     </table>
   `;
 }
@@ -342,6 +354,7 @@ async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
   if (layerInstances[cacheKey]) return layerInstances[cacheKey];
 
   loaderToast.textContent = `Memuat & mengompresi [${item.folder.slice(0, 2)}]: ${item.filename}...`;
+  pendingLoads++;
   loaderToast.classList.remove('hidden');
 
   try {
@@ -364,7 +377,9 @@ async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
     }
 
     const gjData = geojsonCache[cacheKey];
+    const interactive = options.interactive !== false;
     const layer = L.geoJSON(gjData, {
+      interactive,
       style: (feature) => {
         const p = feature.properties || {};
         return {
@@ -386,7 +401,7 @@ async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
         });
       },
       onEachFeature: (feature, lyr) => {
-        if (feature.properties) {
+        if (interactive && feature.properties) {
           lyr.bindPopup(buildPopupHTML(feature.properties), { maxWidth: 300 });
         }
       }
@@ -399,7 +414,8 @@ async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
     setApiStatusError('KONEKSI DRIVE TERKENDALA', err.message);
     return null;
   } finally {
-    loaderToast.classList.add('hidden');
+    pendingLoads = Math.max(0, pendingLoads - 1);
+    if (pendingLoads === 0) loaderToast.classList.add('hidden');
   }
 }
 
@@ -415,39 +431,42 @@ async function syncDriveCatalog() {
   try {
     let filesList = [];
 
-    if (useDirectDriveAPI() && item.fileId) {
-        const directUrl = `https://www.googleapis.com/drive/v3/files/${item.fileId}?alt=media&key=${encodeURIComponent(DRIVE_API_KEY)};
-        try {
-          rawData = await fetchJSONSafe(directUrl);
-        } catch (corsErr) {
-          const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(directUrl)}`;
-          rawData = await fetchJSONSafe(proxyUrl);
-        }
-      };
-      for (const entry of topItems) {
-        if (entry.mimeType === 'application/vnd.google-apps.folder') {
-          const subFiles = await listDriveFilesViaApiV3(entry.id);
-          subFiles.forEach((f) => {
-            if (f.name.toLowerCase().endsWith('.geojson')) {
-              filesList.push({
-                folder: entry.name,
-                filename: f.name,
-                fileId: f.id,
-                lastUpdated: f.modifiedTime || new Date().toISOString(),
-                sizeKB: Math.round(Number(f.size || 0) / 1024)
-              });
-            }
-          });
-        } else if (entry.name.toLowerCase().endsWith('.geojson')) {
+    if (useDirectDriveAPI()) {
+      const topItems = await listDriveFilesViaApiV3(DRIVE_FOLDER_ID);
+
+      // Baca isi semua subfolder secara paralel
+      const folders = topItems.filter((e) => e.mimeType === 'application/vnd.google-apps.folder');
+      const results = await Promise.all(
+        folders.map((f) => listDriveFilesViaApiV3(f.id).then((files) => ({ folder: f.name, files })))
+      );
+
+      results.forEach(({ folder, files }) => {
+        files.forEach((f) => {
+          if (f.name.toLowerCase().endsWith('.geojson')) {
+            filesList.push({
+              folder,
+              filename: f.name,
+              fileId: f.id,
+              lastUpdated: f.modifiedTime || new Date().toISOString(),
+              sizeKB: Math.round(Number(f.size || 0) / 1024)
+            });
+          }
+        });
+      });
+
+      // File .geojson yang langsung berada di folder induk
+      topItems.forEach((e) => {
+        if (e.mimeType !== 'application/vnd.google-apps.folder' && e.name.toLowerCase().endsWith('.geojson')) {
           filesList.push({
             folder: '',
-            filename: entry.name,
-            fileId: entry.id,
-            lastUpdated: entry.modifiedTime || new Date().toISOString(),
-            sizeKB: Math.round(Number(entry.size || 0) / 1024)
+            filename: e.name,
+            fileId: e.id,
+            lastUpdated: e.modifiedTime || new Date().toISOString(),
+            sizeKB: Math.round(Number(e.size || 0) / 1024)
           });
         }
-      }
+      });
+
       filesList.sort((a, b) => (a.folder + a.filename).localeCompare(b.folder + b.filename));
     } else {
       if (DRIVE_API_URL.includes('PASTE_ID_DEPLOYMENT') || !DRIVE_API_URL.includes('/exec')) {
@@ -462,7 +481,10 @@ async function syncDriveCatalog() {
       if (meta.status === 'ok' && meta.files) filesList = meta.files;
     }
 
-    if (filesList.length === 0) return;
+    if (filesList.length === 0) {
+      setApiStatusError('DRIVE KOSONG', 'Tidak ada file .geojson ditemukan. Periksa DRIVE_FOLDER_ID dan pastikan folder dibagikan publik (Anyone with the link).');
+      return;
+    }
 
     apiDiagnosticError = null;
     filesList.forEach((item) => {
@@ -588,7 +610,7 @@ function updateLegendFromGeoJSON(gjData, fallbackTitle = 'Legenda Peta') {
   const box = document.getElementById('map-legend');
   if (!gjData || !gjData.features || gjData.features.length === 0) {
     if (apiDiagnosticError) {
-      box.innerHTML = `<h4 style="color:#dc2626">Status Koneksi Drive API</h4><small style="color:#334155;line-height:1.45">${apiDiagnosticError}</small>`;
+      box.innerHTML = `<h4 style="color:#dc2626">Status Koneksi Drive API</h4><small style="color:#334155;line-height:1.45">${esc(apiDiagnosticError)}</small>`;
     } else {
       box.innerHTML = `<h4>${fallbackTitle}</h4><small>Pilih layer dari ikon kontrol kanan atas peta.</small>`;
     }
@@ -596,18 +618,27 @@ function updateLegendFromGeoJSON(gjData, fallbackTitle = 'Legenda Peta') {
   }
 
   const firstProps = gjData.features[0].properties || {};
-  const title = firstProps.Parameter ? `${firstProps.Parameter} (${firstProps.Tahun || ''})` : fallbackTitle;
-  const sorted = [...gjData.features].sort((a, b) => (a.properties.Kelas_Kode || 0) - (b.properties.Kelas_Kode || 0));
+  const title = firstProps.Parameter ? esc(`${firstProps.Parameter} (${firstProps.Tahun || ''})`) : esc(fallbackTitle);
+  // Deduplikasi per kelas agar legenda tidak membengkak, maksimal 30 item
+  const seen = new Map();
+  gjData.features.forEach((f) => {
+    const p = f.properties || {};
+    const key = `${p.Kelas_Kode ?? ''}|${p.Kategori ?? p.Zona ?? p.Name ?? ''}`;
+    if (!seen.has(key)) seen.set(key, f);
+  });
+  const sorted = [...seen.values()]
+    .sort((a, b) => ((a.properties || {}).Kelas_Kode || 0) - ((b.properties || {}).Kelas_Kode || 0))
+    .slice(0, 30);
 
   const itemsHTML = sorted.map((feat) => {
     const p = feat.properties || {};
     const luasText = p.Luas_Ha ? ` • ${Number(p.Luas_Ha).toLocaleString('id-ID')} Ha` : '';
     return `
       <div class="legend-item">
-        <span class="legend-color" style="background:${p.Warna_Hex || '#15803d'}"></span>
+        <span class="legend-color" style="background:${safeColor(p.Warna_Hex, '#15803d')}"></span>
         <div class="legend-meta">
-          <span>${p.Kategori || p.Zona || p.Name || 'Kelas Spasial'}</span>
-          <small>${p.Rentang_Nilai || ''}${luasText}</small>
+          <span>${esc(p.Kategori || p.Zona || p.Name || 'Kelas Spasial')}</span>
+          <small>${esc(p.Rentang_Nilai || '')}${luasText}</small>
         </div>
       </div>
     `;
@@ -634,42 +665,47 @@ function clearActiveLayers() {
   activeDataLayers = [];
 }
 
-async function renderScene() {
+let renderToken = 0;
+
+async function renderScene(opts = {}) {
   const cfg = chapterMeta[currentChapter];
   if (!cfg) return;
+
+  const refit = opts.refit !== false;   // false = jangan gerakkan peta (ganti tahun / sublayer)
+  const token = ++renderToken;
+  const stale = () => token !== renderToken;
 
   document.getElementById('chapter-label').textContent = cfg.label;
   document.getElementById('chapter-counter').textContent = cfg.count;
   map.invalidateSize();
-  map.flyTo(cfg.center, cfg.zoom, { duration: 1.1 });
 
-  clearActiveLayers();
+  await catalogReady;                    // katalog Drive harus siap dulu
+  if (stale()) return;
 
   const lyrTngl = await getDriveGeoJSONLayer(DRIVE_SPECS.batas_tngl, {
     fillColor: '#15803d',
     strokeColor: '#0f4c3a',
     weight: 2.5,
-    fillOpacity: 0.08
+    fillOpacity: 0.08,
+    interactive: false                   // agar klik tembus ke layer data di bawahnya
   });
-  if (lyrTngl) {
-    lyrTngl.addTo(map);
-    activeDataLayers.push(lyrTngl);
-  }
+  if (stale()) return;
 
-  let primaryLayer = lyrTngl;
+  const load = (spec, fillOpacity = 0.78) => getDriveGeoJSONLayer(spec, { fillOpacity });
+  let primaryLayer = null;
+  let extraLayers = [];
+  let customLegend = null;
 
   if (currentChapter === 'sampul' || currentChapter === 'deliniasi') {
     const mode = currentSublayer || 'zonasi';
     const target = mode === 'elevasi' ? DRIVE_SPECS.elevasi : mode === 'lereng' ? DRIVE_SPECS.lereng : DRIVE_SPECS.zonasi_jarak;
-    primaryLayer = await getDriveGeoJSONLayer(target, { fillOpacity: 0.72 });
+    primaryLayer = await load(target, 0.72);
   } else if (currentChapter === 'hutan') {
     const mode = currentSublayer || 'dinamika_hutan';
-    const target = mode === 'status_hutan' ? DRIVE_SPECS.status_hutan(currentYear) : DRIVE_SPECS.dinamika_hutan;
-    primaryLayer = await getDriveGeoJSONLayer(target, { fillOpacity: 0.78 });
+    primaryLayer = await load(mode === 'status_hutan' ? DRIVE_SPECS.status_hutan(currentYear) : DRIVE_SPECS.dinamika_hutan);
   } else if (currentChapter === 'karbon') {
     const mode = currentSublayer || 'carbon_stock';
-    const target = mode === 'agb' ? DRIVE_SPECS.agb(currentYear) : mode === 'carbon_rate' ? DRIVE_SPECS.carbon_rate : DRIVE_SPECS.carbon_stock(currentYear);
-    primaryLayer = await getDriveGeoJSONLayer(target, { fillOpacity: 0.78 });
+    primaryLayer = await load(mode === 'agb' ? DRIVE_SPECS.agb(currentYear) : mode === 'carbon_rate' ? DRIVE_SPECS.carbon_rate : DRIVE_SPECS.carbon_stock(currentYear));
   } else if (currentChapter === 'termal') {
     const mode = currentSublayer || 'lst';
     const targetMap = {
@@ -678,7 +714,7 @@ async function renderScene() {
       utfvi: DRIVE_SPECS.utfvi(currentYear),
       ndbi: DRIVE_SPECS.ndbi(currentYear)
     };
-    primaryLayer = await getDriveGeoJSONLayer(targetMap[mode], { fillOpacity: 0.78 });
+    primaryLayer = await load(targetMap[mode]);
   } else if (currentChapter === 'delta') {
     const mode = currentSublayer || 'delta_carbon';
     const mapDelta = {
@@ -687,41 +723,59 @@ async function renderScene() {
       delta_ndvi: DRIVE_SPECS.delta_ndvi,
       delta_ndbi: DRIVE_SPECS.delta_ndbi
     };
-    primaryLayer = await getDriveGeoJSONLayer(mapDelta[mode], { fillOpacity: 0.78 });
+    primaryLayer = await load(mapDelta[mode]);
   } else if (currentChapter === 'validasi') {
     const mode = currentSublayer || 'sampel';
     if (mode === 'sar') {
-      primaryLayer = await getDriveGeoJSONLayer(DRIVE_SPECS.sar(currentYear), { fillOpacity: 0.78 });
+      primaryLayer = await load(DRIVE_SPECS.sar(currentYear));
     } else {
-      const lyrIn = await getDriveGeoJSONLayer(DRIVE_SPECS.sampel_dalam);
-      const lyrOut = await getDriveGeoJSONLayer(DRIVE_SPECS.sampel_luar);
-      [lyrIn, lyrOut].forEach((l) => {
-        if (l) { l.addTo(map); activeDataLayers.push(l); }
-      });
-      updateLegendFromGeoJSON({
+      const [lyrIn, lyrOut] = await Promise.all([
+        getDriveGeoJSONLayer(DRIVE_SPECS.sampel_dalam),
+        getDriveGeoJSONLayer(DRIVE_SPECS.sampel_luar)
+      ]);
+      extraLayers = [lyrIn, lyrOut].filter(Boolean);
+      customLegend = {
         features: [
           { properties: { Kategori: 'Titik Sampel Dalam TNGL', Rentang_Nilai: 'Klik titik untuk detail atribut', Warna_Hex: '#15803d' } },
           { properties: { Kategori: 'Titik Sampel Zona Luar', Rentang_Nilai: 'Klik titik untuk detail atribut', Warna_Hex: '#dc2626' } }
         ]
-      }, 'Validasi Sampel Spasial');
-      return;
+      };
     }
   } else if (currentChapter === 'dampak') {
-    primaryLayer = await getDriveGeoJSONLayer(DRIVE_SPECS.delta_lst, { fillOpacity: 0.75 });
+    primaryLayer = await load(DRIVE_SPECS.delta_lst, 0.75);
+  }
+
+  if (stale()) return;                   // render yang lebih baru sudah berjalan, batalkan yang ini
+
+  // Ganti layer secara sinkron: tidak ada kedipan & tidak ada tumpukan layer lama
+  clearActiveLayers();
+  const add = (l) => { if (l) { l.addTo(map); activeDataLayers.push(l); } };
+  add(lyrTngl);
+  if (primaryLayer && primaryLayer !== lyrTngl) add(primaryLayer);
+  extraLayers.forEach(add);
+  if (lyrTngl && primaryLayer) lyrTngl.bringToFront();
+
+  const flyHome = () => { if (refit) map.flyTo(cfg.center, cfg.zoom, { duration: 1.1 }); };
+
+  if (customLegend) {
+    updateLegendFromGeoJSON(customLegend, 'Validasi Sampel Spasial');
+    flyHome();
+    return;
   }
 
   if (primaryLayer) {
-    primaryLayer.addTo(map);
-    activeDataLayers.push(primaryLayer);
-    if (lyrTngl) lyrTngl.bringToFront();
     updateLegendFromGeoJSON(primaryLayer._rawGeoJSON);
-
-    const bounds = primaryLayer.getBounds();
-    if (bounds.isValid() && Math.abs(bounds.getSouth()) <= 90 && Math.abs(bounds.getWest()) <= 180) {
-      map.fitBounds(bounds, { padding: [24, 24], maxZoom: 10 });
+    if (refit) {
+      const bounds = primaryLayer.getBounds();
+      if (bounds.isValid() && Math.abs(bounds.getSouth()) <= 90 && Math.abs(bounds.getWest()) <= 180) {
+        map.flyToBounds(bounds, { padding: [24, 24], maxZoom: 10, duration: 1.1 });
+      } else {
+        flyHome();
+      }
     }
   } else {
     updateLegendFromGeoJSON(null, 'Kawasan Ekosistem Leuser');
+    flyHome();
   }
 }
 
@@ -739,36 +793,42 @@ document.querySelectorAll('.year-btn').forEach((btn) => {
     document.querySelectorAll('.year-btn').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     currentYear = btn.dataset.year;
-    renderScene();
+    renderScene({ refit: false });
   });
 });
 
 document.querySelectorAll('.pill-btn').forEach((pill) => {
-  pill.addEventListener('click', (e) => {
-    const parent = e.target.closest('.layer-pills');
+  pill.addEventListener('click', () => {
+    const parent = pill.closest('.layer-pills');
     parent.querySelectorAll('.pill-btn').forEach((p) => p.classList.remove('active'));
-    e.target.classList.add('active');
-    currentSublayer = e.target.dataset.sublayer;
-    renderScene();
+    pill.classList.add('active');
+    currentSublayer = pill.dataset.sublayer;
+    renderScene({ refit: false });
   });
 });
 
 document.querySelectorAll('.tab-btn').forEach((tab) => {
-  tab.addEventListener('click', (e) => {
-    const stepCard = e.target.closest('.step');
+  tab.addEventListener('click', () => {
+    const stepCard = tab.closest('.step');
     stepCard.querySelectorAll('.tab-btn').forEach((t) => t.classList.remove('active'));
     stepCard.querySelectorAll('.tab-panel').forEach((p) => p.classList.remove('active'));
-    e.target.classList.add('active');
-    document.getElementById(`tab-${e.target.dataset.tab}`).classList.add('active');
+    tab.classList.add('active');
+    const panel = document.getElementById(`tab-${tab.dataset.tab}`);
+    if (panel) panel.classList.add('active');
   });
 });
+
+const catalogReady = syncDriveCatalog();   // dijalankan sekali; tidak pernah reject (error ditangani di dalam)
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
+      const newChapter = entry.target.dataset.step || (entry.target.classList.contains('hero-cover') ? 'sampul' : null);
+      if (!newChapter) return;
       document.querySelectorAll('.step').forEach((s) => s.classList.remove('active'));
       entry.target.classList.add('active');
-      currentChapter = entry.target.dataset.step;
+      if (newChapter === currentChapter) return;   // bab sama, tidak perlu render ulang
+      currentChapter = newChapter;
 
       const firstPill = entry.target.querySelector('.pill-btn');
       if (firstPill) {
@@ -781,9 +841,13 @@ const observer = new IntersectionObserver((entries) => {
       renderScene();
     }
   });
-}, { threshold: 0.35 });
+}, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
 
 document.querySelectorAll('.step, .hero-cover').forEach((sec) => observer.observe(sec));
 
-initChartsAndLightbox();
-syncDriveCatalog().then(() => renderScene());
+try {
+  initChartsAndLightbox();
+} catch (err) {
+  console.error('Gagal inisialisasi grafik/lightbox:', err);
+}
+catalogReady.then(() => renderScene());
