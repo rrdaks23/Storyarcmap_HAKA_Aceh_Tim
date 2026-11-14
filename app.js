@@ -1,7 +1,7 @@
 // ============================================================================
 // 1. KONFIGURASI ENDPOINT GOOGLE DRIVE (TEMPEL URL /exec APPS SCRIPT ANDA)
 // ============================================================================
-const DRIVE_API_URL = 'https://script.google.com/macros/s/AKfycbz3q8NBaKe0_RWfqm5sgCzBLyB7rdEpJgtS5OnLURU/dev';
+const DRIVE_API_URL = 'https://script.google.com/macros/s/AKfycbz3q8NBaKe0_RWfqm5sgCzBLyB7rdEpJgtS5OnLURU/exec';
 
 // ============================================================================
 // 2. INISIALISASI PETA LEAFLET & BASEMAP EDITORIAL
