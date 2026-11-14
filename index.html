@@ -3,21 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Benteng Ekologis TNGL (2019–2025) • WebGIS StoryMap</title>
+  <title>Benteng Ekologis TNGL (2019–2025) • TIM Hard Ground Solid</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- BILAH NAVIGASI & PROGRES BACA ATAS -->
+  <!-- BILAH NAVIGASI, LOGO MITRA, NAMA TIM & PROGRES BACA ATAS -->
   <div id="top-progress-wrap">
     <div class="top-bar-inner">
       <div class="brand-info">
+        <div class="nav-logos">
+          <img src="assets/logo-univ.png" alt="Logo Universitas" class="nav-logo-img" onerror="this.style.display='none'" />
+          <img src="assets/logo-haka.png" alt="Logo HAKA Aceh" class="nav-logo-img" onerror="this.style.display='none'" />
+        </div>
         <span class="status-dot" id="sync-dot"></span>
-        <span id="brand-title">STORYMAP TNGL • 2019–2025</span>
+        <div class="brand-text-stack">
+          <span id="brand-title">STORYMAP TNGL • 2019–2025</span>
+          <span class="nav-team-tag">TIM Hard Ground Solid</span>
+        </div>
       </div>
 
       <div class="top-controls">
@@ -35,16 +42,48 @@
     <div class="scroll-track"><i id="scroll-progress-fill"></i></div>
   </div>
 
-  <!-- NOTIFIKASI SINKRONISASI GOOGLE DRIVE (POJOK KIRI BAWAH AGAR TIDAK MENUTUPI PETA) -->
+  <!-- NOTIFIKASI SINKRONISASI GOOGLE DRIVE (POJOK KIRI BAWAH AGAR PETA BERSIH) -->
   <div id="loader-toast" class="hidden">Menyinkronkan GeoJSON dari Google Drive...</div>
 
-  <!-- SAMPUL PEMBUKA LAYAR PENUH (HERO HEADER) -->
+  <!-- SAMPUL PEMBUKA LAYAR PENUH (HERO HEADER + LOGO GANDA + NAMA TIM) -->
   <header class="hero-cover" id="bab-0" data-step="sampul">
+    <div class="hero-grid-pattern" aria-hidden="true"></div>
     <div class="hero-content">
-      <span class="hero-kicker">METODOLOGI GEOSPASIAL, STATISTIK & AI TERKALIBRASI GEDI L4B (2019–2025)</span>
+
+      <!-- BARIS LOGO UNIVERSITAS & HAKA ACEH -->
+      <div class="hero-partners-bar">
+        <div class="partner-badge">
+          <img src="assets/logo-univ.png" alt="Logo Universitas" class="partner-logo" onerror="this.style.display='none'" />
+          <div class="partner-label">
+            <small>INSTITUSI AKADEMIK</small>
+            <span>Universitas</span>
+          </div>
+        </div>
+        <span class="partner-divider" aria-hidden="true">×</span>
+        <div class="partner-badge">
+          <img src="assets/logo-haka.png" alt="Logo HAKA Aceh" class="partner-logo" onerror="this.style.display='none'" />
+          <div class="partner-label">
+            <small>MITRA KONSERVASI</small>
+            <span>HAKA Aceh</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- IDENTITAS TIM & KICKER KAJIAN -->
+      <div class="hero-identity-row">
+        <span class="team-pill">
+          <span class="team-pulse"></span>
+          TIM Hard Ground Solid
+        </span>
+        <span class="hero-kicker">WEBGIS STORYMAP • PENGINDERAAN JAUH & AI (2019–2025)</span>
+      </div>
+
       <h1>Benteng Ekologis Taman Nasional Gunung Leuser</h1>
+      <p class="hero-subtitle">
+        Evaluasi Efektivitas Kawasan Inti TNGL sebagai Benteng Penyerapan Karbon dan Penyangga Perubahan Iklim Mikro Lokal (2019–2025)
+      </p>
       <p class="hero-lead">
-        Evaluasi efektivitas kawasan inti Taman Nasional Gunung Leuser (TNGL) sebagai benteng alami penyerapan karbon dan penyangga perubahan iklim mikro lokal melalui integrasi citra multi-sensor Google Earth Engine, ekonometrika spasial, Random Forest terkalibrasi LiDAR NASA GEDI L4B, dan Deep Learning LSTM spatio-temporal.
+        Integrasi citra satelit multi-sensor pada Google Earth Engine, uji statistik komparatif, ekonometrika spasial OLS, Random Forest terkalibrasi LiDAR NASA GEDI L4B, dan Deep Learning LSTM spatio-temporal.
       </p>
 
       <div class="hero-stats">
@@ -67,10 +106,12 @@
       </div>
 
       <div class="hero-thesis">
-        <strong>Ringkasan Temuan & Posisi Ilmiah:</strong> Seluruh indikator utama bergerak searah dengan hipotesis perlindungan—cadangan karbon di dalam TNGL lebih tinggi (<strong>64,48 vs. 57,10 Ton/Ha</strong>), suhu permukaan lebih rendah (<strong>22,61 vs. 27,90 °C</strong>), dan indeks lahan terbangun lebih rendah (<strong>−0,2080 vs. −0,1807</strong>). Namun, predikat <em>“benteng”</em> lebih tepat disematkan pada kawasan intinya dibandingkan bentang lahan penyangga 100 km di sekitarnya yang menunjukkan tekanan defisit karbon, pemanasan pada 43,1% area, serta deforestasi.
+        <strong>Tesis Utama Kajian:</strong> Seluruh indikator utama bergerak searah dengan hipotesis perlindungan—cadangan karbon di dalam TNGL lebih tinggi (<strong>64,48 vs. 57,10 Ton/Ha</strong>), suhu permukaan lebih rendah (<strong>22,61 vs. 27,90 °C</strong>), dan indeks lahan terbangun lebih rendah (<strong>−0,2080 vs. −0,1807</strong>). Namun, predikat <em>“benteng”</em> lebih tepat disematkan pada kawasan intinya dibandingkan bentang lahan penyangga 100 km di sekitarnya yang mengalami defisit karbon, pemanasan pada 43,1% area, serta deforestasi.
       </div>
 
-      <a href="#story-main" class="hero-cta">Mulai Eksplorasi Peta & Pembahasan Lengkap ↓</a>
+      <div class="hero-actions">
+        <a href="#story-main" class="hero-cta">Mulai Eksplorasi Peta & Analisis Lengkap ↓</a>
+      </div>
     </div>
   </header>
 
@@ -85,10 +126,10 @@
         <span class="chapter-tag">01 • KONTEKS HISTORIS, UNIT GEOMETRI & MULTI-SENSOR</span>
         <h2>Jantung Warisan Dunia Sumatra & Arsitektur Komputasi GEE</h2>
         <p>
-          Diresmikan sebagai salah satu dari lima taman nasional pertama di Indonesia pada <strong>6 Maret 1980</strong> (Pengumuman Mentan No. 811/Kpts/Um/II/1980), TNGL menjadi inti pengelolaan <strong>Kawasan Ekosistem Leuser (KEL)</strong> melalui Keppres No. 33 Tahun 1998 dan tercatat sebagai Situs Warisan Dunia UNESCO (<em>Tropical Rainforest Heritage of Sumatra</em>, 2004). Dari penunjukan awal seluas ±1,09 juta Ha (SK Menhut 276/1997), penetapan kawasan hutan tahun 2014 menghasilkan luas resmi TNGL sekitar <strong>830.268,95 Ha</strong>—dengan <strong>625.115 Ha</strong> di Provinsi Aceh (serta pembanding 838.872 Ha)—di tengah bentang KEL seluas <strong>±2,28 juta Ha</strong>.
+          Diresmikan sebagai salah satu dari lima taman nasional pertama di Indonesia pada <strong>6 Maret 1980</strong> (Pengumuman Mentan No. 811/Kpts/Um/II/1980), TNGL menjadi inti pengelolaan <strong>Kawasan Ekosistem Leuser (KEL)</strong> melalui Keppres No. 33 Tahun 1998 dan tercatat sebagai Situs Warisan Dunia UNESCO (<em>Tropical Rainforest Heritage of Sumatra</em>, 2004). Dari penunjukan awal seluas ±1,09 juta Ha (SK Menhut 276/1997), penetapan kawasan hutan tahun 2014 menghasilkan luas resmi TNGL sekitar <strong>830.268,95 Ha</strong>—dengan <strong>625.115 Ha</strong> di Provinsi Aceh—di tengah bentang KEL seluas <strong>±2,28 juta Ha</strong>.
         </p>
         <p>
-          Untuk menguji rantai penalaran <em>“hutan → karbon → pendinginan → tekanan terhadap manusia”</em> pada lingkungan komputasi <strong>Google Earth Engine (GEE)</strong> dan Python Geospasial (luaran <code>MyDrive/TNGL_Part2</code>, proyeksi <code>EPSG:4326</code>), batas wilayah (<code>KEL_Aceh</code>, toleransi penyederhanaan 500 m) dibagi menjadi tiga unit geometri:
+          Untuk menguji rantai penalaran <em>“hutan → karbon → pendinginan → tekanan terhadap manusia”</em> pada platform <strong>Google Earth Engine (GEE)</strong> dan Python Geospasial (proyeksi <code>EPSG:4326</code>), batas wilayah (<code>KEL_Aceh</code>, toleransi penyederhanaan 500 m) dibagi menjadi tiga unit geometri:
         </p>
         <ul class="editorial-list">
           <li><strong>Zona Inti TNGL (<code>tngl_geom</code>):</strong> Poligon kawasan konservasi inti sebagai wilayah kontrol tutupan hutan terlindungi.</li>
@@ -491,11 +532,16 @@
 
   </main>
 
-  <!-- FOOTER PENUTUP -->
+  <!-- FOOTER PENUTUP DENGAN LOGO & KREDIT TIM -->
   <footer class="story-footer">
     <div class="footer-inner">
-      <strong>Laporan Metodologi & Evaluasi Efektivitas Taman Nasional Gunung Leuser (2019–2025)</strong>
-      <p>Integrasi Penginderaan Jauh Multi-Sensor (Sentinel-2 SR, Landsat 8/9, Sentinel-1 SAR, VIIRS DNB, NASADEM), Uji Statistik Welch’s T-Test, OLS Spasial, Random Forest Terkalibrasi LiDAR NASA GEDI L4B, dan Deep Learning LSTM 8-Fitur. Terhubung otomatis dengan Google Drive GeoJSON API.</p>
+      <div class="footer-logos">
+        <img src="assets/logo-univ.png" alt="Logo Universitas" class="footer-logo-img" onerror="this.style.display='none'" />
+        <img src="assets/logo-haka.png" alt="Logo HAKA Aceh" class="footer-logo-img" onerror="this.style.display='none'" />
+      </div>
+      <span class="footer-team-badge">Disusun oleh: TIM Hard Ground Solid</span>
+      <strong>Benteng Ekologis Taman Nasional Gunung Leuser (2019–2025)</strong>
+      <p>Integrasi Penginderaan Jauh Multi-Sensor (Sentinel-2 SR, Landsat 8/9, Sentinel-1 SAR, VIIRS DNB, NASADEM), Uji Statistik Welch’s T-Test, OLS Spasial, Random Forest Terkalibrasi LiDAR NASA GEDI L4B, dan Deep Learning LSTM 8-Fitur.</p>
     </div>
   </footer>
 
