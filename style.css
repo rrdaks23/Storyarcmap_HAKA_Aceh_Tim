@@ -3,17 +3,19 @@
   --bg-page: #f7f5f0;
   --bg-card: #ffffff;
   --bg-soft: #efece6;
-  --hero-gradient: linear-gradient(135deg, #062c1e 0%, #0f4c3a 55%, #1b4332 100%);
+  --hero-gradient: linear-gradient(135deg, #042117 0%, #0b3b2c 50%, #154734 100%);
   --text-heading: #14241c;
   --text-body: #334155;
   --text-muted: #64748b;
   --primary-emerald: #15803d;
   --primary-dark: #0f4c3a;
   --accent-ochre: #d97706;
+  --accent-gold: #fbbf24;
   --accent-crimson: #dc2626;
   --accent-teal: #0d9488;
   --border-stone: #e2dfd7;
-  --shadow-card: 0 4px 16px rgba(20, 36, 28, 0.06);
+  --shadow-card: 0 4px 18px rgba(20, 36, 28, 0.06);
+  --shadow-hover: 0 12px 28px rgba(15, 76, 58, 0.12);
 }
 
 * {
@@ -43,7 +45,7 @@ code {
 }
 
 /* =========================================================
-   1. TOP PROGRESS BAR & NOTIFIKASI POJOK KIRI BAWAH
+   1. TOP PROGRESS BAR, LOGO NAVBAR & NAMA TIM
    ========================================================= */
 #top-progress-wrap {
   position: fixed;
@@ -52,46 +54,92 @@ code {
   right: 0;
   z-index: 1200;
   background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-stone);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 
 .top-bar-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 24px;
+  padding: 8px 22px;
   font-size: 0.8rem;
+  gap: 12px;
 }
 
 .brand-info {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 700;
-  color: var(--primary-dark);
-  letter-spacing: 0.03em;
+  min-width: 0;
+}
+
+.nav-logos {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 8px;
+  border-right: 1px solid var(--border-stone);
+}
+
+.nav-logo-img {
+  height: 26px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.nav-logo-img:hover {
+  transform: scale(1.08);
 }
 
 .status-dot {
   width: 9px;
   height: 9px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: var(--primary-emerald);
-  box-shadow: 0 0 8px rgba(21, 128, 61, 0.55);
+  box-shadow: 0 0 8px rgba(21, 128, 61, 0.6);
+  animation: pulseDot 2.4s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.72; }
+}
+
+.brand-text-stack {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+#brand-title {
+  font-weight: 800;
+  font-size: 0.78rem;
+  color: var(--primary-dark);
+  letter-spacing: 0.03em;
+}
+
+.nav-team-tag {
+  font-size: 0.69rem;
+  font-weight: 700;
+  color: var(--accent-ochre);
+  letter-spacing: 0.02em;
 }
 
 .top-controls {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+  flex-shrink: 0;
 }
 
 .year-group {
   display: flex;
   background: var(--bg-soft);
-  border-radius: 7px;
+  border-radius: 8px;
   padding: 2px;
   border: 1px solid var(--border-stone);
 }
@@ -101,23 +149,34 @@ code {
   border: none;
   color: var(--text-body);
   padding: 4px 11px;
-  border-radius: 5px;
-  font-size: 0.76rem;
-  font-weight: 600;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.2s ease;
+}
+
+.year-btn:hover:not(.active) {
+  background: rgba(21, 128, 61, 0.1);
+  color: var(--primary-dark);
 }
 
 .year-btn.active {
   background: var(--primary-emerald);
   color: #ffffff;
+  box-shadow: 0 2px 6px rgba(21, 128, 61, 0.35);
 }
 
 .chapter-indicator {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   font-weight: 700;
+  font-size: 0.77rem;
   color: var(--accent-ochre);
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  padding: 4px 10px;
+  border-radius: 16px;
 }
 
 .scroll-track {
@@ -130,11 +189,11 @@ code {
   display: block;
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--primary-emerald), var(--accent-ochre));
+  background: linear-gradient(90deg, var(--primary-emerald), var(--accent-gold));
   transition: width 0.15s ease-out;
 }
 
-/* Diposisikan di pojok kiri bawah agar kanvas peta sebelah kanan bersih */
+/* Notifikasi Drive di pojok kiri bawah agar peta kanan bebas halangan */
 #loader-toast {
   position: fixed;
   bottom: 16px;
@@ -143,23 +202,24 @@ code {
   background: #ffffff;
   color: var(--primary-dark);
   border: 1px solid var(--primary-emerald);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-  padding: 6px 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+  padding: 7px 15px;
   border-radius: 20px;
   font-size: 0.74rem;
   font-weight: 600;
   max-width: 320px;
   pointer-events: none;
-  transition: opacity 0.25s;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 #loader-toast.hidden {
   opacity: 0;
+  transform: translateY(8px);
   pointer-events: none;
 }
 
 /* =========================================================
-   2. HERO COVER LAYAR PENUH (DEEP FOREST EMERALD & GOLD)
+   2. HERO COVER LAYAR PENUH (LOGO KEMITRAAN + TIM HARD GROUND SOLID)
    ========================================================= */
 .hero-cover {
   position: relative;
@@ -167,49 +227,166 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 96px 24px 64px;
+  padding: 94px 24px 64px;
   background: var(--hero-gradient);
   color: #ffffff;
+  overflow: hidden;
+}
+
+.hero-grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 25%, rgba(251, 191, 36, 0.12) 0%, transparent 42%),
+    radial-gradient(circle at 80% 75%, rgba(16, 185, 129, 0.15) 0%, transparent 45%),
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+  pointer-events: none;
 }
 
 .hero-content {
-  max-width: 900px;
+  position: relative;
+  z-index: 2;
+  max-width: 920px;
   text-align: center;
+}
+
+/* Baris Logo Universitas & HAKA Aceh */
+.hero-partners-bar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(10px);
+  padding: 8px 20px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.hero-partners-bar:hover {
+  transform: translateY(-2px);
+  border-color: rgba(251, 191, 36, 0.5);
+}
+
+.partner-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.partner-logo {
+  height: 38px;
+  width: auto;
+  max-width: 56px;
+  object-fit: contain;
+  background: #ffffff;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.partner-label {
+  text-align: left;
+  line-height: 1.2;
+}
+
+.partner-label small {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: #a7f3d0;
+  font-weight: 700;
+}
+
+.partner-label span {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.partner-divider {
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* Baris Lencana Tim Hard Ground Solid */
+.hero-identity-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.team-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.24), rgba(245, 158, 11, 0.16));
+  border: 1px solid rgba(251, 191, 36, 0.65);
+  color: #fef3c7;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 6px 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.22);
+}
+
+.team-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 8px #fbbf24;
 }
 
 .hero-kicker {
   display: inline-block;
-  font-size: 0.73rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.09em;
-  color: #fde68a;
-  background: rgba(251, 191, 36, 0.14);
-  border: 1px solid rgba(251, 191, 36, 0.35);
-  padding: 6px 15px;
+  letter-spacing: 0.08em;
+  color: #a7f3d0;
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(167, 243, 208, 0.3);
+  padding: 6px 14px;
   border-radius: 20px;
-  margin-bottom: 18px;
 }
 
 .hero-content h1 {
   font-family: 'Merriweather', Georgia, serif;
   font-size: clamp(2rem, 4vw, 3.05rem);
   line-height: 1.22;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
   color: #ffffff;
 }
 
+.hero-subtitle {
+  font-size: 1.04rem;
+  font-weight: 600;
+  color: #fde68a;
+  max-width: 780px;
+  margin: 0 auto 12px;
+}
+
 .hero-lead {
-  font-size: 1.02rem;
+  font-size: 0.96rem;
   color: #d1fae5;
-  max-width: 760px;
-  margin: 0 auto 28px;
+  max-width: 750px;
+  margin: 0 auto 26px;
 }
 
 .hero-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .hero-stat-item {
@@ -218,53 +395,60 @@ code {
   backdrop-filter: blur(6px);
   border-radius: 12px;
   padding: 14px 12px;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.hero-stat-item:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(251, 191, 36, 0.55);
 }
 
 .hero-stat-item strong {
   display: block;
-  font-size: 1.18rem;
+  font-size: 1.16rem;
   color: #fbbf24;
   margin-bottom: 4px;
 }
 
 .hero-stat-item span {
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   color: #ecfdf5;
 }
 
 .hero-thesis {
-  background: rgba(6, 44, 30, 0.68);
-  border: 1px solid rgba(253, 230, 138, 0.3);
+  background: rgba(4, 33, 23, 0.72);
+  border: 1px solid rgba(253, 230, 138, 0.32);
   border-left: 4px solid #fbbf24;
   border-radius: 10px;
   padding: 14px 18px;
   text-align: left;
   font-size: 0.87rem;
   color: #ecfdf5;
-  margin-bottom: 30px;
+  margin-bottom: 28px;
   line-height: 1.62;
 }
 
 .hero-cta {
   display: inline-block;
-  background: #f59e0b;
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
   color: #14241c;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.92rem;
   text-decoration: none;
-  padding: 13px 28px;
+  padding: 13px 30px;
   border-radius: 30px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .hero-cta:hover {
-  transform: translateY(-2px);
-  background: #fbbf24;
-  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(245, 158, 11, 0.45);
 }
 
 /* =========================================================
-   3. SPLIT-SCREEN EDITORIAL LAYOUT (WARM IVORY)
+   3. SPLIT-SCREEN EDITORIAL LAYOUT & INTERACTIVE CARDS
    ========================================================= */
 .story-layout {
   display: grid;
@@ -279,19 +463,28 @@ code {
 }
 
 .step {
+  position: relative;
   background: var(--bg-card);
   border: 1px solid var(--border-stone);
+  border-left: 4px solid transparent;
   border-radius: 14px;
   padding: 28px 28px;
   margin-bottom: 32px;
   box-shadow: var(--shadow-card);
-  opacity: 0.72;
-  transition: opacity 0.35s ease, border-color 0.35s ease;
+  opacity: 0.78;
+  transition: opacity 0.35s ease, transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.step:hover {
+  opacity: 1;
 }
 
 .step.active {
   opacity: 1;
-  border-color: var(--primary-emerald);
+  border-color: #bbf7d0;
+  border-left: 4px solid var(--primary-emerald);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
 }
 
 .chapter-tag {
@@ -300,7 +493,11 @@ code {
   font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--primary-emerald);
-  margin-bottom: 8px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
 }
 
 .step h2 {
@@ -340,7 +537,7 @@ code {
   line-height: 1.58;
 }
 
-/* Grid Persamaan Biofisik */
+/* Grid Persamaan Biofisik Interaktif */
 .formula-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -353,6 +550,13 @@ code {
   border: 1px solid var(--border-stone);
   border-radius: 8px;
   padding: 10px 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.formula-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-emerald);
+  background: #f0fdf4;
 }
 
 .formula-item strong {
@@ -371,7 +575,7 @@ code {
   word-break: break-word;
 }
 
-/* Tabel Komparatif & Matriks */
+/* Tabel Komparatif & Sorotan Baris Interaktif */
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -386,7 +590,7 @@ code {
   background: var(--primary-dark);
   color: #ffffff;
   text-align: left;
-  padding: 8px 10px;
+  padding: 9px 10px;
   font-weight: 600;
 }
 
@@ -395,10 +599,15 @@ code {
   border-bottom: 1px solid var(--border-stone);
   color: var(--text-body);
   vertical-align: top;
+  transition: background 0.15s ease;
 }
 
 .data-table tr:nth-child(even) td {
   background: var(--bg-page);
+}
+
+.data-table tbody tr:hover td {
+  background: #ecfdf5;
 }
 
 .data-table small {
@@ -409,28 +618,17 @@ code {
 /* Lencana Tingkat Kekuatan Bukti */
 .badge {
   display: inline-block;
-  padding: 2px 8px;
+  padding: 2px 9px;
   border-radius: 12px;
   font-size: 0.71rem;
   font-weight: 700;
 }
 
-.badge.moderate {
-  background: #dcfce7;
-  color: #166534;
-}
+.badge.moderate { background: #dcfce7; color: #166534; }
+.badge.mixed { background: #fef3c7; color: #92400e; }
+.badge.pending { background: #fee2e2; color: #991b1b; }
 
-.badge.mixed {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.badge.pending {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-/* Kartu KPI, Grafik, dan Model */
+/* Kartu KPI Interaktif */
 .kpi-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -444,6 +642,12 @@ code {
   border-left: 4px solid var(--primary-emerald);
   border-radius: 8px;
   padding: 12px 14px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(20, 36, 28, 0.08);
 }
 
 .kpi-box.danger { border-left-color: var(--accent-crimson); }
@@ -469,18 +673,22 @@ code {
   color: var(--text-body);
 }
 
+/* Kotak Grafik dengan Indikator Zoom */
 .figure-box {
+  position: relative;
   background: var(--bg-page);
   border: 1px solid var(--border-stone);
   border-radius: 10px;
   padding: 14px;
   margin: 16px 0;
   cursor: zoom-in;
-  transition: border-color 0.2s;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .figure-box:hover {
+  transform: translateY(-2px);
   border-color: var(--primary-emerald);
+  box-shadow: 0 8px 20px rgba(21, 128, 61, 0.1);
 }
 
 .figure-box img {
@@ -497,11 +705,14 @@ code {
   margin-top: 8px;
 }
 
+/* Tombol Kontrol Layer Spasial */
 .layer-pills {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border-stone);
 }
 
 .pill-btn {
@@ -513,20 +724,27 @@ code {
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.2s ease;
 }
 
 .pill-btn:hover {
   background: #dcfce7;
   border-color: var(--primary-emerald);
+  transform: translateY(-1px);
+}
+
+.pill-btn:active {
+  transform: scale(0.97);
 }
 
 .pill-btn.active {
   background: var(--primary-emerald);
   color: #ffffff;
   border-color: var(--primary-emerald);
+  box-shadow: 0 4px 12px rgba(21, 128, 61, 0.28);
 }
 
+/* Kartu Validasi Model AI */
 .model-cards {
   display: flex;
   flex-direction: column;
@@ -539,6 +757,12 @@ code {
   border: 1px solid var(--border-stone);
   border-radius: 8px;
   padding: 12px 14px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.model-card:hover {
+  border-color: var(--primary-emerald);
+  transform: translateX(3px);
 }
 
 .model-title {
@@ -566,7 +790,7 @@ code {
   margin-bottom: 0;
 }
 
-/* Tab Interaktif Dampak */
+/* Tab Interaktif Sektor Dampak */
 .impact-tabs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -579,16 +803,23 @@ code {
   border: 1px solid var(--border-stone);
   color: var(--text-body);
   padding: 8px 6px;
-  border-radius: 6px;
+  border-radius: 7px;
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover:not(.active) {
+  background: #dcfce7;
+  border-color: var(--primary-emerald);
 }
 
 .tab-btn.active {
   background: var(--primary-dark);
   color: #ffffff;
   border-color: var(--primary-dark);
+  box-shadow: 0 3px 10px rgba(15, 76, 58, 0.25);
 }
 
 .tab-panel {
@@ -604,6 +835,12 @@ code {
 
 .tab-panel.active {
   display: block;
+  animation: panelFadeIn 0.25s ease;
+}
+
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .rec-callout {
@@ -660,12 +897,12 @@ code {
 }
 
 /* =========================================================
-   4. KOLOM KANAN: PETA STICKY & LEGENDA TERANG
+   4. KOLOM KANAN: PETA STICKY, KONTROL LEAFLET & LEGENDA
    ========================================================= */
 .map-column {
   position: sticky;
-  top: 44px;
-  height: calc(100vh - 44px);
+  top: 48px;
+  height: calc(100vh - 48px);
   overflow: hidden;
 }
 
@@ -673,6 +910,21 @@ code {
   width: 100%;
   height: 100%;
   z-index: 1;
+}
+
+.leaflet-control-zoom a {
+  color: var(--primary-dark) !important;
+  border-color: var(--border-stone) !important;
+}
+
+.leaflet-control-layers {
+  border: 1px solid var(--border-stone) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 0.78rem !important;
+  max-height: 62vh;
+  overflow-y: auto;
 }
 
 .legend-box {
@@ -726,11 +978,11 @@ code {
   font-size: 0.7rem;
 }
 
-/* Pop-up Leaflet Terang */
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
   background: #ffffff;
   color: var(--text-heading);
+  border-radius: 10px;
 }
 
 .popup-table {
@@ -750,11 +1002,13 @@ code {
   font-weight: 600;
 }
 
-/* Footer & Lightbox */
+/* =========================================================
+   5. FOOTER PENUTUP & LIGHTBOX MODAL
+   ========================================================= */
 .story-footer {
-  background: #062c1e;
+  background: #042117;
   color: #d1fae5;
-  padding: 32px 24px;
+  padding: 36px 24px;
   text-align: center;
   font-size: 0.82rem;
 }
@@ -764,9 +1018,38 @@ code {
   margin: 0 auto;
 }
 
+.footer-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.footer-logo-img {
+  height: 36px;
+  width: auto;
+  background: #ffffff;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.footer-team-badge {
+  display: inline-block;
+  background: rgba(251, 191, 36, 0.16);
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  color: #fde68a;
+  font-weight: 700;
+  font-size: 0.76rem;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
 .footer-inner strong {
   display: block;
   color: #ffffff;
+  font-size: 0.95rem;
   margin-bottom: 6px;
 }
 
@@ -786,7 +1069,8 @@ code {
 .lightbox-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(6, 44, 30, 0.82);
+  background: rgba(4, 33, 23, 0.84);
+  backdrop-filter: blur(4px);
 }
 
 .lightbox-body {
@@ -819,7 +1103,7 @@ code {
   }
   .map-column {
     position: sticky;
-    top: 44px;
+    top: 48px;
     height: 45vh;
     order: -1;
     z-index: 20;
@@ -831,10 +1115,21 @@ code {
   .formula-grid {
     grid-template-columns: 1fr;
   }
+  .nav-logos {
+    display: none;
+  }
 }
 
 @media (max-width: 560px) {
   .hero-stats {
     grid-template-columns: 1fr;
+  }
+  .hero-partners-bar {
+    flex-direction: column;
+    border-radius: 16px;
+    gap: 8px;
+  }
+  .partner-divider {
+    display: none;
   }
 }
