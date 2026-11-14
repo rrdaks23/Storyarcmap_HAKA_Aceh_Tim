@@ -21,7 +21,7 @@
       </div>
 
       <div class="top-controls">
-        <div id="year-switcher" class="year-group" title="Pilih Tahun Data Spasial">
+        <div id="year-switcher" class="year-group" title="Pilih Tahun Komposit Spasial">
           <button class="year-btn" data-year="2019">2019</button>
           <button class="year-btn" data-year="2021">2021</button>
           <button class="year-btn active" data-year="2025">2025</button>
@@ -35,26 +35,30 @@
     <div class="scroll-track"><i id="scroll-progress-fill"></i></div>
   </div>
 
-  <!-- NOTIFIKASI SINKRONISASI GOOGLE DRIVE -->
+  <!-- NOTIFIKASI SINKRONISASI GOOGLE DRIVE (POJOK KIRI BAWAH AGAR TIDAK MENUTUPI PETA) -->
   <div id="loader-toast" class="hidden">Menyinkronkan GeoJSON dari Google Drive...</div>
 
   <!-- SAMPUL PEMBUKA LAYAR PENUH (HERO HEADER) -->
   <header class="hero-cover" id="bab-0" data-step="sampul">
     <div class="hero-content">
-      <span class="hero-kicker">KAJIAN GEOSPASIAL, STATISTIK & MACHINE LEARNING / DEEP LEARNING (2019–2025)</span>
+      <span class="hero-kicker">METODOLOGI GEOSPASIAL, STATISTIK & AI TERKALIBRASI GEDI L4B (2019–2025)</span>
       <h1>Benteng Ekologis Taman Nasional Gunung Leuser</h1>
       <p class="hero-lead">
-        Evaluasi efektivitas Taman Nasional Gunung Leuser (TNGL) sebagai benteng alami penyerapan karbon dan penyangga perubahan iklim mikro lokal berdasarkan integrasi citra satelit multi-sensor, uji statistik komparatif, serta pemodelan spasial-temporal periode 2019–2025.
+        Evaluasi efektivitas kawasan inti Taman Nasional Gunung Leuser (TNGL) sebagai benteng alami penyerapan karbon dan penyangga perubahan iklim mikro lokal melalui integrasi citra multi-sensor Google Earth Engine, ekonometrika spasial, Random Forest terkalibrasi LiDAR NASA GEDI L4B, dan Deep Learning LSTM spatio-temporal.
       </p>
 
       <div class="hero-stats">
         <div class="hero-stat-item">
           <strong>830.268,95 Ha</strong>
-          <span>Luas Kawasan Inti TNGL (Penetapan 2014)</span>
+          <span>Luas Penetapan Inti TNGL (2014)</span>
         </div>
         <div class="hero-stat-item">
           <strong>±2,28 Juta Ha</strong>
-          <span>Bentang Kawasan Ekosistem Leuser (KEL)</span>
+          <span>Bentang Kawasan Ekosistem Leuser</span>
+        </div>
+        <div class="hero-stat-item">
+          <strong>Radius 100 km</strong>
+          <span>Zona Penyangga Eksternal (KEL)</span>
         </div>
         <div class="hero-stat-item">
           <strong>690.000 Jiwa</strong>
@@ -63,7 +67,7 @@
       </div>
 
       <div class="hero-thesis">
-        <strong>Tesis Utama Laporan:</strong> Seluruh indikator utama bergerak searah dengan hipotesis perlindungan—cadangan karbon lebih tinggi (<strong>+7,38 Ton/Ha</strong>), suhu permukaan lebih rendah (<strong>−5,29 °C</strong>), dan indeks lahan terbangun lebih rendah di dalam TNGL. Namun, sebutan <em>“benteng”</em> lebih tepat disematkan pada kawasan intinya dibandingkan bentang lahan penyangga di sekitarnya yang justru menunjukkan tekanan defisit karbon, pemanasan, dan deforestasi.
+        <strong>Ringkasan Temuan & Posisi Ilmiah:</strong> Seluruh indikator utama bergerak searah dengan hipotesis perlindungan—cadangan karbon di dalam TNGL lebih tinggi (<strong>64,48 vs. 57,10 Ton/Ha</strong>), suhu permukaan lebih rendah (<strong>22,61 vs. 27,90 °C</strong>), dan indeks lahan terbangun lebih rendah (<strong>−0,2080 vs. −0,1807</strong>). Namun, predikat <em>“benteng”</em> lebih tepat disematkan pada kawasan intinya dibandingkan bentang lahan penyangga 100 km di sekitarnya yang menunjukkan tekanan defisit karbon, pemanasan pada 43,1% area, serta deforestasi.
       </div>
 
       <a href="#story-main" class="hero-cta">Mulai Eksplorasi Peta & Pembahasan Lengkap ↓</a>
@@ -76,113 +80,174 @@
     <!-- KOLOM KIRI: NASKAH PEMBAHASAN LENGKAP -->
     <article class="narrative-column">
 
-      <!-- BAB 01: KONTEKS STRATEGIS, KERANGKA DATA & FISIOGRAFI -->
+      <!-- BAB 01: KONTEKS HISTORIS, GEOMETRI WILAYAH & ARSITEKTUR MULTI-SENSOR -->
       <section class="step active" id="bab-1" data-step="deliniasi">
-        <span class="chapter-tag">01 • KONTEKS STRATEGIS & DESAIN SPASIAL</span>
-        <h2>Jantung Warisan Dunia Sumatra & Kerangka Multi-Sensor</h2>
+        <span class="chapter-tag">01 • KONTEKS HISTORIS, UNIT GEOMETRI & MULTI-SENSOR</span>
+        <h2>Jantung Warisan Dunia Sumatra & Arsitektur Komputasi GEE</h2>
         <p>
-          Diresmikan sebagai salah satu dari lima taman nasional pertama di Indonesia pada <strong>6 Maret 1980</strong> (Pengumuman Mentan No. 811/1980), TNGL menjadi inti pengelolaan <strong>Kawasan Ekosistem Leuser (KEL)</strong> melalui Keppres No. 33 Tahun 1998 dan tercatat sebagai Situs Warisan Dunia UNESCO (<em>Tropical Rainforest Heritage of Sumatra</em>, 2004).
+          Diresmikan sebagai salah satu dari lima taman nasional pertama di Indonesia pada <strong>6 Maret 1980</strong> (Pengumuman Mentan No. 811/Kpts/Um/II/1980), TNGL menjadi inti pengelolaan <strong>Kawasan Ekosistem Leuser (KEL)</strong> melalui Keppres No. 33 Tahun 1998 dan tercatat sebagai Situs Warisan Dunia UNESCO (<em>Tropical Rainforest Heritage of Sumatra</em>, 2004). Dari penunjukan awal seluas ±1,09 juta Ha (SK Menhut 276/1997), penetapan kawasan hutan tahun 2014 menghasilkan luas resmi TNGL sekitar <strong>830.268,95 Ha</strong>—dengan <strong>625.115 Ha</strong> di Provinsi Aceh (serta pembanding 838.872 Ha)—di tengah bentang KEL seluas <strong>±2,28 juta Ha</strong>.
         </p>
         <p>
-          Dari penunjukan awal seluas ±1,09 juta Ha (SK Menhut 276/1997), penetapan kawasan hutan tahun 2014 menghasilkan luas resmi TNGL sekitar <strong>830.268,95 Ha</strong>—dengan <strong>625.115 Ha</strong> berada di Provinsi Aceh—di tengah blok hutan KEL seluas <strong>±2,28 juta Ha</strong> yang menopang kehidupan sekitar <strong>690.000 jiwa</strong>.
+          Untuk menguji rantai penalaran <em>“hutan → karbon → pendinginan → tekanan terhadap manusia”</em> pada lingkungan komputasi <strong>Google Earth Engine (GEE)</strong> dan Python Geospasial (luaran <code>MyDrive/TNGL_Part2</code>, proyeksi <code>EPSG:4326</code>), batas wilayah (<code>KEL_Aceh</code>, toleransi penyederhanaan 500 m) dibagi menjadi tiga unit geometri:
         </p>
-        <p>
-          Analisis menghubungkan rantai penalaran <em>“hutan → karbon → pendinginan → tekanan terhadap manusia”</em> di platform <strong>Google Earth Engine</strong> menggunakan kombinasi citra optik <strong>Landsat 8/9 OLI/TIRS</strong> (30 m; termal 100 m), <strong>Sentinel-2 MSI</strong> (10–20 m), radar penembus awan <strong>Sentinel-1 C-band SAR</strong> (VV/VH, 10 m), topografi <strong>SRTM DEM</strong> (30 m), produk biomassa global <strong>ESA CCI Biomass / LiDAR GEDI</strong>, serta <strong>Hansen Global Forest Change</strong>.
-        </p>
-        <div class="method-note">
-          <strong>Kontrol Fisiografi (Lapse Rate):</strong> Pengendalian elevasi dan kelerengan wajib dilakukan karena suhu udara turun sekitar <strong>6,5 °C setiap kenaikan 1 km</strong>. Tanpa mengontrol ketinggian tempat, efek pendinginan murni dari vegetasi hutan berisiko terbaca berlebihan.
-        </div>
+        <ul class="editorial-list">
+          <li><strong>Zona Inti TNGL (<code>tngl_geom</code>):</strong> Poligon kawasan konservasi inti sebagai wilayah kontrol tutupan hutan terlindungi.</li>
+          <li><strong>Zona Penyangga Total (<code>buffer_geom</code>):</strong> Perluasan radius <strong>100.000 meter (100 km)</strong> mengelilingi batas terluar TNGL sebagai lanskap pengaruh ekologis regional.</li>
+          <li><strong>Zona Penyangga Eksternal (<code>outside_buffer_geom</code>):</strong> Selisih spasial antara buffer 100 km dan zona inti TNGL yang merepresentasikan area permukiman, perkebunan, serta alih fungsi lahan.</li>
+        </ul>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Komponen & Aset GEE</th>
+              <th>Produk / Resolusi</th>
+              <th>Peran & Prapemrosesan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Optik & Tutupan Lahan</strong><br><small>Sentinel-2 SR + Cloud Score+</small></td>
+              <td><code>S2_SR_HARMONIZED</code><br>10–20 m</td>
+              <td>Komposit median bebas awan (<code>cs_cdf ≥ 0,5</code>) untuk indeks vegetasi, kelembapan, air, dan tanah terbuka.</td>
+            </tr>
+            <tr>
+              <td><strong>Termal & Terbangun</strong><br><small>Landsat 8/9 C02 L2</small></td>
+              <td><code>LC08/C02/T1_L2</code><br>100 m (resampel 30 m)</td>
+              <td>Penapisan awan/bayangan via bit ke-3 & ke-4 <code>QA_PIXEL</code>; ekstraksi LST, UHI, UTFVI, dan NDBI.</td>
+            </tr>
+            <tr>
+              <td><strong>Radar Kanopi (SAR)</strong><br><small>Sentinel-1 GRD IW</small></td>
+              <td>Polarisasi VH (10 m)<br>Lintasan <code>DESCENDING</code></td>
+              <td>Menangkap struktur kanopi 3D menembus awan; lintasan tunggal mencegah distorsi lereng (<em>foreshortening/layover</em>).</td>
+            </tr>
+            <tr>
+              <td><strong>Topografi, Cahaya Malam & LiDAR</strong></td>
+              <td>NASADEM (30 m), VIIRS DNB, NASA GEDI L4B (1 km)</td>
+              <td>Kontrol gradien suhu altitudinal (<em>lapse rate</em> ±6,5 °C/km), intensitas ekonomi, serta target kalibrasi biomassa independen.</td>
+            </tr>
+            <tr>
+              <td><strong>Aksesibilitas & Poligon Hutan</strong></td>
+              <td><code>DSS_fixkel19/21/25</code> & <code>erase_non_kel19/21/25</code></td>
+              <td>Gradien jarak Euclidean: <code>Dist_Road</code> (50 km), <code>Dist_Facility</code> (50 km), dan <code>Dist_To_TNGL</code> (150 km).</td>
+            </tr>
+          </tbody>
+        </table>
+
         <div class="layer-pills">
           <button class="pill-btn active" data-sublayer="zonasi">Zonasi Jarak TNGL</button>
-          <button class="pill-btn" data-sublayer="elevasi">Elevasi (DEM)</button>
+          <button class="pill-btn" data-sublayer="elevasi">Elevasi (NASADEM)</button>
           <button class="pill-btn" data-sublayer="lereng">Kemiringan Lereng</button>
         </div>
       </section>
 
-      <!-- BAB 02: DINAMIKA TUTUPAN HUTAN & DEFORESTASI -->
+      <!-- BAB 02: FORMULASI BIOFISIK 19 BAND & DINAMIKA TUTUPAN HUTAN -->
       <section class="step" id="bab-2" data-step="hutan">
-        <span class="chapter-tag">02 • DINAMIKA TUTUPAN HUTAN & TEKANAN KONVERSI</span>
-        <h2>Laju Deforestasi 2019–2025 & Efektivitas Perlindungan</h2>
+        <span class="chapter-tag">02 • FORMULASI BIOFISIK & DINAMIKA HUTAN (2019–2025)</span>
+        <h2>19 Band Biofisik Terpadu & Laju Deforestasi Regional</h2>
         <p>
-          Pemantauan deret waktu tutupan hutan mendeteksi total kehilangan tutupan pohon seluas <strong>31.745,90 Ha</strong> sepanjang periode 2019–2025, atau berkisar <strong>4.500–5.300 Ha/tahun</strong> (dihitung dari 7 tahun hingga 6 interval pengamatan).
+          Setiap komposit tahunan (2019, 2021, 2025) dan 28 kuartal menurunkan <strong>19 band terpadu</strong> dengan penapisan badan air berbasis <code>MNDWI &lt; 0</code>. Estimasi biomassa menggunakan pendekatan hibrida optik–SAR yang dibatasi pada rentang <strong>0–500 Ton/Ha</strong> sebelum dikalibrasi terhadap LiDAR NASA GEDI L4B:
         </p>
+
+        <div class="formula-grid">
+          <div class="formula-item">
+            <strong>LST (°C)</strong>
+            <code>(ST_B10 × 0,00341802 + 149,0) − 273,15</code>
+          </div>
+          <div class="formula-item">
+            <strong>UHI & UTFVI</strong>
+            <code>UHI = (LST − μ) / σ | UTFVI = (LST − μ) / (LST + 273,15)</code>
+          </div>
+          <div class="formula-item">
+            <strong>AGB Hibrida</strong>
+            <code>NDVI &lt; 0,2 ? 0 : exp(3,0 × NDVI) × 10 + (VH + 30) × 2</code>
+          </div>
+          <div class="formula-item">
+            <strong>Carbon Stock & Rate</strong>
+            <code>CS = 0,5 × AGB | Rate = (CS₂₀₂₅ − CS₂₀₁₉) / 6</code>
+          </div>
+        </div>
+
+        <p>
+          Berdasarkan integrasi poligon tutupan hutan multi-tahun (<code>DSS_fixkel</code> & <code>erase_non_kel</code>) dan deteksi kehilangan tutupan pohon (<em>Hansen GFC</em>), terdeteksi kehilangan hutan seluas <strong>31.745,90 Ha</strong> sepanjang 2019–2025, atau berkisar <strong>±4.500–5.300 Ha/tahun</strong> (dihitung dari 7 tahun hingga 6 interval). Sebagai pembanding historis, proyek REDD KEL mencatat laju deforestasi sekitar <strong>5.500 Ha/tahun</strong> pada 2000–2009 akibat pembukaan jalan, jaringan listrik, bendungan, pertambangan, dan perluasan perkebunan sawit.
+        </p>
+
         <div class="kpi-row">
           <div class="kpi-box danger">
             <small>Total Kehilangan Hutan</small>
             <strong>31.745,90 Ha</strong>
-            <span>Laju ±4.500–5.300 Ha/tahun</span>
+            <span>±4.500–5.300 Ha/tahun (2019–2025)</span>
           </div>
           <div class="kpi-box info">
             <small>Batas Atas Teoretis TNGL</small>
             <strong>3,8 %</strong>
-            <span>Jika seluruhnya di dalam inti</span>
+            <span>Jika seluruh piksel di dalam inti</span>
           </div>
         </div>
-        <p>
-          Sebagai pembanding historis, dokumen proyek REDD KEL mencatat laju deforestasi sekitar <strong>5.500 Ha/tahun</strong> pada periode 2000–2009 yang dipicu oleh pembangunan jalan, jaringan listrik, bendungan, pertambangan, serta perluasan perkebunan sawit.
-        </p>
+
         <div class="method-note">
-          <strong>Catatan Pembuktian Spasial:</strong> Proporsi 3,8% luas TNGL tersebut merupakan <em>batas atas teoretis</em> karena statistik piksel kehilangan hutan belum dipisahkan secara tegas antara zona dalam TNGL dan zona luar. Pemisahan spasial ini menjadi bukti paling langsung efektivitas perlindungan kawasan.
+          <strong>Catatan Pembuktian Spasial:</strong> Angka 3,8% merupakan <em>batas atas teoretis</em> karena statistik piksel kehilangan hutan (<code>Forest₂₀₁₉ = 1 → Forest₂₀₂₅ = 0</code>) belum dipisahkan secara spasial antara zona dalam TNGL dan zona luar buffer. Pemisahan tegas dua zona ini merupakan bukti paling langsung efektivitas perlindungan kawasan.
         </div>
+
         <div class="layer-pills">
           <button class="pill-btn active" data-sublayer="dinamika_hutan">Dinamika Hutan 2019–2025</button>
           <button class="pill-btn" data-sublayer="status_hutan">Status Hutan (Per Tahun)</button>
         </div>
       </section>
 
-      <!-- BAB 03: UJI STATISTIK KOMPARATIF & CADANGAN KARBON -->
+      <!-- BAB 03: UJI STATISTIK KOMPARATIF WELCH'S T-TEST & NERACA KARBON -->
       <section class="step" id="bab-3" data-step="karbon">
         <span class="chapter-tag">03 • UJI STATISTIK KOMPARATIF (WELCH'S T-TEST)</span>
         <h2>Kapasitas Penyimpanan Karbon Kawasan Inti vs. Luar Buffer</h2>
         <p>
-          Uji beda <em>Welch’s t-test</em> (dipilih karena tidak mengasumsikan ragam yang sama antara ekosistem hutan dan permukiman) membuktikan bahwa kawasan di dalam TNGL menyimpan rata-rata cadangan karbon sebesar <strong>64,48 Ton/Ha</strong>, lebih tinggi <strong>+7,38 Ton/Ha (+12,9%)</strong> dibandingkan zona luar buffer sebesar <strong>57,10 Ton/Ha</strong> (<em>t</em> = 11,7848; <em>p</em> = 4,07×10⁻²⁹).
+          Pengujian hipotesis membandingkan <strong>1.500 titik sampel acak</strong> di dalam inti TNGL (<code>Inside_TNGL</code>) melawan <strong>1.500 titik sampel terstratifikasi</strong> pada daratan non-hutan (<code>MNDWI &lt; 0</code>) di luar batas TNGL (<code>Outside_NonForest</code>) pada resolusi 1.000 m (<code>seed = 42</code>). Uji beda <em>Welch’s Independent Two-Sample T-Test</em> (<code>equal_var = False</code>, dipilih karena ragam ekosistem hutan primer berbeda dengan permukiman) membuktikan perbedaan signifikan pada seluruh indikator utama:
         </p>
 
         <table class="data-table">
           <thead>
             <tr>
-              <th>Indikator</th>
+              <th>Indikator Biofisik</th>
               <th>Dalam TNGL</th>
               <th>Luar Buffer</th>
-              <th>Selisih & Uji t</th>
+              <th>Selisih & Statistik Uji</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>Cadangan Karbon</strong></td>
-              <td>64,48 Ton/Ha</td>
-              <td>57,10 Ton/Ha</td>
-              <td>+7,38 (+12,9%)<br><small>t = 11,78; p = 4,07×10⁻²⁹</small></td>
+              <td><strong>Carbon Stock</strong><br><small>(Ton/Ha)</small></td>
+              <td>64,48</td>
+              <td>57,10</td>
+              <td><strong>+7,38 (+12,9%)</strong><br><small>t = 11,7848; p = 4,07×10⁻²⁹</small></td>
             </tr>
             <tr>
-              <td><strong>Suhu LST (°C)</strong></td>
+              <td><strong>Suhu Permukaan LST</strong><br><small>(°C)</small></td>
               <td>22,61 °C</td>
               <td>27,90 °C</td>
-              <td>−5,29 °C<br><small>t = −19,55; p = 5,14×10⁻⁷⁰</small></td>
+              <td><strong>−5,29 °C</strong><br><small>t = −19,5547; p = 5,14×10⁻⁷⁰</small></td>
             </tr>
             <tr>
-              <td><strong>Indeks NDBI</strong></td>
+              <td><strong>Indeks Terbangun NDBI</strong><br><small>(nir-satuan)</small></td>
               <td>−0,2080</td>
               <td>−0,1807</td>
-              <td>−0,0273<br><small>t = −13,0139</small></td>
+              <td><strong>−0,0273</strong><br><small>t = −13,0139 (efek kecil)</small></td>
             </tr>
             <tr>
-              <td><strong>UTFVI & UHI</strong></td>
+              <td><strong>UTFVI & UHI</strong><br><small>(Stres Termal)</small></td>
               <td>Lebih rendah</td>
               <td>Lebih tinggi</td>
-              <td>Signifikan (Tanpa stres termal)</td>
+              <td><strong>Signifikan</strong><br><small>Tanpa tekanan termal di inti</small></td>
             </tr>
           </tbody>
         </table>
 
         <div class="figure-box" title="Klik untuk memperbesar grafik">
           <canvas id="chartKomparasi" height="175"></canvas>
-          <span class="figure-caption">Grafik 1. Perbandingan rata-rata cadangan karbon dan suhu permukaan LST antar-zona (klik untuk memperbesar).</span>
+          <span class="figure-caption">Grafik 1. Perbandingan rata-rata cadangan karbon (Ton/Ha) dan suhu permukaan LST (°C) antara kawasan inti TNGL dan zona luar buffer (klik untuk memperbesar).</span>
         </div>
 
         <p>
-          <strong>Interpretasi Kritis Angka Karbon:</strong> Nilai absolut 64,48 Ton/Ha tampak moderat dibandingkan rerata stok karbon tertimbang proyek REDD KEL (~207 tC/Ha atau 760 tCO₂e/Ha). Perbedaan ini dapat dipicu oleh cakupan definisi (biomassa atas permukaan vs. stok total), dominasi hutan pegunungan, serta efek pencampuran piksel (<em>mixed pixel</em>) pada resolusi kasar. Sementara itu, selisih tipis antar-zona menandakan zona luar buffer belum terdegradasi total dan masih didominasi agroforestri, kebun campuran, serta hutan sekunder.
+          <strong>Interpretasi Kritis Nilai Karbon:</strong> Nilai absolut 64,48 Ton/Ha lebih moderat dibandingkan rerata stok karbon tertimbang proyek REDD KEL (~207 tC/Ha atau 760 tCO₂e/Ha) maupun studi plot alometrik hutan hujan Bukit Lawang (Auliah & Onrizal 2020) akibat perbedaan cakupan biomassa atas permukaan vs. stok total, dominasi hutan pegunungan, serta efek pencampuran piksel (<em>mixed pixel</em>). Sementara itu, selisih moderat +12,9% menandakan zona luar buffer belum terdegradasi penuh dan masih didominasi agroforestri, kebun campuran, serta hutan sekunder.
         </p>
+
         <div class="layer-pills">
           <button class="pill-btn active" data-sublayer="carbon_stock">Cadangan Karbon</button>
           <button class="pill-btn" data-sublayer="agb">Biomassa (AGB)</button>
@@ -190,31 +255,32 @@
         </div>
       </section>
 
-      <!-- BAB 04: IKLIM MIKRO (LST, UHI, UTFVI) & TEKANAN NDBI -->
+      <!-- BAB 04: IKLIM MIKRO, KONTROL ELEVASI & REGRESI SPASIAL OLS -->
       <section class="step" id="bab-4" data-step="termal">
-        <span class="chapter-tag">04 • IKLIM MIKRO & TEKANAN KONVERSI LAHAN</span>
-        <h2>Pendinginan Suhu Permukaan (LST) & Fase Awal NDBI</h2>
+        <span class="chapter-tag">04 • IKLIM MIKRO, KONTROL ELEVASI & REGRESI OLS</span>
+        <h2>Pendinginan Suhu Permukaan (−5,29 °C) & Fase Awal NDBI</h2>
         <p>
-          Sinyal terkuat dalam data terlihat pada suhu permukaan (LST): kawasan dalam TNGL tercatat rata-rata <strong>22,61 °C</strong>, jauh lebih sejuk <strong>−5,29 °C</strong> dibandingkan zona luar sebesar <strong>27,90 °C</strong> (<em>t</em> = −19,5547; <em>p</em> = 5,14×10⁻⁷⁰), dengan indeks Pulau Bahang (UHI) dan stres termal (UTFVI) yang tetap rendah di area inti.
+          Sinyal terkuat dalam data terlihat pada suhu permukaan (LST): kawasan dalam TNGL lebih sejuk <strong>−5,29 °C</strong> dibandingkan zona luar (<strong>22,61 °C vs. 27,90 °C</strong>; <em>t</em> = −19,5547; <em>p</em> = 5,14×10⁻⁷⁰), disertai indeks Pulau Bahang (UHI) dan stres termal (UTFVI) yang rendah di area inti hutan.
         </p>
         <div class="kpi-row">
           <div class="kpi-box info">
-            <small>Selisih Suhu Permukaan</small>
-            <strong>−5,29 °C</strong>
-            <span>22,61 °C vs 27,90 °C</span>
+            <small>Gradien Lapse Rate</small>
+            <strong>±6,5 °C / 1 km</strong>
+            <span>Beda elevasi inti vs. permukiman ±800 m</span>
           </div>
           <div class="kpi-box warning">
-            <small>Indeks Terbangun (NDBI)</small>
-            <strong>−0,2080 vs −0,1807</strong>
-            <span>Selisih −0,0273 (Efek kecil)</span>
+            <small>Regresi Spasial OLS (LST)</small>
+            <strong>R² = 0,3871</strong>
+            <span>8 prediktor non-kolinear (VIF &lt; 5)</span>
           </div>
         </div>
         <p>
-          <strong>Pemisahan Efek Hutan vs. Elevasi:</strong> Perbedaan elevasi sekitar 800 meter antara kawasan inti TNGL di dataran tinggi dan permukiman di dataran rendah sudah dapat menjelaskan sebagian besar selisih suhu 5,29 °C melalui gradien <em>lapse rate</em>. Hal ini sejalan dengan model regresi OLS (<strong>R² = 0,3871</strong>), di mana elevasi dan NDVI terbukti mengendalikan suhu, sedangkan ~61% variasi sisanya dipengaruhi albedo, kelembapan tanah, aspek lereng, dan tutupan awan.
+          <strong>Pemisahan Efek Hutan vs. Topografi:</strong> Karena suhu udara turun sekitar <strong>6,5 °C per kenaikan 1 km</strong> (<em>lapse rate</em>), perbedaan elevasi sekitar 800 meter antara kawasan inti TNGL di pegunungan dan permukiman di dataran rendah sudah dapat menjelaskan sebagian besar selisih 5,29 °C. Model regresi linier berganda <em>Ordinary Least Squares</em> (OLS) pada 2.000 sampel buffer 100 km—menggunakan delapan variabel fisik teruji multikolinearitas (<code>Elevation</code>, <code>Slope</code>, <code>Dist_Road</code>, <code>Dist_To_TNGL</code>, <code>NDVI</code>, <code>NDMI</code>, <code>NDBI</code>, dan <code>Nighttime_Lights</code> dengan kriteria <code>VIF &lt; 5</code>)—menghasilkan <strong>R² = 0,3871</strong>. Artinya, elevasi dan kehijauan vegetasi terbukti mengendalikan LST, sementara ~61% variasi suhu sisanya dipengaruhi albedo, kelembapan tanah, aspek lereng, emisivitas, dan tutupan awan.
         </p>
         <p>
-          <strong>Peluang Intervensi pada Zona NDBI:</strong> Nilai NDBI kedua zona sama-sama negatif dengan selisih kecil (−0,0273), menandakan zona luar berada pada <em>tahap awal tekanan konversi lahan</em>, bukan urbanisasi penuh—sehingga intervensi perlindungan tata ruang masih dapat dilakukan dengan biaya sosial-ekonomi yang relatif murah.
+          <strong>Peluang Intervensi pada Zona NDBI:</strong> Nilai NDBI kedua zona sama-sama negatif (−0,2080 vs. −0,1807; selisih −0,0273), menandakan zona luar berada pada <em>tahap awal tekanan konversi lahan</em>, bukan urbanisasi penuh—memberikan jendela intervensi perlindungan tata ruang dengan biaya sosial-ekonomi yang masih relatif terjangkau.
         </p>
+
         <div class="layer-pills">
           <button class="pill-btn active" data-sublayer="lst">Suhu Permukaan (LST)</button>
           <button class="pill-btn" data-sublayer="uhi">Pulau Bahang (UHI)</button>
@@ -223,27 +289,29 @@
         </div>
       </section>
 
-      <!-- BAB 05: DINAMIKA SPASIAL 2019–2025 & VERIFIKASI LUASAN -->
+      <!-- BAB 05: NERACA DINAMIKA SPASIAL 2019–2025 & AUDIT LUASAN -->
       <section class="step" id="bab-5" data-step="delta">
-        <span class="chapter-tag">05 • NERACA DINAMIKA SPASIAL (2025 vs 2019)</span>
-        <h2>Emitor Neto Regional & Perluasan Zona Pemanasan</h2>
+        <span class="chapter-tag">05 • NERACA DINAMIKA SPASIAL (2025 vs. 2019)</span>
+        <h2>Emitor Neto Regional, Pemanasan 43,1% & Audit Luasan</h2>
         <p>
-          Analisis perubahan spasial periode 2019–2025 menyingkap tiga temuan utama pada skala bentang lahan:
+          Kuantifikasi perubahan spasial periode 2019–2025 dilakukan di GEE melalui reduksi regional luas piksel (<code>pixelArea / 10000</code>, skala 60 m, <code>tileScale = 4</code>) untuk mengukur surplus karbon (<code>Carbon_Diff &gt; 0</code>), defisit karbon (<code>Carbon_Diff &lt; 0</code>), pendinginan (<code>LST_Diff &lt; 0</code>), pemanasan (<code>LST_Diff &gt; 0</code>), dinamika kanopi (<code>NDVI_Diff ±0,05</code>), ekspansi terbangun (<code>NDBI_Diff &gt; 0,05</code>), dan eskalasi stres panas (<code>UTFVI_Diff &gt; 0,005</code>):
         </p>
+
         <ul class="editorial-list">
-          <li><strong>Status Emitor Neto Regional:</strong> Wilayah defisit karbon (emisi) seluas <strong>3.600.596,60 Ha (51,4%)</strong> melampaui wilayah surplus karbon (<em>sink</em>) seluas <strong>3.411.164,57 Ha (48,6%)</strong> dengan selisih defisit bersih sekitar <strong>±189.432 Ha</strong> (dari total 7,01 juta Ha).</li>
-          <li><strong>Pemanasan pada 43,1% Area:</strong> Meskipun wilayah pendinginan (<em>cooling</em>) mendominasi seluas <strong>7.810.506,36 Ha (56,9%)</strong>, sebesar <strong>5.920.652,93 Ha (43,1%)</strong> mengalami pemanasan permukaan (<em>warming</em>) yang menunjukkan tekanan iklim mikro nyata.</li>
-          <li><strong>Kontras Inti vs. Penyangga:</strong> Kondisi ini membuktikan bahwa predikat <em>“benteng”</em> hanya berlaku bila kawasan inti TNGL dipisahkan dari bentang lahan sekitarnya.</li>
+          <li><strong>Status Emitor Neto Regional:</strong> Wilayah defisit karbon seluas <strong>3.600.596,60 Ha (51,4%)</strong> melampaui wilayah surplus karbon seluas <strong>3.411.164,57 Ha (48,6%)</strong> dengan selisih defisit bersih sekitar <strong>±189.432 Ha</strong> (dari total 7,01 juta Ha).</li>
+          <li><strong>Pemanasan Permukaan pada 43,1% Area:</strong> Meskipun pendinginan (<em>cooling</em>) mendominasi seluas <strong>7.810.506,36 Ha (56,9%)</strong>, sebesar <strong>5.920.652,93 Ha (43,1%)</strong> mengalami pemanasan permukaan (<em>warming</em>) dari total 13,73 juta Ha.</li>
+          <li><strong>Kontras Inti vs. Penyangga:</strong> Fakta bahwa lanskap regional secara keseluruhan menjadi emitor neto menegaskan bahwa sebutan <em>“benteng”</em> hanya berlaku bila kawasan inti TNGL dipisahkan dari bentang lahan penyangga di sekitarnya.</li>
         </ul>
 
         <div class="figure-box" title="Klik untuk memperbesar grafik">
           <canvas id="chartDinamika" height="170"></canvas>
-          <span class="figure-caption">Grafik 2. Proporsi luasan surplus/defisit karbon dan pendinginan/pemanasan 2019–2025.</span>
+          <span class="figure-caption">Grafik 2. Proporsi luasan surplus vs. defisit karbon (total 7,01 juta Ha) dan pendinginan vs. pemanasan (total 13,73 juta Ha) periode 2019–2025.</span>
         </div>
 
         <div class="method-note">
-          <strong>Catatan Konsistensi Luasan Spasial:</strong> Total luasan analisis karbon (±7,01 juta Ha) berbeda dengan luasan analisis termal (±13,73 juta Ha—yang melampaui gabungan luas Aceh dan Sumatera Utara ±13 juta Ha), sementara luas resmi TNGL adalah ±0,83 juta Ha. Perbedaan masker poligon, sistem proyeksi, atau resolusi piksel antar-layer ini wajib diseragamkan sebelum publikasi.
+          <strong>Audit Ketidakkonsistenan Luasan Spasial:</strong> Total luasan analisis karbon (±7,01 juta Ha) tidak sama dengan luasan analisis termal (±13,73 juta Ha—yang melampaui gabungan luas Provinsi Aceh dan Sumatera Utara ±13 juta Ha), sementara luas penetapan resmi TNGL adalah <strong>±0,83 juta Ha</strong>. Perbedaan masker poligon, sistem proyeksi, atau resolusi piksel antar-layer ini wajib diseragamkan sebelum publikasi.
         </div>
+
         <div class="layer-pills">
           <button class="pill-btn active" data-sublayer="delta_carbon">Delta Karbon</button>
           <button class="pill-btn" data-sublayer="delta_lst">Delta Suhu LST</button>
@@ -252,49 +320,87 @@
         </div>
       </section>
 
-      <!-- BAB 06: VALIDITAS MODEL ML/DL & KEKUATAN BUKTI -->
+      <!-- BAB 06: VALIDITAS MODEL ML/DL & MATRIKS KEKUATAN BUKTI -->
       <section class="step" id="bab-6" data-step="validasi">
-        <span class="chapter-tag">06 • VALIDITAS MODEL ML/DL & KEKUATAN BUKTI</span>
-        <h2>Evaluasi Keandalan Sistem Monitoring & Rancangan Kausal</h2>
+        <span class="chapter-tag">06 • VALIDITAS MODEL AI & MATRIKS KEKUATAN BUKTI</span>
+        <h2>Evaluasi Random Forest, OLS, LSTM & Inferensi Kausal</h2>
         <div class="model-cards">
           <div class="model-card">
             <div class="model-title">
-              <strong>Random Forest (Karbon)</strong>
+              <strong>Random Forest Regressor (Kalibrasi GEDI L4B)</strong>
               <span>R² = 0,9994 | RMSE = 1,5876</span>
             </div>
-            <p>Galat rerata ±0,8% (MAE 0,5209 Ton/Ha; NDVI <em>importance</em> 0,3786). Nilai R² yang sangat tinggi berisiko terinflasi autokorelasi spasial antar-piksel bertetangga, sirkularitas rumus NDVI, serta kejenuhan NDVI pada biomassa tinggi. Memerlukan <em>spatial block cross-validation</em>, integrasi SAR/tekstur, dan validasi plot lapangan atau LiDAR GEDI.</p>
+            <p>Dirancang dengan 200 pohon keputusan (<code>random_state = 42</code>, 14 prediktor multi-sensor, pembagian 80% latih : 20% uji) terkalibrasi terhadap 2.000 titik LiDAR independen NASA GEDI L4B (<code>GEDI_AGB &gt; 0</code>). Galat rerata ±0,8% (MAE = <strong>0,5209 Ton/Ha</strong>; NDVI <em>importance</em> = <strong>0,3786</strong>). Namun, R² yang sangat tinggi berisiko terinflasi autokorelasi spasial antar-piksel bertetangga, sirkularitas indeks NDVI, serta kejenuhan NDVI pada biomassa tinggi—sehingga wajib diuji melalui <em>spatial block cross-validation</em> dan plot lapangan.</p>
           </div>
           <div class="model-card">
             <div class="model-title">
-              <strong>Regresi Spasial OLS (LST)</strong>
-              <span>R² = 0,3871</span>
+              <strong>Regresi Spasial OLS (Suhu Permukaan LST)</strong>
+              <span>R² = 0,3871 (VIF &lt; 5)</span>
             </div>
-            <p>Mengonfirmasi arah pengaruh elevasi dan NDVI, namun tidak memadai untuk prediksi tunggal. Residu perlu diuji dengan <em>Moran’s I</em> dan ditingkatkan menggunakan <em>Geographically Weighted Regression</em> (GWR).</p>
+            <p>Mengonfirmasi arah pengaruh elevasi dan NDVI pada 2.000 titik sampel, namun belum memadai untuk prediksi tunggal. Residu spasial perlu diuji menggunakan <em>Moran’s I</em> dan dikembangkan ke <em>Geographically Weighted Regression</em> (GWR).</p>
           </div>
           <div class="model-card">
             <div class="model-title">
-              <strong>Deep Learning LSTM (Iklim Mikro)</strong>
-              <span>8 Fitur Kuartalan Optik–SAR</span>
+              <strong>Deep Learning LSTM Spatio-Temporal (8 Fitur)</strong>
+              <span>28 Kuartal • Skala 120 m</span>
             </div>
-            <p>Dilatih pada ~28 titik waktu kuartalan (2019–2025). Operasionalisasi peringatan dini memerlukan pengujian berurutan (<em>walk-forward validation</em>), regularisasi (<em>dropout/early stopping</em>), baseline ARIMA/persistence, serta interval ketidakpastian.</p>
+            <p>Memodelkan 200 titik pemantauan kuartalan (Q1 2019–Q4 2025) untuk 8 fitur (<code>NDVI, EVI, NDMI, LST, NDBI, UHI, UTFVI, SAR_VH</code>) dengan pemisahan 80:20 sebelum <code>MinMaxScaler</code> agar bebas kebocoran data. Arsitektur <code>LSTM(64, return_sequences=True) → Dropout(0,2) → LSTM(32) → Dense(1)</code> (25 epoch, <code>batch_size = 16</code>, Adam, MSE) memerlukan <em>walk-forward validation</em>, baseline ARIMA/persistence, serta pelaporan metrik RMSE dan MAE (°C) pada data uji.</p>
           </div>
         </div>
 
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Klaim Evaluasi</th>
+              <th>Kekuatan Bukti</th>
+              <th>Keterbatasan & Tindak Lanjut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Karbon lebih tinggi di dalam TNGL</strong><br><small>+7,38 Ton/Ha; t = 11,78</small></td>
+              <td><span class="badge moderate">Sedang–Kuat</span></td>
+              <td>Definisi variabel & resolusi; perlu validasi plot lapangan/GEDI.</td>
+            </tr>
+            <tr>
+              <td><strong>Iklim mikro lebih sejuk di dalam TNGL</strong><br><small>LST −5,29 °C; UTFVI rendah</small></td>
+              <td><span class="badge mixed">Kuat (Arah), Lemah (Kausal)</span></td>
+              <td>Tercampur efek elevasi (<em>lapse rate</em>); R² OLS = 0,39.</td>
+            </tr>
+            <tr>
+              <td><strong>Tekanan konversi lebih rendah</strong><br><small>NDBI −0,2080 vs −0,1807</small></td>
+              <td><span class="badge moderate">Sedang</span></td>
+              <td>Ukuran efek kecil (selisih −0,0273); fase awal konversi.</td>
+            </tr>
+            <tr>
+              <td><strong>TNGL mencegah deforestasi</strong><br><small>Total hilang 31.745,9 Ha</small></td>
+              <td><span class="badge pending">Belum Dapat Dinilai</span></td>
+              <td>Belum dipisahkan piksel dalam vs. luar batas TNGL.</td>
+            </tr>
+            <tr>
+              <td><strong>Sistem monitoring ML/DL andal</strong><br><small>R² RF = 0,9994; LSTM terlatih</small></td>
+              <td><span class="badge pending">Belum Terbukti</span></td>
+              <td>Belum ada <em>spatial cross-validation</em> & metrik uji LSTM.</td>
+            </tr>
+          </tbody>
+        </table>
+
         <div class="method-note">
-          <strong>Peningkatan Inferensi Kausal:</strong> Nilai <em>p</em> ekstrem (10⁻²⁹ hingga 10⁻⁷⁰) lebih mencerminkan ukuran sampel piksel yang masif daripada kekuatan efek murni (<em>Cohen’s d</em>). Rancangan lanjutan perlu menerapkan <strong>Propensity Score Matching</strong> (berdasarkan elevasi, lereng, aspek, dan jarak ke jalan) atau <strong>Regression Discontinuity</strong> tepat di garis batas TNGL untuk mengisolasi efek murni perlindungan hutan.
+          <strong>Peningkatan Inferensi Kausal:</strong> Nilai <em>p</em> ekstrem (10⁻²⁹ hingga 10⁻⁷⁰) mencerminkan ukuran sampel piksel yang masif, sehingga ukuran efek (<em>Cohen’s d</em>) perlu dilaporkan. Untuk memisahkan efek murni perlindungan hutan dari faktor geografis, rancangan lanjutan perlu menerapkan <strong>Propensity Score Matching</strong> (berdasarkan elevasi, lereng, aspek, dan jarak ke jalan) atau <strong>Regression Discontinuity</strong> tepat di garis batas TNGL.
         </div>
+
         <div class="layer-pills">
           <button class="pill-btn active" data-sublayer="sampel">Titik Sampel Observasi</button>
           <button class="pill-btn" data-sublayer="sar">Radar Kanopi (SAR VH)</button>
         </div>
       </section>
 
-      <!-- BAB 07: IMPLIKASI MASYARAKAT & REKOMENDASI -->
+      <!-- BAB 07: IMPLIKASI MASYARAKAT, MATRIKS DAMPAK & REKOMENDASI -->
       <section class="step" id="bab-7" data-step="dampak">
         <span class="chapter-tag">07 • IMPLIKASI SOSIAL-EKOLOGIS & REKOMENDASI</span>
-        <h2>Dampak bagi 690.000 Jiwa & Strategi Tata Ruang</h2>
+        <h2>Dampak bagi 690.000 Jiwa & Arah Kebijakan Penyangga</h2>
         <p>
-          Sekitar <strong>690.000 penduduk</strong> tinggal di dalam atau berdekatan dengan KEL, sebagian termasuk kelompok ekonomi rentan. Pelajaran dari studi rawa gambut Tripa menegaskan bahwa penegakan hukum dan pembayaran karbon saja tidak cukup tanpa investasi lapangan kerja alternatif. Klik tab di bawah untuk menelusuri matriks dampak perubahan di zona penyangga:
+          Sekitar <strong>690.000 penduduk</strong> tinggal di dalam atau berdekatan dengan KEL, sebagian termasuk kelompok ekonomi rentan. Pelajaran dari studi konversi rawa gambut Tripa (Tata et al. 2014) menegaskan bahwa penegakan hukum dan pembayaran karbon saja tidak cukup tanpa investasi mata pencaharian alternatif. Pilih sektor di bawah untuk menelusuri dampak perubahan di luar buffer:
         </p>
 
         <div class="impact-tabs">
@@ -305,25 +411,74 @@
         </div>
 
         <div class="tab-panel active" id="tab-lingkungan">
-          <strong>Integritas Ekosistem & Konflik Satwa:</strong> Penyusutan hutan di zona transisi memperluas defisit karbon, menaikkan suhu lokal, mengganggu siklus hidrologi, serta memfragmentasi habitat orangutan Sumatra (<em>Pongo abelii</em>), gajah, dan harimau sehingga meningkatkan konflik manusia–satwa.
+          <strong>Integritas Ekosistem & Satwa Kunci:</strong> Penyusutan hutan di zona transisi mengganggu siklus hidrologi dan curah hujan lokal (Ellison et al. 2017) serta memfragmentasi habitat orangutan Sumatra (<em>Pongo abelii</em>), gajah, dan harimau (Wich et al. 2016), yang memicu konflik manusia–satwa.
         </div>
         <div class="tab-panel" id="tab-ekonomi">
-          <strong>Produktivitas Komoditas & Pasokan Air:</strong> Pemanasan di 43,1% area dan gangguan infiltrasi hulu menurunkan hasil panen kopi, karet, kakao, dan sawit, mengurangi kapasitas kerja petani di luar ruang, serta menghilangkan peluang pendapatan dari skema karbon dan ekowisata.
+          <strong>Produktivitas Komoditas & Pasokan Air:</strong> Pemanasan di 43,1% area dan gangguan infiltrasi hulu menurunkan hasil panen kopi, karet, kakao, dan sawit, mengurangi kapasitas kerja luar ruang petani (Kjellstrom et al. 2016), serta menghilangkan peluang jasa karbon dan ekowisata.
         </div>
         <div class="tab-panel" id="tab-kesehatan">
-          <strong>Stres Panas, Zoonosis & Kabut Asap:</strong> Permukiman yang memanas meningkatkan risiko dehidrasi, gangguan ginjal, dan penyakit kardiovaskular pada lansia, anak, serta pekerja lapangan; pembukaan hutan memicu risiko malaria zoonotik dan paparan kabut asap pembakaran lahan.
+          <strong>Stres Panas, Zoonosis & Kabut Asap:</strong> Permukiman yang memanas meningkatkan risiko dehidrasi, gangguan ginjal, dan penyakit kardiovaskular pada lansia, anak, serta pekerja lapangan; pembukaan hutan meningkatkan risiko malaria zoonotik (Fornace et al. 2016) serta kabut asap pembakaran lahan.
         </div>
         <div class="tab-panel" id="tab-bencana">
           <strong>Banjir Bandang & Longsor Hilir:</strong> Hilangnya tutupan hutan di lereng curam melenyapkan peredam hidrologi alami dan memperbesar risiko banjir bandang serta longsor pada permukiman hilir, sebagaimana riwayat bencana yang pernah melanda Bahorok dan Bukit Lawang.
         </div>
 
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Perubahan di Luar Buffer</th>
+              <th>Dampak Ekonomi</th>
+              <th>Dampak Kesehatan & Bencana</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Defisit Karbon Meluas</strong></td>
+              <td>Hilangnya peluang pendapatan karbon & jasa lingkungan.</td>
+              <td>Kualitas udara turun bila disertai pembakaran; kapasitas hidrologi hutan melemah.</td>
+            </tr>
+            <tr>
+              <td><strong>Pemanasan Permukaan</strong></td>
+              <td>Produktivitas kerja luar ruang & hasil kebun menurun.</td>
+              <td>Stres panas, dehidrasi, penyakit kardiovaskular, kekeringan & kebakaran lahan.</td>
+            </tr>
+            <tr>
+              <td><strong>Deforestasi</strong></td>
+              <td>Pasokan air irigasi & hasil komoditas terganggu.</td>
+              <td>Perubahan habitat vektor penyakit; banjir bandang & longsor di wilayah hilir.</td>
+            </tr>
+          </tbody>
+        </table>
+
         <div class="rec-callout">
           <h4>6 Rekomendasi Teknis & 4 Prioritas Kebijakan</h4>
           <ul>
-            <li><strong>Perbaikan Metodologi Spasial:</strong> (1) Kendalikan elevasi/lereng via <em>matched design</em>; (2) terapkan <em>spatial cross-validation</em> & validasi GEDI/lapangan; (3) laporkan <em>Cohen’s d</em> & koreksi autokorelasi; (4) samakan batas luasan kajian dengan penetapan resmi TNGL (±0,83 juta Ha); (5) sajikan metrik uji LSTM; serta (6) pisahkan statistik deforestasi dalam vs. luar TNGL.</li>
-            <li><strong>Aksi Tata Ruang & Pemberdayaan:</strong> (1) Perkuat patroli di zona transisi tempat NDBI mulai naik; (2) integrasikan sistem peringatan dini tervalidasi dengan patroli lapangan; (3) dorong agroforestri, perhutanan sosial, ekowisata, dan pembayaran jasa lingkungan bagi desa penyangga; serta (4) jadikan peta pemanasan sebagai dasar prioritas adaptasi kesehatan dan tata ruang.</li>
+            <li><strong>Rekomendasi Teknis:</strong> (1) Kendalikan elevasi dan lereng melalui desain <em>matched</em> atau regresi berkovariat; (2) terapkan <em>spatial block cross-validation</em> dan validasi plot lapangan atau LiDAR GEDI; (3) laporkan ukuran efek (<em>Cohen’s d</em>) dan koreksi autokorelasi spasial; (4) samakan batas luasan kajian antar-analisis dan selaraskan luas TNGL dengan penetapan terbaru (±0,83 juta Ha); (5) sajikan metrik uji LSTM beserta baseline pembandingnya; serta (6) pisahkan statistik deforestasi di dalam dan di luar TNGL.</li>
+            <li><strong>Rekomendasi Kebijakan:</strong> (1) Perkuat patroli perlindungan di zona transisi tempat NDBI mulai meningkat; (2) integrasikan sistem peringatan dini berbasis model tervalidasi dengan patroli lapangan; (3) dorong agroforestri, perhutanan sosial, ekowisata, dan pembayaran jasa lingkungan bagi desa penyangga; serta (4) jadikan peta pemanasan dan defisit karbon sebagai dasar prioritas adaptasi kesehatan dan tata ruang.</li>
           </ul>
         </div>
+
+        <details class="ref-details">
+          <summary>Daftar Pustaka & Rujukan Ilmiah Utama</summary>
+          <ul>
+            <li>Alkama R, Cescatti A. 2016. Biophysical climate impacts of recent changes in global forest cover. <em>Science</em>. 351(6273):600–604.</li>
+            <li>Auliah NL, Onrizal. 2020. Stand structure and carbon storage of Bukit Lawang’s tropical rain forest of Gunung Leuser National Park. <em>J Phys Conf Ser</em>. 1542:012061.</li>
+            <li>[BBTNGL] Balai Besar Taman Nasional Gunung Leuser. 2024. <em>Laporan Kinerja Tahun 2023 Balai Besar Taman Nasional Gunung Leuser</em>. Medan: KLHK.</li>
+            <li>Breiman L. 2001. Random forests. <em>Mach Learn</em>. 45(1):5–32. | Hochreiter S, Schmidhuber J. 1997. Long short-term memory. <em>Neural Comput</em>. 9(8):1735–1780.</li>
+            <li>Chave J, Réjou-Méchain M, Búrquez A, et al. 2014. Improved allometric models to estimate the aboveground biomass of tropical trees. <em>Glob Change Biol</em>. 20(10):3177–3190.</li>
+            <li>Dubayah R, Blair JB, Goetz S, et al. 2020. The Global Ecosystem Dynamics Investigation (GEDI). <em>Sci Remote Sens</em>. 1:100002.</li>
+            <li>Ellison D, Morris CE, Locatelli B, et al. 2017. Trees, forests and water: cool insights for a hot world. <em>Glob Environ Change</em>. 43:51–61.</li>
+            <li>Gaveau DLA, Wich S, Epting J, et al. 2009. The future of forests and orangutans (<em>Pongo abelii</em>) in Sumatra. <em>Environ Res Lett</em>. 4(3):034013.</li>
+            <li>Gorelick N, Hancher M, Dixon M, et al. 2017. Google Earth Engine: planetary-scale geospatial analysis for everyone. <em>Remote Sens Environ</em>. 202:18–27.</li>
+            <li>Hansen MC, Potapov PV, Moore R, et al. 2013. High-resolution global maps of 21st-century forest cover change. <em>Science</em>. 342(6160):850–853.</li>
+            <li>Kemenhut SK.4039/Menhut-VII/KUH/2014 & SK.6589/Menhut-VII/KUH/2014 tentang Penetapan Kawasan Hutan TNGL; Keppres No. 33 Tahun 1998 tentang Pengelolaan KEL; UNESCO (2004).</li>
+            <li>Li Y, Zhao M, Motesharrei S, et al. 2015. Local cooling and warming effects of forests based on satellite observations. <em>Nat Commun</em>. 6:6603.</li>
+            <li>Ploton P, Mortier F, Réjou-Méchain M, et al. 2020. Spatial validation reveals poor predictive performance of large-scale ecological mapping models. <em>Nat Commun</em>. 11:4540.</li>
+            <li>Roberts DR, Bahn V, Ciuti S, et al. 2017. Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure. <em>Ecography</em>. 40(8):913–929.</li>
+            <li>Tata HL, van Noordwijk M, Ruysschaert D, et al. 2014. Will funding to REDD+ stop conversion of peat swamps to oil palm in orangutan habitat in Tripa in Aceh? <em>Mitig Adapt Strateg Glob Change</em>. 19(6):693–713.</li>
+            <li>Wich SA, Singleton I, Nowak MG, et al. 2016. Land-cover changes predict steep declines for the Sumatran orangutan (<em>Pongo abelii</em>). <em>Sci Adv</em>. 2(3):e1500789.</li>
+          </ul>
+        </details>
       </section>
 
     </article>
@@ -339,8 +494,8 @@
   <!-- FOOTER PENUTUP -->
   <footer class="story-footer">
     <div class="footer-inner">
-      <strong>Laporan Analisis: Evaluasi Efektivitas Taman Nasional Gunung Leuser (2019–2025)</strong>
-      <p>Kajian Geospasial, Uji Statistik Komparatif, dan Validitas Model Machine Learning/Deep Learning (Random Forest, OLS Spasial, LSTM). Terintegrasi otomatis dengan Google Drive GeoJSON API.</p>
+      <strong>Laporan Metodologi & Evaluasi Efektivitas Taman Nasional Gunung Leuser (2019–2025)</strong>
+      <p>Integrasi Penginderaan Jauh Multi-Sensor (Sentinel-2 SR, Landsat 8/9, Sentinel-1 SAR, VIIRS DNB, NASADEM), Uji Statistik Welch’s T-Test, OLS Spasial, Random Forest Terkalibrasi LiDAR NASA GEDI L4B, dan Deep Learning LSTM 8-Fitur. Terhubung otomatis dengan Google Drive GeoJSON API.</p>
     </div>
   </footer>
 
