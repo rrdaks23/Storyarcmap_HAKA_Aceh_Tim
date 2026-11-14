@@ -415,8 +415,15 @@ async function syncDriveCatalog() {
   try {
     let filesList = [];
 
-    if (useDirectDriveAPI()) {
-      const topItems = await listDriveFilesViaApiV3(DRIVE_FOLDER_ID);
+    if (useDirectDriveAPI() && item.fileId) {
+        const directUrl = `https://www.googleapis.com/drive/v3/files/${item.fileId}?alt=media&key=${encodeURIComponent(DRIVE_API_KEY)};
+        try {
+          rawData = await fetchJSONSafe(directUrl);
+        } catch (corsErr) {
+          const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(directUrl)}`;
+          rawData = await fetchJSONSafe(proxyUrl);
+        }
+      };
       for (const entry of topItems) {
         if (entry.mimeType === 'application/vnd.google-apps.folder') {
           const subFiles = await listDriveFilesViaApiV3(entry.id);
