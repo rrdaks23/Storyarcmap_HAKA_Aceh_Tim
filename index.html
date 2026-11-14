@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Benteng Ekologis TNGL (2019–2025) • TIM Hard Ground Solid</title>
+  <title>Benteng Ekologis TNGL (2019–2025) • TIM High Ground Solid</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- BILAH NAVIGASI, LOGO MITRA, NAMA TIM & PROGRES BACA ATAS -->
+  <!-- BILAH NAVIGASI, LOGO MITRA, NAMA TIM, SLOGAN & PROGRES BACA ATAS -->
   <div id="top-progress-wrap">
     <div class="top-bar-inner">
       <div class="brand-info">
@@ -23,7 +23,7 @@
         <span class="status-dot" id="sync-dot"></span>
         <div class="brand-text-stack">
           <span id="brand-title">STORYMAP TNGL • 2019–2025</span>
-          <span class="nav-team-tag">TIM Hard Ground Solid</span>
+          <span class="nav-team-tag">TIM High Ground Solid • <em>“Veni, vidi, vici”</em></span>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
   <!-- NOTIFIKASI SINKRONISASI GOOGLE DRIVE (POJOK KIRI BAWAH AGAR PETA BERSIH) -->
   <div id="loader-toast" class="hidden">Menyinkronkan GeoJSON dari Google Drive...</div>
 
-  <!-- SAMPUL PEMBUKA LAYAR PENUH (HERO HEADER + LOGO GANDA + NAMA TIM) -->
+  <!-- SAMPUL PEMBUKA LAYAR PENUH (HERO HEADER + LOGO GANDA + TIM + PENYUSUN) -->
   <header class="hero-cover" id="bab-0" data-step="sampul">
     <div class="hero-grid-pattern" aria-hidden="true"></div>
     <div class="hero-content">
@@ -69,19 +69,32 @@
         </div>
       </div>
 
-      <!-- IDENTITAS TIM & KICKER KAJIAN -->
+      <!-- IDENTITAS TIM, SLOGAN & KICKER KAJIAN -->
       <div class="hero-identity-row">
         <span class="team-pill">
           <span class="team-pulse"></span>
-          TIM Hard Ground Solid
+          TIM High Ground Solid
+          <span class="team-slogan-sep">•</span>
+          <em class="team-slogan">“Veni, vidi, vici”</em>
         </span>
-        <span class="hero-kicker">WEBGIS STORYMAP • PENGINDERAAN JAUH & AI (2019–2025)</span>
+        <span class="hero-kicker">WEBGIS STORYMAP • PENGINDERAAN JAUH &amp; AI (2019–2025)</span>
       </div>
 
       <h1>Benteng Ekologis Taman Nasional Gunung Leuser</h1>
       <p class="hero-subtitle">
         Evaluasi Efektivitas Kawasan Inti TNGL sebagai Benteng Penyerapan Karbon dan Penyangga Perubahan Iklim Mikro Lokal (2019–2025)
       </p>
+
+      <!-- KARTU IDENTITAS PENYUSUN -->
+      <div class="authors-box">
+        <span class="authors-label">PENYUSUN KAJIAN &amp; WEBGIS</span>
+        <div class="authors-names">
+          <span class="author-chip">Muhammad Luthfan Nabil</span>
+          <span class="author-amp">&amp;</span>
+          <span class="author-chip">Harun Al Rasyid</span>
+        </div>
+      </div>
+
       <p class="hero-lead">
         Integrasi citra satelit multi-sensor pada Google Earth Engine, uji statistik komparatif, ekonometrika spasial OLS, Random Forest terkalibrasi LiDAR NASA GEDI L4B, dan Deep Learning LSTM spatio-temporal.
       </p>
@@ -110,7 +123,7 @@
       </div>
 
       <div class="hero-actions">
-        <a href="#story-main" class="hero-cta">Mulai Eksplorasi Peta & Analisis Lengkap ↓</a>
+        <a href="#story-main" class="hero-cta">Mulai Eksplorasi Peta, Dokumentasi &amp; Analisis ↓</a>
       </div>
     </div>
   </header>
@@ -123,8 +136,8 @@
 
       <!-- BAB 01: KONTEKS HISTORIS, GEOMETRI WILAYAH & ARSITEKTUR MULTI-SENSOR -->
       <section class="step active" id="bab-1" data-step="deliniasi">
-        <span class="chapter-tag">01 • KONTEKS HISTORIS, UNIT GEOMETRI & MULTI-SENSOR</span>
-        <h2>Jantung Warisan Dunia Sumatra & Arsitektur Komputasi GEE</h2>
+        <span class="chapter-tag">01 • KONTEKS HISTORIS, UNIT GEOMETRI &amp; MULTI-SENSOR</span>
+        <h2>Jantung Warisan Dunia Sumatra &amp; Arsitektur Komputasi GEE</h2>
         <p>
           Diresmikan sebagai salah satu dari lima taman nasional pertama di Indonesia pada <strong>6 Maret 1980</strong> (Pengumuman Mentan No. 811/Kpts/Um/II/1980), TNGL menjadi inti pengelolaan <strong>Kawasan Ekosistem Leuser (KEL)</strong> melalui Keppres No. 33 Tahun 1998 dan tercatat sebagai Situs Warisan Dunia UNESCO (<em>Tropical Rainforest Heritage of Sumatra</em>, 2004). Dari penunjukan awal seluas ±1,09 juta Ha (SK Menhut 276/1997), penetapan kawasan hutan tahun 2014 menghasilkan luas resmi TNGL sekitar <strong>830.268,95 Ha</strong>—dengan <strong>625.115 Ha</strong> di Provinsi Aceh—di tengah bentang KEL seluas <strong>±2,28 juta Ha</strong>.
         </p>
@@ -140,21 +153,21 @@
         <table class="data-table">
           <thead>
             <tr>
-              <th>Komponen & Aset GEE</th>
+              <th>Komponen &amp; Aset GEE</th>
               <th>Produk / Resolusi</th>
-              <th>Peran & Prapemrosesan</th>
+              <th>Peran &amp; Prapemrosesan</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>Optik & Tutupan Lahan</strong><br><small>Sentinel-2 SR + Cloud Score+</small></td>
+              <td><strong>Optik &amp; Tutupan Lahan</strong><br><small>Sentinel-2 SR + Cloud Score+</small></td>
               <td><code>S2_SR_HARMONIZED</code><br>10–20 m</td>
               <td>Komposit median bebas awan (<code>cs_cdf ≥ 0,5</code>) untuk indeks vegetasi, kelembapan, air, dan tanah terbuka.</td>
             </tr>
             <tr>
-              <td><strong>Termal & Terbangun</strong><br><small>Landsat 8/9 C02 L2</small></td>
+              <td><strong>Termal &amp; Terbangun</strong><br><small>Landsat 8/9 C02 L2</small></td>
               <td><code>LC08/C02/T1_L2</code><br>100 m (resampel 30 m)</td>
-              <td>Penapisan awan/bayangan via bit ke-3 & ke-4 <code>QA_PIXEL</code>; ekstraksi LST, UHI, UTFVI, dan NDBI.</td>
+              <td>Penapisan awan/bayangan via bit ke-3 &amp; ke-4 <code>QA_PIXEL</code>; ekstraksi LST, UHI, UTFVI, dan NDBI.</td>
             </tr>
             <tr>
               <td><strong>Radar Kanopi (SAR)</strong><br><small>Sentinel-1 GRD IW</small></td>
@@ -162,13 +175,13 @@
               <td>Menangkap struktur kanopi 3D menembus awan; lintasan tunggal mencegah distorsi lereng (<em>foreshortening/layover</em>).</td>
             </tr>
             <tr>
-              <td><strong>Topografi, Cahaya Malam & LiDAR</strong></td>
+              <td><strong>Topografi, Cahaya Malam &amp; LiDAR</strong></td>
               <td>NASADEM (30 m), VIIRS DNB, NASA GEDI L4B (1 km)</td>
               <td>Kontrol gradien suhu altitudinal (<em>lapse rate</em> ±6,5 °C/km), intensitas ekonomi, serta target kalibrasi biomassa independen.</td>
             </tr>
             <tr>
-              <td><strong>Aksesibilitas & Poligon Hutan</strong></td>
-              <td><code>DSS_fixkel19/21/25</code> & <code>erase_non_kel19/21/25</code></td>
+              <td><strong>Aksesibilitas &amp; Poligon Hutan</strong></td>
+              <td><code>DSS_fixkel19/21/25</code> &amp; <code>erase_non_kel19/21/25</code></td>
               <td>Gradien jarak Euclidean: <code>Dist_Road</code> (50 km), <code>Dist_Facility</code> (50 km), dan <code>Dist_To_TNGL</code> (150 km).</td>
             </tr>
           </tbody>
@@ -181,10 +194,10 @@
         </div>
       </section>
 
-      <!-- BAB 02: FORMULASI BIOFISIK 19 BAND & DINAMIKA TUTUPAN HUTAN -->
+      <!-- BAB 02: FORMULASI BIOFISIK 19 BAND, DINAMIKA HUTAN & DOKUMENTASI DEFORESTASI ACEH -->
       <section class="step" id="bab-2" data-step="hutan">
-        <span class="chapter-tag">02 • FORMULASI BIOFISIK & DINAMIKA HUTAN (2019–2025)</span>
-        <h2>19 Band Biofisik Terpadu & Laju Deforestasi Regional</h2>
+        <span class="chapter-tag">02 • FORMULASI BIOFISIK, DEFORESTASI &amp; DOKUMENTASI ACEH</span>
+        <h2>19 Band Biofisik Terpadu &amp; Potret Deforestasi Aceh</h2>
         <p>
           Setiap komposit tahunan (2019, 2021, 2025) dan 28 kuartal menurunkan <strong>19 band terpadu</strong> dengan penapisan badan air berbasis <code>MNDWI &lt; 0</code>. Estimasi biomassa menggunakan pendekatan hibrida optik–SAR yang dibatasi pada rentang <strong>0–500 Ton/Ha</strong> sebelum dikalibrasi terhadap LiDAR NASA GEDI L4B:
         </p>
@@ -195,7 +208,7 @@
             <code>(ST_B10 × 0,00341802 + 149,0) − 273,15</code>
           </div>
           <div class="formula-item">
-            <strong>UHI & UTFVI</strong>
+            <strong>UHI &amp; UTFVI</strong>
             <code>UHI = (LST − μ) / σ | UTFVI = (LST − μ) / (LST + 273,15)</code>
           </div>
           <div class="formula-item">
@@ -203,13 +216,13 @@
             <code>NDVI &lt; 0,2 ? 0 : exp(3,0 × NDVI) × 10 + (VH + 30) × 2</code>
           </div>
           <div class="formula-item">
-            <strong>Carbon Stock & Rate</strong>
+            <strong>Carbon Stock &amp; Rate</strong>
             <code>CS = 0,5 × AGB | Rate = (CS₂₀₂₅ − CS₂₀₁₉) / 6</code>
           </div>
         </div>
 
         <p>
-          Berdasarkan integrasi poligon tutupan hutan multi-tahun (<code>DSS_fixkel</code> & <code>erase_non_kel</code>) dan deteksi kehilangan tutupan pohon (<em>Hansen GFC</em>), terdeteksi kehilangan hutan seluas <strong>31.745,90 Ha</strong> sepanjang 2019–2025, atau berkisar <strong>±4.500–5.300 Ha/tahun</strong> (dihitung dari 7 tahun hingga 6 interval). Sebagai pembanding historis, proyek REDD KEL mencatat laju deforestasi sekitar <strong>5.500 Ha/tahun</strong> pada 2000–2009 akibat pembukaan jalan, jaringan listrik, bendungan, pertambangan, dan perluasan perkebunan sawit.
+          Berdasarkan integrasi poligon tutupan hutan multi-tahun (<code>DSS_fixkel</code> &amp; <code>erase_non_kel</code>) dan deteksi kehilangan tutupan pohon (<em>Hansen GFC</em>), terdeteksi kehilangan hutan seluas <strong>31.745,90 Ha</strong> sepanjang 2019–2025, atau berkisar <strong>±4.500–5.300 Ha/tahun</strong> (dihitung dari 7 tahun hingga 6 interval). Sebagai pembanding historis, proyek REDD KEL mencatat laju deforestasi sekitar <strong>5.500 Ha/tahun</strong> pada 2000–2009 akibat pembukaan jalan, jaringan listrik, bendungan, pertambangan, dan perluasan perkebunan sawit.
         </p>
 
         <div class="kpi-row">
@@ -222,6 +235,89 @@
             <small>Batas Atas Teoretis TNGL</small>
             <strong>3,8 %</strong>
             <span>Jika seluruh piksel di dalam inti</span>
+          </div>
+        </div>
+
+        <!-- GALERI DOKUMENTASI FOTO KONDISI DEFORESTASI ACEH -->
+        <div class="doc-section">
+          <div class="doc-header">
+            <span class="doc-kicker">DOKUMENTASI VISUAL LAPANGAN &amp; CITRA</span>
+            <h3>Potret Kondisi Deforestasi &amp; Tekanan Tutupan Lahan Aceh</h3>
+            <p>Klik pada setiap foto dokumentasi di bawah untuk memperbesar tampilan dan melihat keterangan lapangan.</p>
+          </div>
+
+          <div class="doc-gallery">
+            <figure class="figure-box doc-card" title="Klik untuk memperbesar foto dokumentasi">
+              <span class="doc-badge">01 • PERAMBAHAN HUTAN</span>
+              <div class="doc-img-wrap">
+                <img
+                  src="assets/deforestasi-aceh-1.jpg"
+                  alt="Dokumentasi Pembukaan Lahan dan Perambahan di Zona Penyangga Aceh"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <div class="doc-placeholder">
+                  <strong>Slot Foto 1</strong>
+                  <span>Unggah ke: <code>assets/deforestasi-aceh-1.jpg</code></span>
+                </div>
+              </div>
+              <figcaption class="figure-caption">
+                <strong>Pembukaan Lahan &amp; Perambahan Zona Transisi Aceh:</strong> Konversi tutupan hutan sekunder menjadi lahan terbuka dan kebun campuran di batas Kawasan Ekosistem Leuser.
+              </figcaption>
+            </figure>
+
+            <figure class="figure-box doc-card" title="Klik untuk memperbesar foto dokumentasi">
+              <span class="doc-badge">02 • AKSES JALAN &amp; FRAGMENTASI</span>
+              <div class="doc-img-wrap">
+                <img
+                  src="assets/deforestasi-aceh-2.jpg"
+                  alt="Dokumentasi Pembukaan Akses Jalan dan Fragmentasi Hutan Leuser Aceh"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <div class="doc-placeholder">
+                  <strong>Slot Foto 2</strong>
+                  <span>Unggah ke: <code>assets/deforestasi-aceh-2.jpg</code></span>
+                </div>
+              </div>
+              <figcaption class="figure-caption">
+                <strong>Fragmentasi Koridor Ekologis &amp; Jaringan Jalan:</strong> Pembukaan koridor akses mempercepat tekanan antropogenik (<code>Dist_Road</code>) menuju tepi kawasan inti TNGL.
+              </figcaption>
+            </figure>
+
+            <figure class="figure-box doc-card" title="Klik untuk memperbesar foto dokumentasi">
+              <span class="doc-badge">03 • LERENG HULU DAS</span>
+              <div class="doc-img-wrap">
+                <img
+                  src="assets/deforestasi-aceh-3.jpg"
+                  alt="Dokumentasi Degradasi Lereng Hulu Daerah Aliran Sungai Aceh"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <div class="doc-placeholder">
+                  <strong>Slot Foto 3</strong>
+                  <span>Unggah ke: <code>assets/deforestasi-aceh-3.jpg</code></span>
+                </div>
+              </div>
+              <figcaption class="figure-caption">
+                <strong>Degradasi Tutupan Tajuk pada Lereng Hulu:</strong> Hilangnya vegetasi rapat melemahkan kapasitas resapan hidrologi dan meningkatkan risiko banjir bandang serta longsor hilir.
+              </figcaption>
+            </figure>
+
+            <figure class="figure-box doc-card" title="Klik untuk memperbesar foto dokumentasi">
+              <span class="doc-badge">04 • EKSPANSI PERKEBUNAN</span>
+              <div class="doc-img-wrap">
+                <img
+                  src="assets/deforestasi-aceh-4.jpg"
+                  alt="Dokumentasi Alih Fungsi Lahan Hutan Menjadi Perkebunan di Aceh"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <div class="doc-placeholder">
+                  <strong>Slot Foto 4</strong>
+                  <span>Unggah ke: <code>assets/deforestasi-aceh-4.jpg</code></span>
+                </div>
+              </div>
+              <figcaption class="figure-caption">
+                <strong>Alih Fungsi Menjadi Perkebunan &amp; Lahan Terbangun:</strong> Memicu pelepasan cadangan karbon (<em>carbon deficit</em>) serta kenaikan suhu permukaan lokal (LST).
+              </figcaption>
+            </figure>
           </div>
         </div>
 
@@ -249,7 +345,7 @@
               <th>Indikator Biofisik</th>
               <th>Dalam TNGL</th>
               <th>Luar Buffer</th>
-              <th>Selisih & Statistik Uji</th>
+              <th>Selisih &amp; Statistik Uji</th>
             </tr>
           </thead>
           <tbody>
@@ -272,7 +368,7 @@
               <td><strong>−0,0273</strong><br><small>t = −13,0139 (efek kecil)</small></td>
             </tr>
             <tr>
-              <td><strong>UTFVI & UHI</strong><br><small>(Stres Termal)</small></td>
+              <td><strong>UTFVI &amp; UHI</strong><br><small>(Stres Termal)</small></td>
               <td>Lebih rendah</td>
               <td>Lebih tinggi</td>
               <td><strong>Signifikan</strong><br><small>Tanpa tekanan termal di inti</small></td>
@@ -286,7 +382,7 @@
         </div>
 
         <p>
-          <strong>Interpretasi Kritis Nilai Karbon:</strong> Nilai absolut 64,48 Ton/Ha lebih moderat dibandingkan rerata stok karbon tertimbang proyek REDD KEL (~207 tC/Ha atau 760 tCO₂e/Ha) maupun studi plot alometrik hutan hujan Bukit Lawang (Auliah & Onrizal 2020) akibat perbedaan cakupan biomassa atas permukaan vs. stok total, dominasi hutan pegunungan, serta efek pencampuran piksel (<em>mixed pixel</em>). Sementara itu, selisih moderat +12,9% menandakan zona luar buffer belum terdegradasi penuh dan masih didominasi agroforestri, kebun campuran, serta hutan sekunder.
+          <strong>Interpretasi Kritis Nilai Karbon:</strong> Nilai absolut 64,48 Ton/Ha lebih moderat dibandingkan rerata stok karbon tertimbang proyek REDD KEL (~207 tC/Ha atau 760 tCO₂e/Ha) maupun studi plot alometrik hutan hujan Bukit Lawang (Auliah &amp; Onrizal 2020) akibat perbedaan cakupan biomassa atas permukaan vs. stok total, dominasi hutan pegunungan, serta efek pencampuran piksel (<em>mixed pixel</em>). Sementara itu, selisih moderat +12,9% menandakan zona luar buffer belum terdegradasi penuh dan masih didominasi agroforestri, kebun campuran, serta hutan sekunder.
         </p>
 
         <div class="layer-pills">
@@ -298,8 +394,8 @@
 
       <!-- BAB 04: IKLIM MIKRO, KONTROL ELEVASI & REGRESI SPASIAL OLS -->
       <section class="step" id="bab-4" data-step="termal">
-        <span class="chapter-tag">04 • IKLIM MIKRO, KONTROL ELEVASI & REGRESI OLS</span>
-        <h2>Pendinginan Suhu Permukaan (−5,29 °C) & Fase Awal NDBI</h2>
+        <span class="chapter-tag">04 • IKLIM MIKRO, KONTROL ELEVASI &amp; REGRESI OLS</span>
+        <h2>Pendinginan Suhu Permukaan (−5,29 °C) &amp; Fase Awal NDBI</h2>
         <p>
           Sinyal terkuat dalam data terlihat pada suhu permukaan (LST): kawasan dalam TNGL lebih sejuk <strong>−5,29 °C</strong> dibandingkan zona luar (<strong>22,61 °C vs. 27,90 °C</strong>; <em>t</em> = −19,5547; <em>p</em> = 5,14×10⁻⁷⁰), disertai indeks Pulau Bahang (UHI) dan stres termal (UTFVI) yang rendah di area inti hutan.
         </p>
@@ -333,7 +429,7 @@
       <!-- BAB 05: NERACA DINAMIKA SPASIAL 2019–2025 & AUDIT LUASAN -->
       <section class="step" id="bab-5" data-step="delta">
         <span class="chapter-tag">05 • NERACA DINAMIKA SPASIAL (2025 vs. 2019)</span>
-        <h2>Emitor Neto Regional, Pemanasan 43,1% & Audit Luasan</h2>
+        <h2>Emitor Neto Regional, Pemanasan 43,1% &amp; Audit Luasan</h2>
         <p>
           Kuantifikasi perubahan spasial periode 2019–2025 dilakukan di GEE melalui reduksi regional luas piksel (<code>pixelArea / 10000</code>, skala 60 m, <code>tileScale = 4</code>) untuk mengukur surplus karbon (<code>Carbon_Diff &gt; 0</code>), defisit karbon (<code>Carbon_Diff &lt; 0</code>), pendinginan (<code>LST_Diff &lt; 0</code>), pemanasan (<code>LST_Diff &gt; 0</code>), dinamika kanopi (<code>NDVI_Diff ±0,05</code>), ekspansi terbangun (<code>NDBI_Diff &gt; 0,05</code>), dan eskalasi stres panas (<code>UTFVI_Diff &gt; 0,005</code>):
         </p>
@@ -363,8 +459,8 @@
 
       <!-- BAB 06: VALIDITAS MODEL ML/DL & MATRIKS KEKUATAN BUKTI -->
       <section class="step" id="bab-6" data-step="validasi">
-        <span class="chapter-tag">06 • VALIDITAS MODEL AI & MATRIKS KEKUATAN BUKTI</span>
-        <h2>Evaluasi Random Forest, OLS, LSTM & Inferensi Kausal</h2>
+        <span class="chapter-tag">06 • VALIDITAS MODEL AI &amp; MATRIKS KEKUATAN BUKTI</span>
+        <h2>Evaluasi Random Forest, OLS, LSTM &amp; Inferensi Kausal</h2>
         <div class="model-cards">
           <div class="model-card">
             <div class="model-title">
@@ -394,14 +490,14 @@
             <tr>
               <th>Klaim Evaluasi</th>
               <th>Kekuatan Bukti</th>
-              <th>Keterbatasan & Tindak Lanjut</th>
+              <th>Keterbatasan &amp; Tindak Lanjut</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>Karbon lebih tinggi di dalam TNGL</strong><br><small>+7,38 Ton/Ha; t = 11,78</small></td>
               <td><span class="badge moderate">Sedang–Kuat</span></td>
-              <td>Definisi variabel & resolusi; perlu validasi plot lapangan/GEDI.</td>
+              <td>Definisi variabel &amp; resolusi; perlu validasi plot lapangan/GEDI.</td>
             </tr>
             <tr>
               <td><strong>Iklim mikro lebih sejuk di dalam TNGL</strong><br><small>LST −5,29 °C; UTFVI rendah</small></td>
@@ -421,7 +517,7 @@
             <tr>
               <td><strong>Sistem monitoring ML/DL andal</strong><br><small>R² RF = 0,9994; LSTM terlatih</small></td>
               <td><span class="badge pending">Belum Terbukti</span></td>
-              <td>Belum ada <em>spatial cross-validation</em> & metrik uji LSTM.</td>
+              <td>Belum ada <em>spatial cross-validation</em> &amp; metrik uji LSTM.</td>
             </tr>
           </tbody>
         </table>
@@ -438,8 +534,8 @@
 
       <!-- BAB 07: IMPLIKASI MASYARAKAT, MATRIKS DAMPAK & REKOMENDASI -->
       <section class="step" id="bab-7" data-step="dampak">
-        <span class="chapter-tag">07 • IMPLIKASI SOSIAL-EKOLOGIS & REKOMENDASI</span>
-        <h2>Dampak bagi 690.000 Jiwa & Arah Kebijakan Penyangga</h2>
+        <span class="chapter-tag">07 • IMPLIKASI SOSIAL-EKOLOGIS &amp; REKOMENDASI</span>
+        <h2>Dampak bagi 690.000 Jiwa &amp; Arah Kebijakan Penyangga</h2>
         <p>
           Sekitar <strong>690.000 penduduk</strong> tinggal di dalam atau berdekatan dengan KEL, sebagian termasuk kelompok ekonomi rentan. Pelajaran dari studi konversi rawa gambut Tripa (Tata et al. 2014) menegaskan bahwa penegakan hukum dan pembayaran karbon saja tidak cukup tanpa investasi mata pencaharian alternatif. Pilih sektor di bawah untuk menelusuri dampak perubahan di luar buffer:
         </p>
@@ -452,16 +548,16 @@
         </div>
 
         <div class="tab-panel active" id="tab-lingkungan">
-          <strong>Integritas Ekosistem & Satwa Kunci:</strong> Penyusutan hutan di zona transisi mengganggu siklus hidrologi dan curah hujan lokal (Ellison et al. 2017) serta memfragmentasi habitat orangutan Sumatra (<em>Pongo abelii</em>), gajah, dan harimau (Wich et al. 2016), yang memicu konflik manusia–satwa.
+          <strong>Integritas Ekosistem &amp; Satwa Kunci:</strong> Penyusutan hutan di zona transisi mengganggu siklus hidrologi dan curah hujan lokal (Ellison et al. 2017) serta memfragmentasi habitat orangutan Sumatra (<em>Pongo abelii</em>), gajah, dan harimau (Wich et al. 2016), yang memicu konflik manusia–satwa.
         </div>
         <div class="tab-panel" id="tab-ekonomi">
-          <strong>Produktivitas Komoditas & Pasokan Air:</strong> Pemanasan di 43,1% area dan gangguan infiltrasi hulu menurunkan hasil panen kopi, karet, kakao, dan sawit, mengurangi kapasitas kerja luar ruang petani (Kjellstrom et al. 2016), serta menghilangkan peluang jasa karbon dan ekowisata.
+          <strong>Produktivitas Komoditas &amp; Pasokan Air:</strong> Pemanasan di 43,1% area dan gangguan infiltrasi hulu menurunkan hasil panen kopi, karet, kakao, dan sawit, mengurangi kapasitas kerja luar ruang petani (Kjellstrom et al. 2016), serta menghilangkan peluang jasa karbon dan ekowisata.
         </div>
         <div class="tab-panel" id="tab-kesehatan">
-          <strong>Stres Panas, Zoonosis & Kabut Asap:</strong> Permukiman yang memanas meningkatkan risiko dehidrasi, gangguan ginjal, dan penyakit kardiovaskular pada lansia, anak, serta pekerja lapangan; pembukaan hutan meningkatkan risiko malaria zoonotik (Fornace et al. 2016) serta kabut asap pembakaran lahan.
+          <strong>Stres Panas, Zoonosis &amp; Kabut Asap:</strong> Permukiman yang memanas meningkatkan risiko dehidrasi, gangguan ginjal, dan penyakit kardiovaskular pada lansia, anak, serta pekerja lapangan; pembukaan hutan meningkatkan risiko malaria zoonotik (Fornace et al. 2016) serta kabut asap pembakaran lahan.
         </div>
         <div class="tab-panel" id="tab-bencana">
-          <strong>Banjir Bandang & Longsor Hilir:</strong> Hilangnya tutupan hutan di lereng curam melenyapkan peredam hidrologi alami dan memperbesar risiko banjir bandang serta longsor pada permukiman hilir, sebagaimana riwayat bencana yang pernah melanda Bahorok dan Bukit Lawang.
+          <strong>Banjir Bandang &amp; Longsor Hilir:</strong> Hilangnya tutupan hutan di lereng curam melenyapkan peredam hidrologi alami dan memperbesar risiko banjir bandang serta longsor pada permukiman hilir, sebagaimana riwayat bencana yang pernah melanda Bahorok dan Bukit Lawang.
         </div>
 
         <table class="data-table">
@@ -469,30 +565,30 @@
             <tr>
               <th>Perubahan di Luar Buffer</th>
               <th>Dampak Ekonomi</th>
-              <th>Dampak Kesehatan & Bencana</th>
+              <th>Dampak Kesehatan &amp; Bencana</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>Defisit Karbon Meluas</strong></td>
-              <td>Hilangnya peluang pendapatan karbon & jasa lingkungan.</td>
+              <td>Hilangnya peluang pendapatan karbon &amp; jasa lingkungan.</td>
               <td>Kualitas udara turun bila disertai pembakaran; kapasitas hidrologi hutan melemah.</td>
             </tr>
             <tr>
               <td><strong>Pemanasan Permukaan</strong></td>
-              <td>Produktivitas kerja luar ruang & hasil kebun menurun.</td>
-              <td>Stres panas, dehidrasi, penyakit kardiovaskular, kekeringan & kebakaran lahan.</td>
+              <td>Produktivitas kerja luar ruang &amp; hasil kebun menurun.</td>
+              <td>Stres panas, dehidrasi, penyakit kardiovaskular, kekeringan &amp; kebakaran lahan.</td>
             </tr>
             <tr>
               <td><strong>Deforestasi</strong></td>
-              <td>Pasokan air irigasi & hasil komoditas terganggu.</td>
-              <td>Perubahan habitat vektor penyakit; banjir bandang & longsor di wilayah hilir.</td>
+              <td>Pasokan air irigasi &amp; hasil komoditas terganggu.</td>
+              <td>Perubahan habitat vektor penyakit; banjir bandang &amp; longsor di wilayah hilir.</td>
             </tr>
           </tbody>
         </table>
 
         <div class="rec-callout">
-          <h4>6 Rekomendasi Teknis & 4 Prioritas Kebijakan</h4>
+          <h4>6 Rekomendasi Teknis &amp; 4 Prioritas Kebijakan</h4>
           <ul>
             <li><strong>Rekomendasi Teknis:</strong> (1) Kendalikan elevasi dan lereng melalui desain <em>matched</em> atau regresi berkovariat; (2) terapkan <em>spatial block cross-validation</em> dan validasi plot lapangan atau LiDAR GEDI; (3) laporkan ukuran efek (<em>Cohen’s d</em>) dan koreksi autokorelasi spasial; (4) samakan batas luasan kajian antar-analisis dan selaraskan luas TNGL dengan penetapan terbaru (±0,83 juta Ha); (5) sajikan metrik uji LSTM beserta baseline pembandingnya; serta (6) pisahkan statistik deforestasi di dalam dan di luar TNGL.</li>
             <li><strong>Rekomendasi Kebijakan:</strong> (1) Perkuat patroli perlindungan di zona transisi tempat NDBI mulai meningkat; (2) integrasikan sistem peringatan dini berbasis model tervalidasi dengan patroli lapangan; (3) dorong agroforestri, perhutanan sosial, ekowisata, dan pembayaran jasa lingkungan bagi desa penyangga; serta (4) jadikan peta pemanasan dan defisit karbon sebagai dasar prioritas adaptasi kesehatan dan tata ruang.</li>
@@ -500,7 +596,7 @@
         </div>
 
         <details class="ref-details">
-          <summary>Daftar Pustaka & Rujukan Ilmiah Utama</summary>
+          <summary>Daftar Pustaka &amp; Rujukan Ilmiah Utama</summary>
           <ul>
             <li>Alkama R, Cescatti A. 2016. Biophysical climate impacts of recent changes in global forest cover. <em>Science</em>. 351(6273):600–604.</li>
             <li>Auliah NL, Onrizal. 2020. Stand structure and carbon storage of Bukit Lawang’s tropical rain forest of Gunung Leuser National Park. <em>J Phys Conf Ser</em>. 1542:012061.</li>
@@ -512,7 +608,7 @@
             <li>Gaveau DLA, Wich S, Epting J, et al. 2009. The future of forests and orangutans (<em>Pongo abelii</em>) in Sumatra. <em>Environ Res Lett</em>. 4(3):034013.</li>
             <li>Gorelick N, Hancher M, Dixon M, et al. 2017. Google Earth Engine: planetary-scale geospatial analysis for everyone. <em>Remote Sens Environ</em>. 202:18–27.</li>
             <li>Hansen MC, Potapov PV, Moore R, et al. 2013. High-resolution global maps of 21st-century forest cover change. <em>Science</em>. 342(6160):850–853.</li>
-            <li>Kemenhut SK.4039/Menhut-VII/KUH/2014 & SK.6589/Menhut-VII/KUH/2014 tentang Penetapan Kawasan Hutan TNGL; Keppres No. 33 Tahun 1998 tentang Pengelolaan KEL; UNESCO (2004).</li>
+            <li>Kemenhut SK.4039/Menhut-VII/KUH/2014 &amp; SK.6589/Menhut-VII/KUH/2014 tentang Penetapan Kawasan Hutan TNGL; Keppres No. 33 Tahun 1998 tentang Pengelolaan KEL; UNESCO (2004).</li>
             <li>Li Y, Zhao M, Motesharrei S, et al. 2015. Local cooling and warming effects of forests based on satellite observations. <em>Nat Commun</em>. 6:6603.</li>
             <li>Ploton P, Mortier F, Réjou-Méchain M, et al. 2020. Spatial validation reveals poor predictive performance of large-scale ecological mapping models. <em>Nat Commun</em>. 11:4540.</li>
             <li>Roberts DR, Bahn V, Ciuti S, et al. 2017. Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure. <em>Ecography</em>. 40(8):913–929.</li>
@@ -532,24 +628,25 @@
 
   </main>
 
-  <!-- FOOTER PENUTUP DENGAN LOGO & KREDIT TIM -->
+  <!-- FOOTER PENUTUP DENGAN LOGO, TIM, SLOGAN & NAMA PENYUSUN -->
   <footer class="story-footer">
     <div class="footer-inner">
       <div class="footer-logos">
         <img src="assets/logo-univ.png" alt="Logo Universitas" class="footer-logo-img" onerror="this.style.display='none'" />
         <img src="assets/logo-haka.png" alt="Logo HAKA Aceh" class="footer-logo-img" onerror="this.style.display='none'" />
       </div>
-      <span class="footer-team-badge">Disusun oleh: TIM Hard Ground Solid</span>
+      <span class="footer-team-badge">TIM High Ground Solid • <em>“Veni, vidi, vici”</em></span>
+      <p class="footer-authors">Penyusun: <strong>Muhammad Luthfan Nabil</strong> &amp; <strong>Harun Al Rasyid</strong></p>
       <strong>Benteng Ekologis Taman Nasional Gunung Leuser (2019–2025)</strong>
       <p>Integrasi Penginderaan Jauh Multi-Sensor (Sentinel-2 SR, Landsat 8/9, Sentinel-1 SAR, VIIRS DNB, NASADEM), Uji Statistik Welch’s T-Test, OLS Spasial, Random Forest Terkalibrasi LiDAR NASA GEDI L4B, dan Deep Learning LSTM 8-Fitur.</p>
     </div>
   </footer>
 
-  <!-- LIGHTBOX MODAL UNTUK MEMPERBESAR GRAFIK & FOTO -->
+  <!-- LIGHTBOX MODAL UNTUK MEMPERBESAR GRAFIK & FOTO DOKUMENTASI -->
   <div id="lightbox-modal" hidden>
     <div class="lightbox-backdrop" id="lightbox-close"></div>
     <div class="lightbox-body">
-      <img id="lightbox-img" alt="Pratinjau Gambar" />
+      <img id="lightbox-img" alt="Pratinjau Dokumentasi &amp; Grafik" />
       <p id="lightbox-caption"></p>
     </div>
   </div>
