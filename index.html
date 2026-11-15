@@ -2,19 +2,13 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#072a1d" />
-  <meta name="description" content="Storymap interaktif: efektivitas Kawasan Ekosistem Leuser sebagai benteng ekologis penyerap karbon dan penyangga iklim lokal (2019–2025). Leuser GeoStory Challenge | Festival Rimba Leuser 2026." />
-  <meta property="og:title" content="Benteng Ekologis Kawasan Ekosistem Leuser • TIM High Ground Solid" />
-  <meta property="og:description" content="Peta interaktif karbon, suhu permukaan, dan deforestasi Leuser 2019–2025." />
-  <meta property="og:type" content="website" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Benteng Ekologis Kawasan Ekosistem Leuser • TIM High Ground Solid</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Merriweather:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="style-v2.css" />
   <style>
     .stat-fig-header {
       display: flex;
@@ -63,7 +57,6 @@
   </style>
 </head>
 <body>
-  <a href="#story-main" class="skip-link">Lompat ke konten</a>
 
   <!-- BILAH NAVIGASI, LOGO MITRA, NAMA TIM & PROGRES BACA ATAS -->
   <div id="top-progress-wrap">
@@ -113,7 +106,7 @@
         <div class="partner-badge">
           <img src="assets/logo-haka.png" alt="Logo HAKA Aceh" class="partner-logo" onerror="this.style.display='none'" />
           <div class="partner-label">
-            <small>PENYELENGGARA</small>
+            <small>PENYELENGARA</small>
             <span>HAKA Aceh</span>
           </div>
         </div>
@@ -158,7 +151,7 @@
       <div class="hero-stats">
         <div class="hero-stat-item">
           <strong>830.268,95 Ha</strong>
-          <span>Luas Penetapan Inti TNGL (2014)</span>
+          <span>Luas Penetapan Inti Kawasan Ekosistem Leuser (2014)</span>
         </div>
         <div class="hero-stat-item">
           <strong>±2,28 Juta Ha</strong>
@@ -166,7 +159,7 @@
         </div>
         <div class="hero-stat-item">
           <strong>Radius 100 km</strong>
-          <span>Zona Penyangga di Luar Inti TNGL</span>
+          <span>Zona Penyangga Eksternal (KEL)</span>
         </div>
         <div class="hero-stat-item">
           <strong>690.000 Jiwa</strong>
@@ -175,7 +168,7 @@
       </div>
 
       <div class="hero-thesis">
-        <strong>Tesis Utama Kajian:</strong> Seluruh indikator utama bergerak searah dengan hipotesis perlindungan—cadangan karbon di dalam TNGL lebih tinggi (<strong>64,48 vs. 57,10 Ton/Ha</strong>), suhu permukaan lebih rendah (<strong>22,61 vs. 27,90 °C</strong>), dan indeks lahan terbangun lebih rendah (<strong>−0,2080 vs. −0,1807</strong>). Namun, predikat <em>“benteng”</em> lebih tepat disematkan pada kawasan intinya dibandingkan bentang lahan penyangga 100 km di sekitarnya yang mengalami defisit karbon, pemanasan pada 43,1% area, serta deforestasi.
+        <strong>Tesis Utama Kajian:</strong> Seluruh indikator utama bergerak searah dengan hipotesis perlindungan—cadangan karbon di dalam Kawasan Ekosistem Leuser lebih tinggi (<strong>64,48 vs. 57,10 Ton/Ha</strong>), suhu permukaan lebih rendah (<strong>22,61 vs. 27,90 °C</strong>), dan indeks lahan terbangun lebih rendah (<strong>−0,2080 vs. −0,1807</strong>). Namun, predikat <em>“benteng”</em> lebih tepat disematkan pada kawasan intinya dibandingkan bentang lahan penyangga 100 km di sekitarnya yang mengalami defisit karbon, pemanasan pada 43,1% area, serta deforestasi.
       </div>
 
       <div class="hero-actions">
@@ -190,20 +183,26 @@
     <!-- KOLOM KIRI: NASKAH PEMBAHASAN LENGKAP -->
     <article class="narrative-column">
 
+      <!-- LATAR CITRA SATELIT STICKY UNTUK SELURUH BAGIAN PEMBAHASAN -->
+      <div class="narr-bg" aria-hidden="true">
+        <div id="narr-sat" class="sat-bg"></div>
+        <div class="narr-bg-overlay"></div>
+      </div>
+
       <!-- BAB 01: KONTEKS HISTORIS, GEOMETRI WILAYAH & ARSITEKTUR MULTI-SENSOR -->
       <section class="step active" id="bab-1" data-step="deliniasi">
         <span class="chapter-tag">01 • KONTEKS HISTORIS, UNIT GEOMETRI &amp; MULTI-SENSOR</span>
         <h2>Jantung Warisan Dunia Sumatra &amp; Arsitektur Komputasi GEE</h2>
         <p>
-          Diresmikan sebagai salah satu dari lima taman nasional pertama di Indonesia pada <strong>6 Maret 1980</strong> (Pengumuman Mentan No. 811/Kpts/Um/II/1980), TNGL menjadi inti pengelolaan <strong>Kawasan Ekosistem Leuser (KEL)</strong> melalui Keppres No. 33 Tahun 1998 dan tercatat sebagai Situs Warisan Dunia UNESCO (<em>Tropical Rainforest Heritage of Sumatra</em>, 2004). Dari penunjukan awal seluas ±1,09 juta Ha (SK Menhut 276/1997), penetapan kawasan hutan tahun 2014 menghasilkan luas resmi TNGL sekitar <strong>830.268,95 Ha</strong>—dengan <strong>625.115 Ha</strong> di Provinsi Aceh—di tengah bentang KEL seluas <strong>±2,28 juta Ha</strong>.
+          Diresmikan sebagai salah satu dari lima taman nasional pertama di Indonesia pada <strong>6 Maret 1980</strong> (Pengumuman Mentan No. 811/Kpts/Um/II/1980), taman nasional ini menjadi inti pengelolaan <strong>Kawasan Ekosistem Leuser (KEL)</strong> melalui Keppres No. 33 Tahun 1998 dan tercatat sebagai Situs Warisan Dunia UNESCO (<em>Tropical Rainforest Heritage of Sumatra</em>, 2004). Dari penunjukan awal seluas ±1,09 juta Ha (SK Menhut 276/1997), penetapan kawasan hutan tahun 2014 menghasilkan luas resmi Kawasan Ekosistem Leuser sekitar <strong>830.268,95 Ha</strong>—dengan <strong>625.115 Ha</strong> di Provinsi Aceh—di tengah bentang KEL seluas <strong>±2,28 juta Ha</strong>.
         </p>
         <p>
           Untuk menguji rantai penalaran <em>“hutan → karbon → pendinginan → tekanan terhadap manusia”</em> pada platform <strong>Google Earth Engine (GEE)</strong> dan Python Geospasial (proyeksi <code>EPSG:4326</code>), batas wilayah (<code>KEL_Aceh</code>, toleransi penyederhanaan 500 m) dibagi menjadi tiga unit geometri:
         </p>
         <ul class="editorial-list">
-          <li><strong>Zona Inti TNGL (<code>tngl_geom</code>):</strong> Poligon kawasan konservasi inti sebagai wilayah kontrol tutupan hutan terlindungi.</li>
-          <li><strong>Zona Penyangga Total (<code>buffer_geom</code>):</strong> Perluasan radius <strong>100.000 meter (100 km)</strong> mengelilingi batas terluar TNGL sebagai lanskap pengaruh ekologis regional.</li>
-          <li><strong>Zona Penyangga Eksternal (<code>outside_buffer_geom</code>):</strong> Selisih spasial antara buffer 100 km dan zona inti TNGL yang merepresentasikan area permukiman, perkebunan, serta alih fungsi lahan.</li>
+          <li><strong>Zona Inti Kawasan Ekosistem Leuser (<code>tngl_geom</code>):</strong> Poligon kawasan konservasi inti sebagai wilayah kontrol tutupan hutan terlindungi.</li>
+          <li><strong>Zona Penyangga Total (<code>buffer_geom</code>):</strong> Perluasan radius <strong>100.000 meter (100 km)</strong> mengelilingi batas terluar Kawasan Ekosistem Leuser sebagai lanskap pengaruh ekologis regional.</li>
+          <li><strong>Zona Penyangga Eksternal (<code>outside_buffer_geom</code>):</strong> Selisih spasial antara buffer 100 km dan zona inti Kawasan Ekosistem Leuser yang merepresentasikan area permukiman, perkebunan, serta alih fungsi lahan.</li>
         </ul>
 
         <table class="data-table">
@@ -244,7 +243,7 @@
         </table>
 
         <div class="layer-pills">
-          <button class="pill-btn active" data-sublayer="zonasi">Zonasi Jarak TNGL</button>
+          <button class="pill-btn active" data-sublayer="zonasi">Zonasi Jarak Kawasan Ekosistem Leuser</button>
           <button class="pill-btn" data-sublayer="elevasi">Elevasi (NASADEM)</button>
           <button class="pill-btn" data-sublayer="lereng">Kemiringan Lereng</button>
         </div>
@@ -288,7 +287,7 @@
             <span>±4.500–5.300 Ha/tahun (2019–2025)</span>
           </div>
           <div class="kpi-box info">
-            <small>Batas Atas Teoretis TNGL</small>
+            <small>Batas Atas Teoretis Kawasan Ekosistem Leuser</small>
             <strong>3,8 %</strong>
             <span>Jika seluruh piksel di dalam inti</span>
           </div>
@@ -390,7 +389,7 @@
         </div>
 
         <div class="method-note">
-          <strong>Catatan Pembuktian Spasial:</strong> Angka 3,8% merupakan <em>batas atas teoretis</em> karena statistik piksel kehilangan hutan (<code>Forest₂₀₁₉ = 1 → Forest₂₀₂₅ = 0</code>) belum dipisahkan secara spasial antara zona dalam TNGL dan zona luar buffer. Pemisahan tegas dua zona ini merupakan bukti paling langsung efektivitas perlindungan kawasan.
+          <strong>Catatan Pembuktian Spasial:</strong> Angka 3,8% merupakan <em>batas atas teoretis</em> karena statistik piksel kehilangan hutan (<code>Forest₂₀₁₉ = 1 → Forest₂₀₂₅ = 0</code>) belum dipisahkan secara spasial antara zona dalam Kawasan Ekosistem Leuser dan zona luar buffer. Pemisahan tegas dua zona ini merupakan bukti paling langsung efektivitas perlindungan kawasan.
         </div>
 
         <div class="layer-pills">
@@ -404,14 +403,14 @@
         <span class="chapter-tag">03 • UJI STATISTIK KOMPARATIF (WELCH'S T-TEST)</span>
         <h2>Kapasitas Penyimpanan Karbon Kawasan Inti vs. Luar Buffer</h2>
         <p>
-          Pengujian hipotesis membandingkan <strong>1.500 titik sampel acak</strong> di dalam inti TNGL (<code>Inside_TNGL</code>) melawan <strong>1.500 titik sampel terstratifikasi</strong> pada daratan non-hutan (<code>MNDWI &lt; 0</code>) di luar batas TNGL (<code>Outside_NonForest</code>) pada resolusi 1.000 m (<code>seed = 42</code>). Uji beda <em>Welch’s Independent Two-Sample T-Test</em> (<code>equal_var = False</code>, dipilih karena ragam ekosistem hutan primer berbeda dengan permukiman) membuktikan perbedaan signifikan pada seluruh indikator utama:
+          Pengujian hipotesis membandingkan <strong>1.500 titik sampel acak</strong> di dalam inti Kawasan Ekosistem Leuser (<code>Inside_TNGL</code>) melawan <strong>1.500 titik sampel terstratifikasi</strong> pada daratan non-hutan (<code>MNDWI &lt; 0</code>) di luar batas Kawasan Ekosistem Leuser (<code>Outside_NonForest</code>) pada resolusi 1.000 m (<code>seed = 42</code>). Uji beda <em>Welch’s Independent Two-Sample T-Test</em> (<code>equal_var = False</code>, dipilih karena ragam ekosistem hutan primer berbeda dengan permukiman) membuktikan perbedaan signifikan pada seluruh indikator utama:
         </p>
 
         <table class="data-table">
           <thead>
             <tr>
               <th>Indikator Biofisik</th>
-              <th>Dalam TNGL</th>
+              <th>Dalam Kawasan Ekosistem Leuser</th>
               <th>Luar Buffer</th>
               <th>Selisih &amp; Statistik Uji</th>
             </tr>
@@ -421,19 +420,19 @@
               <td><strong>Carbon Stock</strong><br><small>(Ton/Ha)</small></td>
               <td>64,48</td>
               <td>57,10</td>
-              <td><strong>+7,38 (+12,9%)</strong><br><small>t = 11,7848; p = 4,07×10⁻²⁹; d ≈ 0,43</small></td>
+              <td><strong>+7,38 (+12,9%)</strong><br><small>t = 11,7848; p = 4,07×10⁻²⁹</small></td>
             </tr>
             <tr>
               <td><strong>Suhu Permukaan LST</strong><br><small>(°C)</small></td>
               <td>22,61 °C</td>
               <td>27,90 °C</td>
-              <td><strong>−5,29 °C</strong><br><small>t = −19,5547; p = 5,14×10⁻⁷⁰; d ≈ −0,71</small></td>
+              <td><strong>−5,29 °C</strong><br><small>t = −19,5547; p = 5,14×10⁻⁷⁰</small></td>
             </tr>
             <tr>
-              <td><strong>Indeks Terbangun NDBI</strong><br><small>(tak berdimensi)</small></td>
+              <td><strong>Indeks Terbangun NDBI</strong><br><small>(nir-satuan)</small></td>
               <td>−0,2080</td>
               <td>−0,1807</td>
-              <td><strong>−0,0273</strong><br><small>t = −13,0139; d ≈ −0,48 (kecil–sedang)</small></td>
+              <td><strong>−0,0273</strong><br><small>t = −13,0139 (efek kecil)</small></td>
             </tr>
             <tr>
               <td><strong>UTFVI &amp; UHI</strong><br><small>(Stres Termal)</small></td>
@@ -444,8 +443,6 @@
           </tbody>
         </table>
 
-        <p class="table-note">d (Cohen) diperkirakan dari statistik t Welch dengan n = 1.500 per kelompok (d ≈ t·√(2/n)); hitung ulang dari data mentah sebelum publikasi.</p>
-
         <!-- GRAFIK GAMBAR 1A: HASIL UJI BEDA WELCH'S T-TEST -->
         <figure class="figure-box" title="Klik untuk memperbesar grafik hasil uji statistika">
           <div class="stat-fig-header">
@@ -454,7 +451,7 @@
           </div>
           <img
             src="assets/grafik-uji-ttest.png"
-            alt="Grafik Hasil Uji Statistik Komparatif Welch's T-Test Antar-Zona TNGL"
+            alt="Grafik Hasil Uji Statistik Komparatif Welch's T-Test Antar-Zona Kawasan Ekosistem Leuser"
             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
           />
           <div class="stat-fig-placeholder">
@@ -462,7 +459,7 @@
             <span>Pastikan file gambar grafik Anda di folder <code>assets/</code> bernama <code>grafik-uji-ttest.png</code> (atau ubah atribut <code>src</code> pada baris ini sesuai nama file di GitHub).</span>
           </div>
           <figcaption class="figure-caption">
-            <strong>Grafik 1A.</strong> Perbandingan hasil uji beda <em>Welch’s Independent Two-Sample T-Test</em> pada cadangan karbon (Ton/Ha), suhu permukaan LST (°C), dan indeks terbangun NDBI antara kawasan inti TNGL dan zona luar buffer (klik gambar untuk memperbesar).
+            <strong>Grafik 1A.</strong> Perbandingan hasil uji beda <em>Welch’s Independent Two-Sample T-Test</em> pada cadangan karbon (Ton/Ha), suhu permukaan LST (°C), dan indeks terbangun NDBI antara inti Kawasan Ekosistem Leuser dan zona luar buffer (klik gambar untuk memperbesar).
           </figcaption>
         </figure>
 
@@ -474,7 +471,7 @@
           </div>
           <img
             src="assets/grafik-distribusi-statistik.png"
-            alt="Grafik Distribusi Sampel Statistik Kawasan Inti TNGL vs Luar Buffer"
+            alt="Grafik Distribusi Sampel Statistik Inti Kawasan Ekosistem Leuser vs Luar Buffer"
             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
           />
           <div class="stat-fig-placeholder">
@@ -482,7 +479,7 @@
             <span>Pastikan file gambar grafik Anda di folder <code>assets/</code> bernama <code>grafik-distribusi-statistik.png</code> (atau ubah atribut <code>src</code> pada baris ini sesuai nama file di GitHub).</span>
           </div>
           <figcaption class="figure-caption">
-            <strong>Grafik 1B.</strong> Distribusi sebaran nilai sampel statistik (<em>n</em> = 1.500 titik dalam TNGL vs. <em>n</em> = 1.500 titik luar buffer) yang menunjukkan signifikansi perlindungan kawasan inti (klik gambar untuk memperbesar).
+            <strong>Grafik 1B.</strong> Distribusi sebaran nilai sampel statistik (<em>n</em> = 1.500 titik dalam Kawasan Ekosistem Leuser vs. <em>n</em> = 1.500 titik luar buffer) yang menunjukkan signifikansi perlindungan kawasan inti (klik gambar untuk memperbesar).
           </figcaption>
         </figure>
 
@@ -502,7 +499,7 @@
         <span class="chapter-tag">04 • IKLIM MIKRO, KONTROL ELEVASI &amp; REGRESI OLS</span>
         <h2>Pendinginan Suhu Permukaan (−5,29 °C) &amp; Fase Awal NDBI</h2>
         <p>
-          Sinyal terkuat dalam data terlihat pada suhu permukaan (LST): kawasan dalam TNGL lebih sejuk <strong>−5,29 °C</strong> dibandingkan zona luar (<strong>22,61 °C vs. 27,90 °C</strong>; <em>t</em> = −19,5547; <em>p</em> = 5,14×10⁻⁷⁰), disertai indeks Pulau Bahang (UHI) dan stres termal (UTFVI) yang rendah di area inti hutan.
+          Sinyal terkuat dalam data terlihat pada suhu permukaan (LST): kawasan dalam Kawasan Ekosistem Leuser lebih sejuk <strong>−5,29 °C</strong> dibandingkan zona luar (<strong>22,61 °C vs. 27,90 °C</strong>; <em>t</em> = −19,5547; <em>p</em> = 5,14×10⁻⁷⁰), disertai indeks Pulau Bahang (UHI) dan stres termal (UTFVI) yang rendah di area inti hutan.
         </p>
         <div class="kpi-row">
           <div class="kpi-box info">
@@ -517,7 +514,7 @@
           </div>
         </div>
         <p>
-          <strong>Pemisahan Efek Hutan vs. Topografi:</strong> Karena suhu udara turun sekitar <strong>6,5 °C per kenaikan 1 km</strong> (<em>lapse rate</em>), perbedaan elevasi sekitar 800 meter antara kawasan inti TNGL di pegunungan dan permukiman di dataran rendah secara aritmetika setara ±5,2 °C (0,8 km × 6,5 °C/km)—hampir seluruh selisih 5,29 °C—sehingga kontribusi murni tutupan hutan belum dapat dipisahkan tanpa kontrol elevasi (catatan: <em>lapse rate</em> berlaku untuk suhu udara, sedangkan LST adalah suhu permukaan). Model regresi linier berganda <em>Ordinary Least Squares</em> (OLS) pada 2.000 sampel buffer 100 km—menggunakan delapan variabel fisik teruji multikolinearitas (<code>Elevation</code>, <code>Slope</code>, <code>Dist_Road</code>, <code>Dist_To_TNGL</code>, <code>NDVI</code>, <code>NDMI</code>, <code>NDBI</code>, dan <code>Nighttime_Lights</code> dengan kriteria <code>VIF &lt; 5</code>)—menghasilkan <strong>R² = 0,3871</strong>. Artinya, elevasi dan kehijauan vegetasi terbukti mengendalikan LST, sementara ~61% variasi suhu sisanya dipengaruhi albedo, kelembapan tanah, aspek lereng, emisivitas, dan tutupan awan.
+          <strong>Pemisahan Efek Hutan vs. Topografi:</strong> Karena suhu udara turun sekitar <strong>6,5 °C per kenaikan 1 km</strong> (<em>lapse rate</em>), perbedaan elevasi sekitar 800 meter antara inti Kawasan Ekosistem Leuser di pegunungan dan permukiman di dataran rendah sudah dapat menjelaskan sebagian besar selisih 5,29 °C. Model regresi linier berganda <em>Ordinary Least Squares</em> (OLS) pada 2.000 sampel buffer 100 km—menggunakan delapan variabel fisik teruji multikolinearitas (<code>Elevation</code>, <code>Slope</code>, <code>Dist_Road</code>, <code>Dist_To_TNGL</code>, <code>NDVI</code>, <code>NDMI</code>, <code>NDBI</code>, dan <code>Nighttime_Lights</code> dengan kriteria <code>VIF &lt; 5</code>)—menghasilkan <strong>R² = 0,3871</strong>. Artinya, elevasi dan kehijauan vegetasi terbukti mengendalikan LST, sementara ~61% variasi suhu sisanya dipengaruhi albedo, kelembapan tanah, aspek lereng, emisivitas, dan tutupan awan.
         </p>
         <p>
           <strong>Peluang Intervensi pada Zona NDBI:</strong> Nilai NDBI kedua zona sama-sama negatif (−0,2080 vs. −0,1807; selisih −0,0273), menandakan zona luar berada pada <em>tahap awal tekanan konversi lahan</em>, bukan urbanisasi penuh—memberikan jendela intervensi perlindungan tata ruang dengan biaya sosial-ekonomi yang masih relatif terjangkau.
@@ -542,7 +539,7 @@
         <ul class="editorial-list">
           <li><strong>Status Emitor Neto Regional:</strong> Wilayah defisit karbon seluas <strong>3.600.596,60 Ha (51,4%)</strong> melampaui wilayah surplus karbon seluas <strong>3.411.164,57 Ha (48,6%)</strong> dengan selisih defisit bersih sekitar <strong>±189.432 Ha</strong> (dari total 7,01 juta Ha).</li>
           <li><strong>Pemanasan Permukaan pada 43,1% Area:</strong> Meskipun pendinginan (<em>cooling</em>) mendominasi seluas <strong>7.810.506,36 Ha (56,9%)</strong>, sebesar <strong>5.920.652,93 Ha (43,1%)</strong> mengalami pemanasan permukaan (<em>warming</em>) dari total 13,73 juta Ha.</li>
-          <li><strong>Kontras Inti vs. Penyangga:</strong> Fakta bahwa lanskap regional secara keseluruhan menjadi emitor neto menegaskan bahwa sebutan <em>“benteng”</em> hanya berlaku bila kawasan inti TNGL dipisahkan dari bentang lahan penyangga di sekitarnya.</li>
+          <li><strong>Kontras Inti vs. Penyangga:</strong> Fakta bahwa lanskap regional secara keseluruhan menjadi emitor neto menegaskan bahwa sebutan <em>“benteng”</em> hanya berlaku bila inti Kawasan Ekosistem Leuser dipisahkan dari bentang lahan penyangga di sekitarnya.</li>
         </ul>
 
         <!-- GRAFIK GAMBAR 2: NERACA DINAMIKA KARBON & TERMAL -->
@@ -566,7 +563,7 @@
         </figure>
 
         <div class="method-note">
-          <strong>Audit Ketidakkonsistenan Luasan Spasial:</strong> Total luasan analisis karbon (±7,01 juta Ha) tidak sama dengan luasan analisis termal (±13,73 juta Ha—yang melampaui gabungan luas Provinsi Aceh dan Sumatera Utara ±13 juta Ha), sementara luas penetapan resmi TNGL adalah <strong>±0,83 juta Ha</strong>. Perbedaan masker poligon, sistem proyeksi, atau resolusi piksel antar-layer ini wajib diseragamkan sebelum publikasi. Perhatikan pula bahwa 51,4% vs. 48,6% adalah proporsi <em>luas piksel</em>, bukan neraca massa karbon; status emitor neto yang formal memerlukan penjumlahan ΔCarbon (Ton) terbobot luas.
+          <strong>Audit Ketidakkonsistenan Luasan Spasial:</strong> Total luasan analisis karbon (±7,01 juta Ha) tidak sama dengan luasan analisis termal (±13,73 juta Ha—yang melampaui gabungan luas Provinsi Aceh dan Sumatera Utara ±13 juta Ha), sementara luas penetapan resmi Kawasan Ekosistem Leuser adalah <strong>±0,83 juta Ha</strong>. Perbedaan masker poligon, sistem proyeksi, atau resolusi piksel antar-layer ini wajib diseragamkan sebelum publikasi.
         </div>
 
         <div class="layer-pills">
@@ -635,12 +632,12 @@
           </thead>
           <tbody>
             <tr>
-              <td><strong>Karbon lebih tinggi di dalam TNGL</strong><br><small>+7,38 Ton/Ha; t = 11,78</small></td>
+              <td><strong>Karbon lebih tinggi di dalam Kawasan Ekosistem Leuser</strong><br><small>+7,38 Ton/Ha; t = 11,78</small></td>
               <td><span class="badge moderate">Sedang–Kuat</span></td>
               <td>Definisi variabel &amp; resolusi; perlu validasi plot lapangan/GEDI.</td>
             </tr>
             <tr>
-              <td><strong>Iklim mikro lebih sejuk di dalam TNGL</strong><br><small>LST −5,29 °C; UTFVI rendah</small></td>
+              <td><strong>Iklim mikro lebih sejuk di dalam Kawasan Ekosistem Leuser</strong><br><small>LST −5,29 °C; UTFVI rendah</small></td>
               <td><span class="badge mixed">Kuat (Arah), Lemah (Kausal)</span></td>
               <td>Tercampur efek elevasi (<em>lapse rate</em>); R² OLS = 0,39.</td>
             </tr>
@@ -650,9 +647,9 @@
               <td>Ukuran efek kecil (selisih −0,0273); fase awal konversi.</td>
             </tr>
             <tr>
-              <td><strong>TNGL mencegah deforestasi</strong><br><small>Total hilang 31.745,9 Ha</small></td>
+              <td><strong>Kawasan Ekosistem Leuser mencegah deforestasi</strong><br><small>Total hilang 31.745,9 Ha</small></td>
               <td><span class="badge pending">Belum Dapat Dinilai</span></td>
-              <td>Belum dipisahkan piksel dalam vs. luar batas TNGL.</td>
+              <td>Belum dipisahkan piksel dalam vs. luar batas Kawasan Ekosistem Leuser.</td>
             </tr>
             <tr>
               <td><strong>Sistem monitoring ML/DL andal</strong><br><small>R² RF = 0,9994; LSTM terlatih</small></td>
@@ -663,7 +660,7 @@
         </table>
 
         <div class="method-note">
-          <strong>Peningkatan Inferensi Kausal:</strong> Nilai <em>p</em> ekstrem (10⁻²⁹ hingga 10⁻⁷⁰) mencerminkan ukuran sampel piksel yang masif, sehingga ukuran efek (<em>Cohen’s d</em>) perlu dilaporkan. Untuk memisahkan efek murni perlindungan hutan dari faktor geografis, rancangan lanjutan perlu menerapkan <strong>Propensity Score Matching</strong> (berdasarkan elevasi, lereng, aspek, dan jarak ke jalan) atau <strong>Regression Discontinuity</strong> tepat di garis batas TNGL.
+          <strong>Peningkatan Inferensi Kausal:</strong> Nilai <em>p</em> ekstrem (10⁻²⁹ hingga 10⁻⁷⁰) mencerminkan ukuran sampel piksel yang masif, sehingga ukuran efek (<em>Cohen’s d</em>) perlu dilaporkan. Untuk memisahkan efek murni perlindungan hutan dari faktor geografis, rancangan lanjutan perlu menerapkan <strong>Propensity Score Matching</strong> (berdasarkan elevasi, lereng, aspek, dan jarak ke jalan) atau <strong>Regression Discontinuity</strong> tepat di garis batas Kawasan Ekosistem Leuser.
         </div>
 
         <div class="layer-pills">
@@ -730,7 +727,7 @@
         <div class="rec-callout">
           <h4>6 Rekomendasi Teknis &amp; 4 Prioritas Kebijakan</h4>
           <ul>
-            <li><strong>Rekomendasi Teknis:</strong> (1) Kendalikan elevasi dan lereng melalui desain <em>matched</em> atau regresi berkovariat; (2) terapkan <em>spatial block cross-validation</em> dan validasi plot lapangan atau LiDAR GEDI; (3) laporkan ukuran efek (<em>Cohen’s d</em>) dan koreksi autokorelasi spasial; (4) samakan batas luasan kajian antar-analisis dan selaraskan luas TNGL dengan penetapan terbaru (±0,83 juta Ha); (5) sajikan metrik uji LSTM beserta baseline pembandingnya; serta (6) pisahkan statistik deforestasi di dalam dan di luar TNGL.</li>
+            <li><strong>Rekomendasi Teknis:</strong> (1) Kendalikan elevasi dan lereng melalui desain <em>matched</em> atau regresi berkovariat; (2) terapkan <em>spatial block cross-validation</em> dan validasi plot lapangan atau LiDAR GEDI; (3) laporkan ukuran efek (<em>Cohen’s d</em>) dan koreksi autokorelasi spasial; (4) samakan batas luasan kajian antar-analisis dan selaraskan luas Kawasan Ekosistem Leuser dengan penetapan terbaru (±0,83 juta Ha); (5) sajikan metrik uji LSTM beserta baseline pembandingnya; serta (6) pisahkan statistik deforestasi di dalam dan di luar Kawasan Ekosistem Leuser.</li>
             <li><strong>Rekomendasi Kebijakan:</strong> (1) Perkuat patroli perlindungan di zona transisi tempat NDBI mulai meningkat; (2) integrasikan sistem peringatan dini berbasis model tervalidasi dengan patroli lapangan; (3) dorong agroforestri, perhutanan sosial, ekowisata, dan pembayaran jasa lingkungan bagi desa penyangga; serta (4) jadikan peta pemanasan dan defisit karbon sebagai dasar prioritas adaptasi kesehatan dan tata ruang.</li>
           </ul>
         </div>
@@ -745,12 +742,10 @@
             <li>Chave J, Réjou-Méchain M, Búrquez A, et al. 2014. Improved allometric models to estimate the aboveground biomass of tropical trees. <em>Glob Change Biol</em>. 20(10):3177–3190.</li>
             <li>Dubayah R, Blair JB, Goetz S, et al. 2020. The Global Ecosystem Dynamics Investigation (GEDI). <em>Sci Remote Sens</em>. 1:100002.</li>
             <li>Ellison D, Morris CE, Locatelli B, et al. 2017. Trees, forests and water: cool insights for a hot world. <em>Glob Environ Change</em>. 43:51–61.</li>
-            <li>Fornace KM, Abidin TR, Alexander N, et al. 2016. Association between landscape factors and spatial patterns of <em>Plasmodium knowlesi</em> infections in Sabah, Malaysia. <em>Emerg Infect Dis</em>. 22(2):201–208.</li>
             <li>Gaveau DLA, Wich S, Epting J, et al. 2009. The future of forests and orangutans (<em>Pongo abelii</em>) in Sumatra. <em>Environ Res Lett</em>. 4(3):034013.</li>
             <li>Gorelick N, Hancher M, Dixon M, et al. 2017. Google Earth Engine: planetary-scale geospatial analysis for everyone. <em>Remote Sens Environ</em>. 202:18–27.</li>
             <li>Hansen MC, Potapov PV, Moore R, et al. 2013. High-resolution global maps of 21st-century forest cover change. <em>Science</em>. 342(6160):850–853.</li>
             <li>Kemenhut SK.4039/Menhut-VII/KUH/2014 &amp; SK.6589/Menhut-VII/KUH/2014 tentang Penetapan Kawasan Hutan TNGL; Keppres No. 33 Tahun 1998 tentang Pengelolaan KEL; UNESCO (2004).</li>
-            <li>Kjellstrom T, Briggs D, Freyberg C, et al. 2016. Heat, human performance, and occupational health: a key issue for the assessment of global climate change impacts. <em>Annu Rev Public Health</em>. 37:97–112.</li>
             <li>Li Y, Zhao M, Motesharrei S, et al. 2015. Local cooling and warming effects of forests based on satellite observations. <em>Nat Commun</em>. 6:6603.</li>
             <li>Ploton P, Mortier F, Réjou-Méchain M, et al. 2020. Spatial validation reveals poor predictive performance of large-scale ecological mapping models. <em>Nat Commun</em>. 11:4540.</li>
             <li>Roberts DR, Bahn V, Ciuti S, et al. 2017. Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure. <em>Ecography</em>. 40(8):913–929.</li>
@@ -763,27 +758,12 @@
     </article>
 
     <!-- KOLOM KANAN: KANVAS PETA INTERAKTIF STICKY (RESPONSIF LAPTOP & HANDPHONE) -->
-    <aside class="map-column" aria-label="Peta interaktif">
-      <div id="map" role="application" aria-label="Peta Kawasan Ekosistem Leuser"></div>
-
-      <div class="map-tools">
-        <button type="button" id="tools-btn" class="map-btn" aria-expanded="false" aria-controls="tools-panel">Lapisan ▾</button>
-        <div id="tools-panel" class="tools-panel" hidden>
-          <div class="tools-block">
-            <label for="opacity-range">Transparansi lapisan utama <output id="opacity-out">100%</output></label>
-            <input id="opacity-range" type="range" min="10" max="100" step="5" value="100" />
-          </div>
-          <div id="overlay-list"></div>
-        </div>
-      </div>
-
+    <aside class="map-column">
+      <div id="map"></div>
+      <button type="button" id="legend-toggle-btn" class="legend-toggle-btn" aria-expanded="true" title="Tampilkan atau sembunyikan legenda peta">
+        Legenda
+      </button>
       <div id="map-legend" class="legend-box"></div>
-
-      <div class="map-actions">
-        <button type="button" id="map-expand-btn" class="map-btn" aria-pressed="false">Perbesar peta</button>
-        <button type="button" id="map-home-btn" class="map-btn" title="Kembali ke tampilan bab ini">Pusatkan</button>
-        <button type="button" id="legend-toggle-btn" class="map-btn" aria-expanded="true" title="Tampilkan atau sembunyikan legenda peta">Legenda</button>
-      </div>
     </aside>
 
   </main>
@@ -860,28 +840,29 @@
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script>
-    /* Latar citra satelit sampul (dekoratif). Dilewati bila Data Saver aktif; animasi dijeda saat sampul di luar layar. */
+    /* Latar citra satelit dekoratif (non-interaktif). Tidak memengaruhi peta utama. */
     (function () {
-      var saver = navigator.connection && navigator.connection.saveData;
-      var hero = document.getElementById('bab-0');
-      var el = document.getElementById('hero-sat');
-      if (typeof L === 'undefined' || !el || saver) return;
-      var m = L.map(el, {
-        zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
-        doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, zoomAnimation: false,
-        fadeAnimation: false, inertia: false
-      }).setView([3.75, 97.35], 9);
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, maxNativeZoom: 12 }).addTo(m);
-      window.addEventListener('load', function () { setTimeout(function () { m.invalidateSize(); }, 300); });
-      if ('IntersectionObserver' in window && hero) {
-        new IntersectionObserver(function (es) {
-          hero.classList.toggle('is-offscreen', !es[0].isIntersecting);
-        }, { threshold: 0.05 }).observe(hero);
+      if (typeof L === 'undefined') return;
+      var TILE = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+      function makeBg(id, center, zoom) {
+        var el = document.getElementById(id);
+        if (!el) return null;
+        var m = L.map(el, {
+          zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
+          doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, zoomAnimation: false,
+          fadeAnimation: false, inertia: false
+        }).setView(center, zoom);
+        L.tileLayer(TILE, { maxZoom: 12, maxNativeZoom: 12 }).addTo(m);
+        return m;
       }
+      var maps = [makeBg('hero-sat', [3.75, 97.35], 9), makeBg('narr-sat', [3.55, 97.6], 10)].filter(Boolean);
+      window.addEventListener('load', function () {
+        setTimeout(function () { maps.forEach(function (m) { m.invalidateSize(); }); }, 300);
+      });
     })();
   </script>
-  <noscript><p style="position:fixed;bottom:0;left:0;right:0;background:#fff3cd;color:#333;padding:10px;text-align:center;z-index:3000">Peta interaktif membutuhkan JavaScript. Aktifkan JavaScript lalu muat ulang halaman.</p></noscript>
   <script src="app.js"></script>
 </body>
 </html>
