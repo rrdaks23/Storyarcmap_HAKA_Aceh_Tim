@@ -9,10 +9,56 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Merriweather:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .stat-fig-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .stat-fig-badge {
+      display: inline-block;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      background: #0f4c3a;
+      padding: 2px 9px;
+      border-radius: 6px;
+    }
+    .stat-fig-zoom {
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: #15803d;
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .stat-fig-placeholder {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 150px;
+      padding: 16px;
+      border: 1.5px dashed #cbd5e1;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 0.78rem;
+    }
+    .stat-fig-placeholder strong {
+      color: #0f4c3a;
+      margin-bottom: 4px;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- BILAH NAVIGASI, LOGO MITRA, NAMA TIM, SLOGAN & PROGRES BACA ATAS -->
+  <!-- BILAH NAVIGASI, LOGO MITRA, NAMA TIM & PROGRES BACA ATAS -->
   <div id="top-progress-wrap">
     <div class="top-bar-inner">
       <div class="brand-info">
@@ -23,7 +69,7 @@
         <span class="status-dot" id="sync-dot"></span>
         <div class="brand-text-stack">
           <span id="brand-title">STORYMAP TNGL • 2019–2025</span>
-          <span class="nav-team-tag">TIM High Ground Solid • <em class="slogan-script">“Veni, vidi, vici”</em></span>
+          <span class="nav-team-tag">TIM High Ground Solid</span>
         </div>
       </div>
 
@@ -42,11 +88,22 @@
     <div class="scroll-track"><i id="scroll-progress-fill"></i></div>
   </div>
 
-  <!-- NOTIFIKASI SINKRONISASI GOOGLE DRIVE (POJOK KIRI BAWAH AGAR PETA BERSIH) -->
+  <!-- NOTIFIKASI SINKRONISASI GOOGLE DRIVE -->
   <div id="loader-toast" class="hidden">Menyinkronkan GeoJSON dari Google Drive...</div>
 
-  <!-- SAMPUL PEMBUKA LAYAR PENUH (HERO HEADER + LOGO GANDA + TIM + PENYUSUN) -->
+  <!-- SAMPUL PEMBUKA LAYAR PENUH (HERO HEADER + FOTO BACKGROUND + LOGO GANDA + TIM + PENYUSUN) -->
   <header class="hero-cover" id="bab-0" data-step="sampul">
+    <!-- FOTO BACKGROUND HEADER DARI FOLDER ASSETS GITHUB -->
+    <div class="hero-bg-media" aria-hidden="true">
+      <img
+        src="assets/hero-bg.jpg"
+        alt="Lanskap Hutan Taman Nasional Gunung Leuser"
+        class="hero-bg-img"
+        onerror="this.style.display='none'"
+      />
+      <div class="hero-bg-overlay"></div>
+    </div>
+
     <div class="hero-grid-pattern" aria-hidden="true"></div>
     <div class="hero-content">
 
@@ -69,13 +126,11 @@
         </div>
       </div>
 
-      <!-- IDENTITAS TIM, SLOGAN KLASIK & KICKER KAJIAN -->
+      <!-- IDENTITAS TIM & KICKER KAJIAN (TANPA SLOGAN DI HEADER) -->
       <div class="hero-identity-row">
         <span class="team-pill">
           <span class="team-pulse"></span>
           TIM HIGH GROUND SOLID
-          <span class="team-slogan-sep">•</span>
-          <em class="team-slogan slogan-script">“Veni, vidi, vici”</em>
         </span>
         <span class="hero-kicker">LEUSER GEOSTORY CHALLENGE • FESTIVAL RIMBA LEUSER 2026</span>
       </div>
@@ -128,7 +183,7 @@
     </div>
   </header>
 
-  <!-- TATA LETAK SPLIT-SCREEN: NARASI EDITORIAL (KIRI) + PETA STICKY (KANAN) -->
+  <!-- TATA LETAK SPLIT-SCREEN: NARASI EDITORIAL (KIRI) + PETA STICKY (KANAN / ATAS MOBILE) -->
   <main id="story-main" class="story-layout">
 
     <!-- KOLOM KIRI: NASKAH PEMBAHASAN LENGKAP -->
@@ -388,10 +443,45 @@
           </tbody>
         </table>
 
-        <div class="figure-box" title="Klik untuk memperbesar grafik">
-          <canvas id="chartKomparasi" height="175"></canvas>
-          <span class="figure-caption">Grafik 1. Perbandingan rata-rata cadangan karbon (Ton/Ha) dan suhu permukaan LST (°C) antara kawasan inti TNGL dan zona luar buffer (klik untuk memperbesar).</span>
-        </div>
+        <!-- GRAFIK GAMBAR 1A: HASIL UJI BEDA WELCH'S T-TEST -->
+        <figure class="figure-box" title="Klik untuk memperbesar grafik hasil uji statistika">
+          <div class="stat-fig-header">
+            <span class="stat-fig-badge">GRAFIK UJI STATISTIKA 1A</span>
+            <span class="stat-fig-zoom">🔍 Perbesar</span>
+          </div>
+          <img
+            src="assets/grafik-uji-ttest.png"
+            alt="Grafik Hasil Uji Statistik Komparatif Welch's T-Test Antar-Zona TNGL"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          <div class="stat-fig-placeholder">
+            <strong>Gambar Grafik 1A Belum Ditemukan</strong>
+            <span>Pastikan file gambar grafik Anda di folder <code>assets/</code> bernama <code>grafik-uji-ttest.png</code> (atau ubah atribut <code>src</code> pada baris ini sesuai nama file di GitHub).</span>
+          </div>
+          <figcaption class="figure-caption">
+            <strong>Grafik 1A.</strong> Perbandingan hasil uji beda <em>Welch’s Independent Two-Sample T-Test</em> pada cadangan karbon (Ton/Ha), suhu permukaan LST (°C), dan indeks terbangun NDBI antara kawasan inti TNGL dan zona luar buffer (klik gambar untuk memperbesar).
+          </figcaption>
+        </figure>
+
+        <!-- GRAFIK GAMBAR 1B: DISTRIBUSI & SEBARAN STATISTIK SAMPEL -->
+        <figure class="figure-box" title="Klik untuk memperbesar grafik distribusi statistika">
+          <div class="stat-fig-header">
+            <span class="stat-fig-badge">GRAFIK UJI STATISTIKA 1B</span>
+            <span class="stat-fig-zoom">🔍 Perbesar</span>
+          </div>
+          <img
+            src="assets/grafik-distribusi-statistik.png"
+            alt="Grafik Distribusi Sampel Statistik Kawasan Inti TNGL vs Luar Buffer"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          <div class="stat-fig-placeholder">
+            <strong>Gambar Grafik 1B Belum Ditemukan</strong>
+            <span>Pastikan file gambar grafik Anda di folder <code>assets/</code> bernama <code>grafik-distribusi-statistik.png</code> (atau ubah atribut <code>src</code> pada baris ini sesuai nama file di GitHub).</span>
+          </div>
+          <figcaption class="figure-caption">
+            <strong>Grafik 1B.</strong> Distribusi sebaran nilai sampel statistik (<em>n</em> = 1.500 titik dalam TNGL vs. <em>n</em> = 1.500 titik luar buffer) yang menunjukkan signifikansi perlindungan kawasan inti (klik gambar untuk memperbesar).
+          </figcaption>
+        </figure>
 
         <p>
           <strong>Interpretasi Kritis Nilai Karbon:</strong> Nilai absolut 64,48 Ton/Ha lebih moderat dibandingkan rerata stok karbon tertimbang proyek REDD KEL (~207 tC/Ha atau 760 tCO₂e/Ha) maupun studi plot alometrik hutan hujan Bukit Lawang (Auliah &amp; Onrizal 2020) akibat perbedaan cakupan biomassa atas permukaan vs. stok total, dominasi hutan pegunungan, serta efek pencampuran piksel (<em>mixed pixel</em>). Sementara itu, selisih moderat +12,9% menandakan zona luar buffer belum terdegradasi penuh dan masih didominasi agroforestri, kebun campuran, serta hutan sekunder.
@@ -452,10 +542,25 @@
           <li><strong>Kontras Inti vs. Penyangga:</strong> Fakta bahwa lanskap regional secara keseluruhan menjadi emitor neto menegaskan bahwa sebutan <em>“benteng”</em> hanya berlaku bila kawasan inti TNGL dipisahkan dari bentang lahan penyangga di sekitarnya.</li>
         </ul>
 
-        <div class="figure-box" title="Klik untuk memperbesar grafik">
-          <canvas id="chartDinamika" height="170"></canvas>
-          <span class="figure-caption">Grafik 2. Proporsi luasan surplus vs. defisit karbon (total 7,01 juta Ha) dan pendinginan vs. pemanasan (total 13,73 juta Ha) periode 2019–2025.</span>
-        </div>
+        <!-- GRAFIK GAMBAR 2: NERACA DINAMIKA KARBON & TERMAL -->
+        <figure class="figure-box" title="Klik untuk memperbesar grafik neraca dinamika">
+          <div class="stat-fig-header">
+            <span class="stat-fig-badge">GRAFIK UJI STATISTIKA 2</span>
+            <span class="stat-fig-zoom">🔍 Perbesar</span>
+          </div>
+          <img
+            src="assets/grafik-dinamika-spasial.png"
+            alt="Grafik Proporsi Luasan Surplus vs Defisit Karbon dan Pendinginan vs Pemanasan"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          <div class="stat-fig-placeholder">
+            <strong>Gambar Grafik 2 Belum Ditemukan</strong>
+            <span>Pastikan file gambar grafik Anda di folder <code>assets/</code> bernama <code>grafik-dinamika-spasial.png</code> (atau ubah atribut <code>src</code> pada baris ini sesuai nama file di GitHub).</span>
+          </div>
+          <figcaption class="figure-caption">
+            <strong>Grafik 2.</strong> Proporsi luasan surplus vs. defisit karbon (total 7,01 juta Ha) dan pendinginan vs. pemanasan permukaan (total 13,73 juta Ha) periode 2019–2025 (klik gambar untuk memperbesar).
+          </figcaption>
+        </figure>
 
         <div class="method-note">
           <strong>Audit Ketidakkonsistenan Luasan Spasial:</strong> Total luasan analisis karbon (±7,01 juta Ha) tidak sama dengan luasan analisis termal (±13,73 juta Ha—yang melampaui gabungan luas Provinsi Aceh dan Sumatera Utara ±13 juta Ha), sementara luas penetapan resmi TNGL adalah <strong>±0,83 juta Ha</strong>. Perbedaan masker poligon, sistem proyeksi, atau resolusi piksel antar-layer ini wajib diseragamkan sebelum publikasi.
@@ -496,6 +601,26 @@
             <p>Memodelkan 200 titik pemantauan kuartalan (Q1 2019–Q4 2025) untuk 8 fitur (<code>NDVI, EVI, NDMI, LST, NDBI, UHI, UTFVI, SAR_VH</code>) dengan pemisahan 80:20 sebelum <code>MinMaxScaler</code> agar bebas kebocoran data. Arsitektur <code>LSTM(64, return_sequences=True) → Dropout(0,2) → LSTM(32) → Dense(1)</code> (25 epoch, <code>batch_size = 16</code>, Adam, MSE) memerlukan <em>walk-forward validation</em>, baseline ARIMA/persistence, serta pelaporan metrik RMSE dan MAE (°C) pada data uji.</p>
           </div>
         </div>
+
+        <!-- GRAFIK GAMBAR 3: EVALUASI MODEL STATISTIK & MACHINE LEARNING -->
+        <figure class="figure-box" title="Klik untuk memperbesar grafik evaluasi model">
+          <div class="stat-fig-header">
+            <span class="stat-fig-badge">GRAFIK UJI STATISTIKA 3</span>
+            <span class="stat-fig-zoom">🔍 Perbesar</span>
+          </div>
+          <img
+            src="assets/grafik-validasi-model.png"
+            alt="Grafik Hasil Validasi Regresi OLS, Feature Importance Random Forest, dan LSTM"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          <div class="stat-fig-placeholder">
+            <strong>Gambar Grafik 3 Belum Ditemukan</strong>
+            <span>Pastikan file gambar grafik Anda di folder <code>assets/</code> bernama <code>grafik-validasi-model.png</code> (atau ubah atribut <code>src</code> pada baris ini sesuai nama file di GitHub).</span>
+          </div>
+          <figcaption class="figure-caption">
+            <strong>Grafik 3.</strong> Hasil evaluasi statistik pemodelan: kontribusi variabel prediktor (<em>Feature Importance</em>), uji regresi spasial OLS, dan performa simulasi deret waktu kuartalan (klik gambar untuk memperbesar).
+          </figcaption>
+        </figure>
 
         <table class="data-table">
           <thead>
@@ -632,9 +757,12 @@
 
     </article>
 
-    <!-- KOLOM KANAN: KANVAS PETA INTERAKTIF STICKY -->
+    <!-- KOLOM KANAN: KANVAS PETA INTERAKTIF STICKY (RESPONSIF LAPTOP & HANDPHONE) -->
     <aside class="map-column">
       <div id="map"></div>
+      <button type="button" id="legend-toggle-btn" class="legend-toggle-btn" aria-expanded="true" title="Tampilkan atau sembunyikan legenda peta">
+        Legenda
+      </button>
       <div id="map-legend" class="legend-box"></div>
     </aside>
 
