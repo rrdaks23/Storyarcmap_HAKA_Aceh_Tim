@@ -85,4 +85,4 @@ Geojson lomba/
 
 ---
 
-*Dikembangkan oleh **TIM Hard Ground Solid** dalam kolaborasi dengan **HAKA Aceh** untuk mendukung pemantauan konservasi berbasis bukti di Kawasan Ekosistem Leuser.*
+*Dikembangkan oleh **TIM Hard Ground Solid** dengan anggota Muhammad Luthfan Nabil dan Harun Al Rasyid dalam Leuser Geostory Challenge | Festival Rimba Leuser 2026 yang diselengarakan oleh  **HAKA Aceh** untuk mendukung pemantauan konservasi berbasis bukti di Kawasan Ekosistem Leuser.*
