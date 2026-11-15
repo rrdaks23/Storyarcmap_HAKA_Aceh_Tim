@@ -1,0 +1,1 @@
+{"type": "FeatureCollection", "columns": {"Interpretasi": "String", "Kategori": "String", "Kelas_Kode": "Integer", "Luas_Ha": "Float", "Parameter": "String", "Rentang_Nilai": "String", "Tahun": "String", "Warna_Hex": "String", "system:index": "String"}, "features": []}
