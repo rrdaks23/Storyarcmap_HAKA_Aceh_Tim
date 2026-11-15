@@ -2,13 +2,19 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#072a1d" />
+  <meta name="description" content="Storymap interaktif: efektivitas Kawasan Ekosistem Leuser sebagai benteng ekologis penyerap karbon dan penyangga iklim lokal (2019–2025). Leuser GeoStory Challenge | Festival Rimba Leuser 2026." />
+  <meta property="og:title" content="Benteng Ekologis Kawasan Ekosistem Leuser • TIM High Ground Solid" />
+  <meta property="og:description" content="Peta interaktif karbon, suhu permukaan, dan deforestasi Leuser 2019–2025." />
+  <meta property="og:type" content="website" />
   <title>Benteng Ekologis Kawasan Ekosistem Leuser • TIM High Ground Solid</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Merriweather:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style-v2.css" />
   <style>
     .stat-fig-header {
       display: flex;
@@ -57,6 +63,7 @@
   </style>
 </head>
 <body>
+  <a href="#story-main" class="skip-link">Lompat ke konten</a>
 
   <!-- BILAH NAVIGASI, LOGO MITRA, NAMA TIM & PROGRES BACA ATAS -->
   <div id="top-progress-wrap">
@@ -106,7 +113,7 @@
         <div class="partner-badge">
           <img src="assets/logo-haka.png" alt="Logo HAKA Aceh" class="partner-logo" onerror="this.style.display='none'" />
           <div class="partner-label">
-            <small>PENYELENGARA</small>
+            <small>PENYELENGGARA</small>
             <span>HAKA Aceh</span>
           </div>
         </div>
@@ -159,7 +166,7 @@
         </div>
         <div class="hero-stat-item">
           <strong>Radius 100 km</strong>
-          <span>Zona Penyangga Eksternal (KEL)</span>
+          <span>Zona Penyangga di Luar Inti TNGL</span>
         </div>
         <div class="hero-stat-item">
           <strong>690.000 Jiwa</strong>
@@ -182,12 +189,6 @@
 
     <!-- KOLOM KIRI: NASKAH PEMBAHASAN LENGKAP -->
     <article class="narrative-column">
-
-      <!-- LATAR CITRA SATELIT STICKY UNTUK SELURUH BAGIAN PEMBAHASAN -->
-      <div class="narr-bg" aria-hidden="true">
-        <div id="narr-sat" class="sat-bg"></div>
-        <div class="narr-bg-overlay"></div>
-      </div>
 
       <!-- BAB 01: KONTEKS HISTORIS, GEOMETRI WILAYAH & ARSITEKTUR MULTI-SENSOR -->
       <section class="step active" id="bab-1" data-step="deliniasi">
@@ -420,19 +421,19 @@
               <td><strong>Carbon Stock</strong><br><small>(Ton/Ha)</small></td>
               <td>64,48</td>
               <td>57,10</td>
-              <td><strong>+7,38 (+12,9%)</strong><br><small>t = 11,7848; p = 4,07×10⁻²⁹</small></td>
+              <td><strong>+7,38 (+12,9%)</strong><br><small>t = 11,7848; p = 4,07×10⁻²⁹; d ≈ 0,43</small></td>
             </tr>
             <tr>
               <td><strong>Suhu Permukaan LST</strong><br><small>(°C)</small></td>
               <td>22,61 °C</td>
               <td>27,90 °C</td>
-              <td><strong>−5,29 °C</strong><br><small>t = −19,5547; p = 5,14×10⁻⁷⁰</small></td>
+              <td><strong>−5,29 °C</strong><br><small>t = −19,5547; p = 5,14×10⁻⁷⁰; d ≈ −0,71</small></td>
             </tr>
             <tr>
-              <td><strong>Indeks Terbangun NDBI</strong><br><small>(nir-satuan)</small></td>
+              <td><strong>Indeks Terbangun NDBI</strong><br><small>(tak berdimensi)</small></td>
               <td>−0,2080</td>
               <td>−0,1807</td>
-              <td><strong>−0,0273</strong><br><small>t = −13,0139 (efek kecil)</small></td>
+              <td><strong>−0,0273</strong><br><small>t = −13,0139; d ≈ −0,48 (kecil–sedang)</small></td>
             </tr>
             <tr>
               <td><strong>UTFVI &amp; UHI</strong><br><small>(Stres Termal)</small></td>
@@ -442,6 +443,8 @@
             </tr>
           </tbody>
         </table>
+
+        <p class="table-note">d (Cohen) diperkirakan dari statistik t Welch dengan n = 1.500 per kelompok (d ≈ t·√(2/n)); hitung ulang dari data mentah sebelum publikasi.</p>
 
         <!-- GRAFIK GAMBAR 1A: HASIL UJI BEDA WELCH'S T-TEST -->
         <figure class="figure-box" title="Klik untuk memperbesar grafik hasil uji statistika">
@@ -514,7 +517,7 @@
           </div>
         </div>
         <p>
-          <strong>Pemisahan Efek Hutan vs. Topografi:</strong> Karena suhu udara turun sekitar <strong>6,5 °C per kenaikan 1 km</strong> (<em>lapse rate</em>), perbedaan elevasi sekitar 800 meter antara kawasan inti TNGL di pegunungan dan permukiman di dataran rendah sudah dapat menjelaskan sebagian besar selisih 5,29 °C. Model regresi linier berganda <em>Ordinary Least Squares</em> (OLS) pada 2.000 sampel buffer 100 km—menggunakan delapan variabel fisik teruji multikolinearitas (<code>Elevation</code>, <code>Slope</code>, <code>Dist_Road</code>, <code>Dist_To_TNGL</code>, <code>NDVI</code>, <code>NDMI</code>, <code>NDBI</code>, dan <code>Nighttime_Lights</code> dengan kriteria <code>VIF &lt; 5</code>)—menghasilkan <strong>R² = 0,3871</strong>. Artinya, elevasi dan kehijauan vegetasi terbukti mengendalikan LST, sementara ~61% variasi suhu sisanya dipengaruhi albedo, kelembapan tanah, aspek lereng, emisivitas, dan tutupan awan.
+          <strong>Pemisahan Efek Hutan vs. Topografi:</strong> Karena suhu udara turun sekitar <strong>6,5 °C per kenaikan 1 km</strong> (<em>lapse rate</em>), perbedaan elevasi sekitar 800 meter antara kawasan inti TNGL di pegunungan dan permukiman di dataran rendah secara aritmetika setara ±5,2 °C (0,8 km × 6,5 °C/km)—hampir seluruh selisih 5,29 °C—sehingga kontribusi murni tutupan hutan belum dapat dipisahkan tanpa kontrol elevasi (catatan: <em>lapse rate</em> berlaku untuk suhu udara, sedangkan LST adalah suhu permukaan). Model regresi linier berganda <em>Ordinary Least Squares</em> (OLS) pada 2.000 sampel buffer 100 km—menggunakan delapan variabel fisik teruji multikolinearitas (<code>Elevation</code>, <code>Slope</code>, <code>Dist_Road</code>, <code>Dist_To_TNGL</code>, <code>NDVI</code>, <code>NDMI</code>, <code>NDBI</code>, dan <code>Nighttime_Lights</code> dengan kriteria <code>VIF &lt; 5</code>)—menghasilkan <strong>R² = 0,3871</strong>. Artinya, elevasi dan kehijauan vegetasi terbukti mengendalikan LST, sementara ~61% variasi suhu sisanya dipengaruhi albedo, kelembapan tanah, aspek lereng, emisivitas, dan tutupan awan.
         </p>
         <p>
           <strong>Peluang Intervensi pada Zona NDBI:</strong> Nilai NDBI kedua zona sama-sama negatif (−0,2080 vs. −0,1807; selisih −0,0273), menandakan zona luar berada pada <em>tahap awal tekanan konversi lahan</em>, bukan urbanisasi penuh—memberikan jendela intervensi perlindungan tata ruang dengan biaya sosial-ekonomi yang masih relatif terjangkau.
@@ -563,7 +566,7 @@
         </figure>
 
         <div class="method-note">
-          <strong>Audit Ketidakkonsistenan Luasan Spasial:</strong> Total luasan analisis karbon (±7,01 juta Ha) tidak sama dengan luasan analisis termal (±13,73 juta Ha—yang melampaui gabungan luas Provinsi Aceh dan Sumatera Utara ±13 juta Ha), sementara luas penetapan resmi TNGL adalah <strong>±0,83 juta Ha</strong>. Perbedaan masker poligon, sistem proyeksi, atau resolusi piksel antar-layer ini wajib diseragamkan sebelum publikasi.
+          <strong>Audit Ketidakkonsistenan Luasan Spasial:</strong> Total luasan analisis karbon (±7,01 juta Ha) tidak sama dengan luasan analisis termal (±13,73 juta Ha—yang melampaui gabungan luas Provinsi Aceh dan Sumatera Utara ±13 juta Ha), sementara luas penetapan resmi TNGL adalah <strong>±0,83 juta Ha</strong>. Perbedaan masker poligon, sistem proyeksi, atau resolusi piksel antar-layer ini wajib diseragamkan sebelum publikasi. Perhatikan pula bahwa 51,4% vs. 48,6% adalah proporsi <em>luas piksel</em>, bukan neraca massa karbon; status emitor neto yang formal memerlukan penjumlahan ΔCarbon (Ton) terbobot luas.
         </div>
 
         <div class="layer-pills">
@@ -742,10 +745,12 @@
             <li>Chave J, Réjou-Méchain M, Búrquez A, et al. 2014. Improved allometric models to estimate the aboveground biomass of tropical trees. <em>Glob Change Biol</em>. 20(10):3177–3190.</li>
             <li>Dubayah R, Blair JB, Goetz S, et al. 2020. The Global Ecosystem Dynamics Investigation (GEDI). <em>Sci Remote Sens</em>. 1:100002.</li>
             <li>Ellison D, Morris CE, Locatelli B, et al. 2017. Trees, forests and water: cool insights for a hot world. <em>Glob Environ Change</em>. 43:51–61.</li>
+            <li>Fornace KM, Abidin TR, Alexander N, et al. 2016. Association between landscape factors and spatial patterns of <em>Plasmodium knowlesi</em> infections in Sabah, Malaysia. <em>Emerg Infect Dis</em>. 22(2):201–208.</li>
             <li>Gaveau DLA, Wich S, Epting J, et al. 2009. The future of forests and orangutans (<em>Pongo abelii</em>) in Sumatra. <em>Environ Res Lett</em>. 4(3):034013.</li>
             <li>Gorelick N, Hancher M, Dixon M, et al. 2017. Google Earth Engine: planetary-scale geospatial analysis for everyone. <em>Remote Sens Environ</em>. 202:18–27.</li>
             <li>Hansen MC, Potapov PV, Moore R, et al. 2013. High-resolution global maps of 21st-century forest cover change. <em>Science</em>. 342(6160):850–853.</li>
             <li>Kemenhut SK.4039/Menhut-VII/KUH/2014 &amp; SK.6589/Menhut-VII/KUH/2014 tentang Penetapan Kawasan Hutan TNGL; Keppres No. 33 Tahun 1998 tentang Pengelolaan KEL; UNESCO (2004).</li>
+            <li>Kjellstrom T, Briggs D, Freyberg C, et al. 2016. Heat, human performance, and occupational health: a key issue for the assessment of global climate change impacts. <em>Annu Rev Public Health</em>. 37:97–112.</li>
             <li>Li Y, Zhao M, Motesharrei S, et al. 2015. Local cooling and warming effects of forests based on satellite observations. <em>Nat Commun</em>. 6:6603.</li>
             <li>Ploton P, Mortier F, Réjou-Méchain M, et al. 2020. Spatial validation reveals poor predictive performance of large-scale ecological mapping models. <em>Nat Commun</em>. 11:4540.</li>
             <li>Roberts DR, Bahn V, Ciuti S, et al. 2017. Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure. <em>Ecography</em>. 40(8):913–929.</li>
@@ -758,12 +763,27 @@
     </article>
 
     <!-- KOLOM KANAN: KANVAS PETA INTERAKTIF STICKY (RESPONSIF LAPTOP & HANDPHONE) -->
-    <aside class="map-column">
-      <div id="map"></div>
-      <button type="button" id="legend-toggle-btn" class="legend-toggle-btn" aria-expanded="true" title="Tampilkan atau sembunyikan legenda peta">
-        Legenda
-      </button>
+    <aside class="map-column" aria-label="Peta interaktif">
+      <div id="map" role="application" aria-label="Peta Kawasan Ekosistem Leuser"></div>
+
+      <div class="map-tools">
+        <button type="button" id="tools-btn" class="map-btn" aria-expanded="false" aria-controls="tools-panel">Lapisan ▾</button>
+        <div id="tools-panel" class="tools-panel" hidden>
+          <div class="tools-block">
+            <label for="opacity-range">Transparansi lapisan utama <output id="opacity-out">100%</output></label>
+            <input id="opacity-range" type="range" min="10" max="100" step="5" value="100" />
+          </div>
+          <div id="overlay-list"></div>
+        </div>
+      </div>
+
       <div id="map-legend" class="legend-box"></div>
+
+      <div class="map-actions">
+        <button type="button" id="map-expand-btn" class="map-btn" aria-pressed="false">Perbesar peta</button>
+        <button type="button" id="map-home-btn" class="map-btn" title="Kembali ke tampilan bab ini">Pusatkan</button>
+        <button type="button" id="legend-toggle-btn" class="map-btn" aria-expanded="true" title="Tampilkan atau sembunyikan legenda peta">Legenda</button>
+      </div>
     </aside>
 
   </main>
@@ -840,29 +860,28 @@
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script>
-    /* Latar citra satelit dekoratif (non-interaktif). Tidak memengaruhi peta utama. */
+    /* Latar citra satelit sampul (dekoratif). Dilewati bila Data Saver aktif; animasi dijeda saat sampul di luar layar. */
     (function () {
-      if (typeof L === 'undefined') return;
-      var TILE = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-      function makeBg(id, center, zoom) {
-        var el = document.getElementById(id);
-        if (!el) return null;
-        var m = L.map(el, {
-          zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
-          doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, zoomAnimation: false,
-          fadeAnimation: false, inertia: false
-        }).setView(center, zoom);
-        L.tileLayer(TILE, { maxZoom: 12, maxNativeZoom: 12 }).addTo(m);
-        return m;
+      var saver = navigator.connection && navigator.connection.saveData;
+      var hero = document.getElementById('bab-0');
+      var el = document.getElementById('hero-sat');
+      if (typeof L === 'undefined' || !el || saver) return;
+      var m = L.map(el, {
+        zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
+        doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, zoomAnimation: false,
+        fadeAnimation: false, inertia: false
+      }).setView([3.75, 97.35], 9);
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, maxNativeZoom: 12 }).addTo(m);
+      window.addEventListener('load', function () { setTimeout(function () { m.invalidateSize(); }, 300); });
+      if ('IntersectionObserver' in window && hero) {
+        new IntersectionObserver(function (es) {
+          hero.classList.toggle('is-offscreen', !es[0].isIntersecting);
+        }, { threshold: 0.05 }).observe(hero);
       }
-      var maps = [makeBg('hero-sat', [3.75, 97.35], 9), makeBg('narr-sat', [3.55, 97.6], 10)].filter(Boolean);
-      window.addEventListener('load', function () {
-        setTimeout(function () { maps.forEach(function (m) { m.invalidateSize(); }); }, 300);
-      });
     })();
   </script>
+  <noscript><p style="position:fixed;bottom:0;left:0;right:0;background:#fff3cd;color:#333;padding:10px;text-align:center;z-index:3000">Peta interaktif membutuhkan JavaScript. Aktifkan JavaScript lalu muat ulang halaman.</p></noscript>
   <script src="app.js"></script>
 </body>
 </html>
