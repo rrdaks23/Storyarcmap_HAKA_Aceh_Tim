@@ -1,25 +1,25 @@
 :root {
   /* Palet Warna: Editorial Warm Ivory & Deep Forest Emerald */
-  --bg-page: #f7f5f0;
+  --bg-page: #eaf3ec;
   --bg-card: #ffffff;
-  --bg-soft: #efece6;
-  --hero-gradient: linear-gradient(135deg, #042117 0%, #0b3b2c 50%, #154734 100%);
+  --bg-soft: #dcebe1;
+  --hero-gradient: linear-gradient(135deg, #03170f 0%, #08301f 50%, #0d4a30 100%);
   --closing-bg: #182917;
   --closing-bottom-bg: #132112;
   --closing-amber: #d48c46;
   --closing-ivory: #e8e4d9;
-  --text-heading: #14241c;
-  --text-body: #334155;
-  --text-muted: #64748b;
-  --primary-emerald: #15803d;
-  --primary-dark: #0f4c3a;
+  --text-heading: #0d2a1f;
+  --text-body: #2c473a;
+  --text-muted: #5b7568;
+  --primary-emerald: #1b8a54;
+  --primary-dark: #0c4a33;
   --accent-ochre: #d97706;
   --accent-gold: #fbbf24;
   --accent-crimson: #dc2626;
   --accent-teal: #0d9488;
-  --border-stone: #e2dfd7;
-  --shadow-card: 0 4px 18px rgba(20, 36, 28, 0.06);
-  --shadow-hover: 0 12px 28px rgba(15, 76, 58, 0.12);
+  --border-stone: #cfe3d5;
+  --shadow-card: 0 6px 22px rgba(4, 37, 26, 0.16);
+  --shadow-hover: 0 16px 38px rgba(4, 37, 26, 0.30);
 }
 
 * {
@@ -1505,4 +1505,139 @@ code {
   .partner-divider {
     display: none;
   }
+}
+
+
+/* =========================================================
+   TEMA HIJAU RIMBA LEUSER + LATAR CITRA SATELIT
+   ========================================================= */
+.sat-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: #06281b;
+}
+.sat-bg .leaflet-control-container { display: none; }
+.sat-credit {
+  position: absolute;
+  right: 14px;
+  bottom: 8px;
+  z-index: 3;
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.02em;
+}
+
+/* ---- Sampul layar penuh ---- */
+.hero-cover {
+  min-height: 100svh;
+  background: #031a11;
+  isolation: isolate;
+  text-align: center;
+}
+.hero-cover .sat-bg { animation: satDrift 48s ease-in-out infinite alternate; }
+@keyframes satDrift {
+  from { transform: scale(1.03) translate(0, 0); }
+  to   { transform: scale(1.12) translate(-1.5%, -1%); }
+}
+.hero-sat-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(3, 26, 17, 0.42) 0%, rgba(3, 26, 17, 0.88) 100%),
+    linear-gradient(180deg, rgba(3, 26, 17, 0.6) 0%, transparent 26%, transparent 68%, rgba(3, 26, 17, 0.92) 100%);
+}
+.hero-grid-pattern { z-index: 1; opacity: 0.45; }
+.hero-content { z-index: 2; text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45); }
+
+.hero-kicker {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  background: rgba(3, 26, 17, 0.55);
+  backdrop-filter: blur(6px);
+}
+.hero-content h1 {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 6.4vw, 5.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 14px 0 16px;
+}
+.h1-accent { color: #f5c76b; display: block; }
+.hero-subtitle { font-weight: 500; color: #fdf3d0; font-size: 1.08rem; }
+.hero-stat-item,
+.authors-box {
+  background: rgba(4, 33, 23, 0.55);
+  backdrop-filter: blur(10px);
+  border-color: rgba(167, 243, 208, 0.28);
+}
+.hero-thesis { background: rgba(3, 26, 17, 0.7); backdrop-filter: blur(8px); }
+.hero-cta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #c9772a, #e39a45);
+  color: #fff;
+}
+
+/* ---- Bagian pembahasan: hijau + satelit sticky ---- */
+#top-progress-wrap { background: rgba(244, 251, 246, 0.95); }
+#scroll-progress-fill { background: linear-gradient(90deg, #1b8a54, #6ee7b7); }
+
+.narrative-column {
+  position: relative;
+  background: #072a1d;
+  border-right: 1px solid rgba(110, 231, 183, 0.25);
+}
+.narr-bg {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  margin: -36px -34px calc(36px - 100vh);   /* penuhi lebar kolom, tanpa menambah tinggi */
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.narr-bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(4, 30, 20, 0.84) 0%, rgba(6, 44, 30, 0.76) 100%);
+}
+.narrative-column > .step { z-index: 1; }
+
+.step {
+  background: rgba(244, 251, 246, 0.96);
+  backdrop-filter: blur(6px);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.step.active { border-color: #9fd8b5; border-left: 4px solid var(--primary-emerald); }
+.step h2 {
+  color: #0a3a28;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #bfe3cd;
+}
+.chapter-tag { background: #dcf2e4; border-color: #a9dcbc; color: #0c4a33; }
+
+.rec-callout {
+  background: #eaf8ef;
+  border: 1px solid #b7e4c6;
+  border-left: 4px solid #1b8a54;
+}
+.rec-callout h4 { color: #0c4a33; }
+.model-title span { background: #dcf2e4; color: #0c4a33; }
+.doc-placeholder { background: #eef7f1; border-color: #a9dcbc; }
+
+@media (max-width: 960px) {
+  .narr-bg { margin: -36px -34px calc(36px - 100vh); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-cover .sat-bg { animation: none; }
 }
