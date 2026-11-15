@@ -1,19 +1,31 @@
 // ============================================================================
-// 1. KONFIGURASI GOOGLE DRIVE (ISI 2 BARIS INI SAJA)
+// 1. KONFIGURASI DATA LOKAL (GitHub Pages)
 // ============================================================================
+// Struktur folder di repo:  data/<nama_folder>/<nama_file>.geojson
+// Nama folder & file harus PERSIS seperti di DATA_SPECS (huruf besar-kecil berpengaruh).
+const DATA_BASE = 'data';
+const FETCH_TIMEOUT_MS = 45000;   // batas waktu tiap unduhan
+
+// CADANGAN OPSIONAL: Google Drive. Dipakai HANYA jika file lokal di data/ tidak ditemukan.
+// Kosongkan kedua nilai ('') untuk menonaktifkannya. Kegagalan Drive tidak pernah menampilkan error ke pengunjung.
+// PENTING: batasi API key di Google Cloud (HTTP referrer github.io + Drive API saja).
 const DRIVE_FOLDER_ID = '1cShz78J7EnXJ8tngWHnU2W7dzcO7uuPc';
-// PENTING: batasi key ini di Google Cloud (HTTP referrer github.io + Drive API saja) & ganti key lama.
 const DRIVE_API_KEY   = 'AIzaSyCsL4Gs00TIkvItUOhFp2mCmOkhdgPN4Ak';
-
-// Cadangan Google Apps Script /exec (otomatis terlewati jika API Key di atas diisi)
-const DRIVE_API_URL   = 'https://script.google.com/macros/s/AKfycbzrQ8NM9zL704M6IxDGBVfSuoYNz-66npZH3d9oH-g2lmbYZPThwexujHwQ_nGU2YFc/exec';
-
-// Toleransi kompresi geometri otomatis di browser (0.0004 derajat ≈ 44 meter)
-const SIMPLIFY_TOLERANCE = 0.0004;
 
 // ============================================================================
 // 2. INISIALISASI PETA LEAFLET CANVAS & 100% BASEMAP RESMI ESRI
 // ============================================================================
+// Pelindung awal: Leaflet harus termuat sebelum peta dibuat
+const $ = (id) => document.getElementById(id);
+if (typeof L === 'undefined') {
+  const mapEl = $('map');
+  if (mapEl) mapEl.innerHTML = '<p style="padding:24px;font:14px sans-serif">Pustaka peta (Leaflet) gagal dimuat. Periksa koneksi internet lalu muat ulang halaman.</p>';
+  throw new Error('Leaflet tidak termuat');
+}
+// Error tak terduga hanya dicatat di console, tidak menghentikan halaman
+window.addEventListener('unhandledrejection', (e) => { console.error('[Unhandled]', e.reason); e.preventDefault(); });
+window.addEventListener('error', (e) => console.error('[Error]', e.message));
+
 const map = L.map('map', {
   center: [3.55, 97.45],
   zoom: 8,
@@ -55,212 +67,97 @@ const esriNatGeo = L.tileLayer(
   { maxZoom: 16, attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme' }
 );
 
+// Basemap Cadangan: OpenStreetMap (otomatis dipakai bila tile Esri gagal total dimuat)
+const osmCadangan = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18, attribution: '&copy; OpenStreetMap contributors'
+});
+let tilesLoaded = 0, tilesFailed = 0;
+esriGrayBase.on('tileload', () => { tilesLoaded++; });
+esriGrayBase.on('tileerror', () => {
+  tilesFailed++;
+  if (tilesLoaded === 0 && tilesFailed === 8 && map.hasLayer(esriCanvasTerang)) {
+    map.removeLayer(esriCanvasTerang);
+    osmCadangan.addTo(map);
+  }
+});
+
 const layerControl = L.control.layers(
   {
     'Esri Canvas Terang (Utama)': esriCanvasTerang,
     'Esri Topografi Leuser': esriTopo,
     'Esri Citra Satelit': esriSat,
-    'Esri NatGeo Map': esriNatGeo
+    'Esri NatGeo Map': esriNatGeo,
+    'OpenStreetMap (cadangan)': osmCadangan
   },
   {},
   { collapsed: true }
 ).addTo(map);
 
 // ============================================================================
-// 3. PEMETAAN 7 SUBFOLDER GOOGLE DRIVE ("Geojson lomba")
+// 3. PEMETAAN FILE DATA (data/<folder>/<file>)
 // ============================================================================
 const paramFolder = (yr) => (yr === '2019' ? '03_Parameter_2019' : yr === '2021' ? '04_Parameter_2021' : '05_Parameter_2025');
 
-const DRIVE_SPECS = {
+const DATA_SPECS = {
   // Folder 01: Batas & Data Pendukung
-  batas_tngl: { folder: '01_Batas_Dan_Data_Pendukung', file: '01_Batas_Kawasan_Inti_TNGL.geojson', kw: ['batas', 'inti', 'tngl'] },
-  buffer_luar: { folder: '01_Batas_Dan_Data_Pendukung', file: '02_Zona_Buffer_100km_Luar_TNGL.geojson', kw: ['buffer', 'luar'] },
-  elevasi: { folder: '01_Batas_Dan_Data_Pendukung', file: '06_Klasifikasi_Elevasi_DEM.geojson', kw: ['elevasi', 'dem'] },
-  lereng: { folder: '01_Batas_Dan_Data_Pendukung', file: '07_Klasifikasi_Kemiringan_Lereng.geojson', kw: ['lereng', 'slope'] },
-  zonasi_jarak: { folder: '01_Batas_Dan_Data_Pendukung', file: '10_Klasifikasi_Zonasi_Jarak_TNGL.geojson', kw: ['zonasi', 'jarak'] },
+  batas_tngl: { folder: '01_Batas_Dan_Data_Pendukung', file: '01_Batas_Kawasan_Inti_TNGL.geojson' },
+  buffer_luar: { folder: '01_Batas_Dan_Data_Pendukung', file: '02_Zona_Buffer_100km_Luar_TNGL.geojson' },
+  elevasi: { folder: '01_Batas_Dan_Data_Pendukung', file: '06_Klasifikasi_Elevasi_DEM.geojson' },
+  lereng: { folder: '01_Batas_Dan_Data_Pendukung', file: '07_Klasifikasi_Kemiringan_Lereng.geojson' },
+  zonasi_jarak: { folder: '01_Batas_Dan_Data_Pendukung', file: '10_Klasifikasi_Zonasi_Jarak_TNGL.geojson' },
 
   // Folder 02: Tutupan Hutan & Permukiman
-  dinamika_hutan: { folder: '02_Tutupan_Hutan_Dan_Permukiman', file: '02_Dinamika_Perubahan_Hutan_2019_2025.geojson', kw: ['dinamika', 'kehilangan', 'deforestasi'] },
-  status_hutan: (yr) => ({ folder: '02_Tutupan_Hutan_Dan_Permukiman', file: `01_Status_Tutupan_Hutan_${yr}.geojson`, kw: ['status', 'tutupan', yr], year: yr }),
+  dinamika_hutan: { folder: '02_Tutupan_Hutan_Dan_Permukiman', file: '02_Dinamika_Perubahan_Hutan_2019_2025.geojson' },
+  status_hutan: (yr) => ({ folder: '02_Tutupan_Hutan_Dan_Permukiman', file: `01_Status_Tutupan_Hutan_${yr}.geojson`, year: yr }),
 
   // Folder 03, 04, 05: Parameter Biofisik Multi-Tahun (2019, 2021, 2025)
-  carbon_stock: (yr) => ({ folder: paramFolder(yr), file: `01_Cadangan_Karbon_${yr}.geojson`, kw: ['karbon', 'carbon_stock'], year: yr }),
-  agb: (yr) => ({ folder: paramFolder(yr), file: `02_Biomassa_AGB_${yr}.geojson`, kw: ['biomassa', 'agb'], year: yr }),
-  lst: (yr) => ({ folder: paramFolder(yr), file: `03_Suhu_Permukaan_LST_${yr}.geojson`, kw: ['suhu', 'lst'], year: yr }),
-  uhi: (yr) => ({ folder: paramFolder(yr), file: `04_Pulau_Bahang_UHI_${yr}.geojson`, kw: ['uhi', 'bahang'], year: yr }),
-  utfvi: (yr) => ({ folder: paramFolder(yr), file: `05_Stres_Termal_UTFVI_${yr}.geojson`, kw: ['utfvi', 'stres'], year: yr }),
-  ndbi: (yr) => ({ folder: paramFolder(yr), file: `12_Kawasan_Terbangun_NDBI_${yr}.geojson`, kw: ['ndbi', 'terbangun'], year: yr }),
-  sar: (yr) => ({ folder: paramFolder(yr), file: `14_Radar_Kanopi_SAR_VH_${yr}.geojson`, kw: ['sar', 'radar'], year: yr }),
-  carbon_rate: { folder: '05_Parameter_2025', file: '15_Laju_Carbon_Rate_2019_2025.geojson', kw: ['rate', 'laju'] },
+  carbon_stock: (yr) => ({ folder: paramFolder(yr), file: `01_Cadangan_Karbon_${yr}.geojson`, year: yr }),
+  agb: (yr) => ({ folder: paramFolder(yr), file: `02_Biomassa_AGB_${yr}.geojson`, year: yr }),
+  lst: (yr) => ({ folder: paramFolder(yr), file: `03_Suhu_Permukaan_LST_${yr}.geojson`, year: yr }),
+  uhi: (yr) => ({ folder: paramFolder(yr), file: `04_Pulau_Bahang_UHI_${yr}.geojson`, year: yr }),
+  utfvi: (yr) => ({ folder: paramFolder(yr), file: `05_Stres_Termal_UTFVI_${yr}.geojson`, year: yr }),
+  ndbi: (yr) => ({ folder: paramFolder(yr), file: `12_Kawasan_Terbangun_NDBI_${yr}.geojson`, year: yr }),
+  sar: (yr) => ({ folder: paramFolder(yr), file: `14_Radar_Kanopi_SAR_VH_${yr}.geojson`, year: yr }),
+  carbon_rate: { folder: '05_Parameter_2025', file: '15_Laju_Carbon_Rate_2019_2025.geojson' },
 
   // Folder 06: Delta Perubahan 2025 vs 2019
-  delta_carbon: { folder: '06_Delta_Perubahan_2019_2025', file: '01_Delta_Carbon_Stock_2025_vs_2019.geojson', kw: ['carbon', 'karbon'] },
-  delta_lst: { folder: '06_Delta_Perubahan_2019_2025', file: '02_Delta_Suhu_LST_2025_vs_2019.geojson', kw: ['lst', 'suhu'] },
-  delta_ndvi: { folder: '06_Delta_Perubahan_2019_2025', file: '05_Delta_Vegetasi_NDVI_2025_vs_2019.geojson', kw: ['ndvi', 'vegetasi'] },
-  delta_ndbi: { folder: '06_Delta_Perubahan_2019_2025', file: '08_Delta_Terbangun_NDBI_2025_vs_2019.geojson', kw: ['ndbi', 'terbangun'] },
+  delta_carbon: { folder: '06_Delta_Perubahan_2019_2025', file: '01_Delta_Carbon_Stock_2025_vs_2019.geojson' },
+  delta_lst: { folder: '06_Delta_Perubahan_2019_2025', file: '02_Delta_Suhu_LST_2025_vs_2019.geojson' },
+  delta_ndvi: { folder: '06_Delta_Perubahan_2019_2025', file: '05_Delta_Vegetasi_NDVI_2025_vs_2019.geojson' },
+  delta_ndbi: { folder: '06_Delta_Perubahan_2019_2025', file: '08_Delta_Terbangun_NDBI_2025_vs_2019.geojson' },
 
   // Folder 07: Titik Sampel Validasi Statistik
-  sampel_dalam: { folder: '07_Titik_Sampel_Dan_Ringkasan', file: '01_Titik_Sampel_Dalam_TNGL.geojson', kw: ['dalam', 'tngl'] },
-  sampel_luar: { folder: '07_Titik_Sampel_Dan_Ringkasan', file: '02_Titik_Sampel_Permukiman_Buffer.geojson', kw: ['luar', 'buffer', 'permukiman'] }
+  sampel_dalam: { folder: '07_Titik_Sampel_Dan_Ringkasan', file: '01_Titik_Sampel_Dalam_TNGL.geojson' },
+  sampel_luar: { folder: '07_Titik_Sampel_Dan_Ringkasan', file: '02_Titik_Sampel_Permukiman_Buffer.geojson' }
 };
 
 // ============================================================================
-// 4. KOMPRESOR GEOJSON REAL-TIME DI BROWSER (ITERATIVE DOUGLAS-PEUCKER)
+// 4. HELPER
 // ============================================================================
-const ALLOWED_PROPS = new Set([
-  'Kategori', 'Parameter', 'Tahun', 'Rentang_Nilai', 'Luas_Ha',
-  'Persentase_Area', 'Interpretasi', 'Warna_Hex', 'Kelas_Kode',
-  'Zona', 'Carbon_Stock', 'LST', 'UHI', 'UTFVI', 'NDVI', 'NDMI',
-  'NDBI', 'SAR_VH', 'Elevation', 'Slope', 'Name'
-]);
-
-const round5 = (n) => Math.round(n * 1e5) / 1e5;
-
-// Helper aman untuk HTML (cegah XSS dari atribut GeoJSON) & angka kosong
+// Escape HTML (cegah XSS dari atribut GeoJSON), validasi warna, format angka kosong
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const safeColor = (c, fallback) => (typeof c === 'string' && /^#[0-9a-f]{3,8}$/i.test(c.trim()) ? c.trim() : fallback);
 const fmtNum = (v, d) => (v === null || v === undefined || v === '' || Number.isNaN(Number(v)) ? '-' : Number(v).toFixed(d));
 
-function perpDistanceSq(p, a, b) {
-  let x = a[0], y = a[1];
-  let dx = b[0] - x, dy = b[1] - y;
-  if (dx !== 0 || dy !== 0) {
-    const t = ((p[0] - x) * dx + (p[1] - y) * dy) / (dx * dx + dy * dy);
-    if (t > 1) {
-      x = b[0];
-      y = b[1];
-    } else if (t > 0) {
-      x += dx * t;
-      y += dy * t;
-    }
-  }
-  dx = p[0] - x;
-  dy = p[1] - y;
-  return dx * dx + dy * dy;
-}
-
-function simplifyCoordsIterative(coords, tolerance, isPolygonRing) {
-  const len = coords.length;
-  if (len <= 6) {
-    return coords.map((c) => [round5(c[0]), round5(c[1])]);
-  }
-
-  const sqTol = tolerance * tolerance;
-  const keep = new Uint8Array(len);
-  keep[0] = 1;
-  keep[len - 1] = 1;
-
-  const stack = [[0, len - 1]];
-  while (stack.length > 0) {
-    const [first, last] = stack.pop();
-    let maxSqDist = 0;
-    let index = 0;
-
-    for (let i = first + 1; i < last; i++) {
-      const sqDist = perpDistanceSq(coords[i], coords[first], coords[last]);
-      if (sqDist > maxSqDist) {
-        index = i;
-        maxSqDist = sqDist;
-      }
-    }
-
-    if (maxSqDist > sqTol) {
-      keep[index] = 1;
-      if (index - first > 1) stack.push([first, index]);
-      if (last - index > 1) stack.push([index, last]);
-    }
-  }
-
-  const out = [];
-  for (let i = 0; i < len; i++) {
-    if (keep[i]) {
-      out.push([round5(coords[i][0]), round5(coords[i][1])]);
-    }
-  }
-
-  if (isPolygonRing && out.length < 4) {
-    return coords.map((c) => [round5(c[0]), round5(c[1])]);
-  }
-  return out;
-}
-
-function compressGeometry(geom, tolerance) {
-  if (!geom || !geom.coordinates) return geom;
-  const t = geom.type;
-  if (t === 'Point') {
-    return { type: t, coordinates: [round5(geom.coordinates[0]), round5(geom.coordinates[1])] };
-  }
-  if (t === 'MultiPoint') {
-    return { type: t, coordinates: geom.coordinates.map((c) => [round5(c[0]), round5(c[1])]) };
-  }
-  if (t === 'LineString') {
-    return { type: t, coordinates: simplifyCoordsIterative(geom.coordinates, tolerance, false) };
-  }
-  if (t === 'MultiLineString') {
-    return { type: t, coordinates: geom.coordinates.map((line) => simplifyCoordsIterative(line, tolerance, false)) };
-  }
-  if (t === 'Polygon') {
-    return { type: t, coordinates: geom.coordinates.map((ring) => simplifyCoordsIterative(ring, tolerance, true)) };
-  }
-  if (t === 'MultiPolygon') {
-    return {
-      type: t,
-      coordinates: geom.coordinates.map((poly) => poly.map((ring) => simplifyCoordsIterative(ring, tolerance, true)))
-    };
-  }
-  return geom;
-}
-
-function compressGeoJSONInMemory(rawGj, tolerance = SIMPLIFY_TOLERANCE) {
-  if (!rawGj || !Array.isArray(rawGj.features)) return rawGj;
-
-  const compressedFeatures = rawGj.features.map((feat) => {
-    const cleanProps = {};
-    if (feat.properties) {
-      for (const key of Object.keys(feat.properties)) {
-        if (ALLOWED_PROPS.has(key)) {
-          cleanProps[key] = feat.properties[key];
-        }
-      }
-    }
-    return {
-      type: 'Feature',
-      properties: cleanProps,
-      geometry: compressGeometry(feat.geometry, tolerance)
-    };
-  });
-
-  return { type: 'FeatureCollection', features: compressedFeatures };
-}
-
 // ============================================================================
-// 5. ENGINE PENGAMBILAN DATA GOOGLE DRIVE (DIRECT API V3 & FALLBACK SCRIPT)
+// 5. ENGINE PEMUATAN DATA LOKAL (fetch dari folder data/ di situs yang sama)
 // ============================================================================
-const geojsonCache = {};
-const layerInstances = {};
-const catalogByFolder = {};
+const geojsonCache = {};     // url -> Promise<GeoJSON> (mencegah unduhan ganda)
+const layerInstances = {};   // url -> L.geoJSON untuk scene utama
 let activeDataLayers = [];
 let currentYear = '2025';
 let currentChapter = 'sampul';
 let currentSublayer = null;
-let apiDiagnosticError = null;
+let dataError = null;
 let pendingLoads = 0;
 
-const loaderToast = document.getElementById('loader-toast');
+const loaderToast = $('loader-toast');
+const brandEl = $('brand-title');
+const dotEl = $('sync-dot');
+const BRAND_TEXT = brandEl ? brandEl.textContent : '';
 
-function useDirectDriveAPI() {
-  return (
-    DRIVE_API_KEY &&
-    !DRIVE_API_KEY.includes('PASTE_GOOGLE_DRIVE') &&
-    DRIVE_FOLDER_ID &&
-    !DRIVE_FOLDER_ID.includes('PASTE_ID_FOLDER')
-  );
-}
-
-function setApiStatusError(shortTitle, detailMsg) {
-  if (!apiDiagnosticError) apiDiagnosticError = detailMsg;
-  const brandEl = document.getElementById('brand-title');
-  const dotEl = document.getElementById('sync-dot');
+function setDataError(shortTitle, detailMsg) {
+  if (!dataError) dataError = detailMsg;
   if (brandEl) brandEl.textContent = `STORYMAP TNGL • ${shortTitle}`;
   if (dotEl) {
     dotEl.style.background = '#dc2626';
@@ -268,54 +165,122 @@ function setApiStatusError(shortTitle, detailMsg) {
   }
 }
 
-async function fetchJSONSafe(url) {
-  const res = await fetch(url, { method: 'GET', redirect: 'follow' });
-  if (!res.ok) {
-    let extraMsg = '';
-    try {
-      const errBody = await res.json();
-      if (errBody && errBody.error && errBody.error.message) {
-        extraMsg = ` (${errBody.error.message})`;
-      }
-    } catch (_) {}
-    throw new Error(`HTTP ${res.status}${extraMsg}: Pastikan Google Drive API aktif & folder "Geojson lomba" dibagikan publik (Anyone with the link).`);
+function clearDataError() {
+  if (!dataError) return;
+  dataError = null;
+  if (brandEl) brandEl.textContent = BRAND_TEXT;
+  if (dotEl) {
+    dotEl.style.background = '';
+    dotEl.style.boxShadow = '';
   }
-  const rawText = await res.text();
-  const trimmed = rawText.trim();
-  if (trimmed.startsWith('<')) {
-    throw new Error(
-      'Google mengembalikan halaman HTML Login. Isi DRIVE_FOLDER_ID & DRIVE_API_KEY di baris 4–5 app.js untuk akses langsung tanpa batas ukuran.'
-    );
-  }
-  return JSON.parse(trimmed);
 }
 
-function resolveCatalogItem(specOrTuple) {
-  if (Array.isArray(specOrTuple)) {
-    const [fName, fn] = specOrTuple;
-    const found = (catalogByFolder[fName] || []).find((x) => x.filename.toLowerCase() === fn.toLowerCase());
-    return found || { folder: fName, filename: fn, fileId: null };
+function dataUrl(spec) {
+  return [DATA_BASE, spec.folder, spec.file].map(encodeURIComponent).join('/');
+}
+
+// Unduh JSON dengan batas waktu & 1x ulang untuk gangguan sementara (jaringan / 5xx)
+async function fetchJSON(url, timeoutMs = FETCH_TIMEOUT_MS) {
+  const shown = decodeURIComponent(url.split('?')[0]);   // jangan tampilkan API key di pesan error
+  let lastErr;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { signal: ctrl.signal });
+      if (!res.ok) {
+        const e = new Error(`HTTP ${res.status} saat memuat "${shown}". Pastikan file ada di repo GitHub dengan nama folder & file yang persis sama (huruf besar-kecil berpengaruh).`);
+        e.status = res.status;
+        throw e;
+      }
+      const text = (await res.text()).trim();
+      if (text.startsWith('<')) throw Object.assign(new Error(`"${shown}" berisi HTML, bukan GeoJSON. Periksa path file.`), { status: 422 });
+      try {
+        return JSON.parse(text);
+      } catch (parseErr) {
+        throw Object.assign(new Error(`"${shown}" bukan JSON yang valid (file rusak atau terpotong).`), { status: 422 });
+      }
+    } catch (err) {
+      lastErr = err.name === 'AbortError' ? new Error(`Waktu tunggu habis saat memuat "${shown}". Periksa koneksi internet.`) : err;
+      if (err.status && err.status < 500) break;          // 4xx tidak perlu diulang
+      if (attempt === 0) await new Promise((r) => setTimeout(r, 800));
+    } finally {
+      clearTimeout(timer);
+    }
   }
+  throw lastErr;
+}
 
-  const list = catalogByFolder[specOrTuple.folder] || [];
-  if (list.length === 0) return { folder: specOrTuple.folder, filename: specOrTuple.file, fileId: null };
+// Pastikan bentuknya FeatureCollection & buang fitur tanpa geometri
+function normalizeGeoJSON(gj, label) {
+  let fc = null;
+  if (gj && gj.type === 'FeatureCollection' && Array.isArray(gj.features)) fc = gj;
+  else if (gj && gj.type === 'Feature') fc = { type: 'FeatureCollection', features: [gj] };
+  else if (gj && gj.type && gj.coordinates) fc = { type: 'FeatureCollection', features: [{ type: 'Feature', properties: {}, geometry: gj }] };
+  if (!fc) throw new Error(`"${label}" bukan GeoJSON yang valid.`);
+  return { ...fc, features: fc.features.filter((f) => f && f.geometry) };
+}
 
-  const exact = list.find((f) => f.filename.toLowerCase() === specOrTuple.file.toLowerCase());
-  if (exact) return exact;
-
-  const prefix = specOrTuple.file.slice(0, 3).toLowerCase();
-  const byPrefix = list.find((f) => {
-    const fn = f.filename.toLowerCase();
-    return fn.startsWith(prefix) && (!specOrTuple.year || fn.includes(specOrTuple.year));
-  });
-  if (byPrefix) { console.warn('[Drive] Nama file tidak persis, memakai kecocokan prefix:', byPrefix.filename); return byPrefix; }
-
-  if (specOrTuple.kw && specOrTuple.kw.length > 0) {
-    const byKw = list.find((f) => specOrTuple.kw.some((k) => f.filename.toLowerCase().includes(k.toLowerCase())));
-    if (byKw) { console.warn('[Drive] Nama file tidak persis, memakai kecocokan kata kunci:', byKw.filename); return byKw; }
+// ---- Cadangan Google Drive (opsional; semua kegagalan hanya dicatat di console) ----
+let driveIndexPromise = null;
+function getDriveIndex() {
+  if (!DRIVE_FOLDER_ID || !DRIVE_API_KEY) return Promise.resolve(null);
+  if (!driveIndexPromise) {
+    driveIndexPromise = (async () => {
+      const list = async (parentId) => {
+        const q = encodeURIComponent(`'${parentId}' in parents and trashed=false`);
+        const fields = encodeURIComponent('files(id,name,mimeType)');
+        const j = await fetchJSON(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&pageSize=200&key=${encodeURIComponent(DRIVE_API_KEY)}`, 20000);
+        return j.files || [];
+      };
+      const index = {};
+      const top = await list(DRIVE_FOLDER_ID);
+      const folders = top.filter((e) => e.mimeType === 'application/vnd.google-apps.folder');
+      const lists = await Promise.all(folders.map(async (f) => ({ name: f.name, files: await list(f.id) })));
+      lists.forEach(({ name, files }) => files.forEach((f) => { index[`${name}/${f.name}`] = f.id; }));
+      return index;
+    })().catch((err) => {
+      console.warn('[Drive] Cadangan tidak tersedia:', err.message);
+      return null;
+    });
   }
+  return driveIndexPromise;
+}
 
-  return { folder: specOrTuple.folder, filename: specOrTuple.file, fileId: null };
+async function fetchFromDrive(spec) {
+  const index = await getDriveIndex();
+  const id = index && index[`${spec.folder}/${spec.file}`];
+  if (!id) return null;
+  return fetchJSON(`https://www.googleapis.com/drive/v3/files/${id}?alt=media&key=${encodeURIComponent(DRIVE_API_KEY)}`);
+}
+
+// Urutan: file lokal data/ dulu -> (opsional) Google Drive -> baru dilaporkan gagal
+function loadGeoJSON(spec) {
+  const url = dataUrl(spec);
+  if (!geojsonCache[url]) {
+    geojsonCache[url] = (async () => {
+      let localErr;
+      try {
+        return normalizeGeoJSON(await fetchJSON(url), spec.file);
+      } catch (err) {
+        localErr = err;
+      }
+      try {
+        const viaDrive = await fetchFromDrive(spec);
+        if (viaDrive) {
+          console.info('[Data] Memakai cadangan Google Drive:', spec.file);
+          return normalizeGeoJSON(viaDrive, spec.file);
+        }
+      } catch (err) {
+        console.warn('[Drive]', err.message);
+      }
+      throw localErr;
+    })().catch((err) => {
+      delete geojsonCache[url];   // izinkan coba lagi nanti
+      throw err;
+    });
+  }
+  return geojsonCache[url];
 }
 
 function buildPopupHTML(props) {
@@ -346,175 +311,95 @@ function buildPopupHTML(props) {
   `;
 }
 
-async function getDriveGeoJSONLayer(specOrTuple, options = {}) {
-  if (!specOrTuple) return null;
+function makeLayer(gjData, options = {}) {
+  const interactive = options.interactive !== false;
+  return L.geoJSON(gjData, {
+    interactive,
+    style: (feature) => {
+      const p = feature.properties || {};
+      return {
+        fillColor: options.fillColor || safeColor(p.Warna_Hex, '#15803d'),
+        color: options.strokeColor || '#334155',
+        weight: options.weight !== undefined ? options.weight : 0.7,
+        fillOpacity: options.fillOpacity !== undefined ? options.fillOpacity : 0.75,
+        dashArray: options.dashArray || null
+      };
+    },
+    pointToLayer: (feature, latlng) => {
+      const p = feature.properties || {};
+      return L.circleMarker(latlng, {
+        radius: 5,
+        fillColor: safeColor(p.Warna_Hex, '#0d9488'),
+        color: '#ffffff',
+        weight: 1.2,
+        fillOpacity: 0.92,
+        interactive
+      });
+    },
+    onEachFeature: (feature, lyr) => {
+      if (interactive && feature.properties) {
+        lyr.bindPopup(buildPopupHTML(feature.properties), { maxWidth: 300 });
+      }
+    }
+  });
+}
 
-  const item = resolveCatalogItem(specOrTuple);
-  const cacheKey = `${item.folder}/${item.filename}`;
-  if (layerInstances[cacheKey]) return layerInstances[cacheKey];
+async function getGeoJSONLayer(spec, options = {}) {
+  if (!spec) return null;
 
-  loaderToast.textContent = `Memuat & mengompresi [${item.folder.slice(0, 2)}]: ${item.filename}...`;
+  const key = dataUrl(spec);
+  if (layerInstances[key]) return layerInstances[key];
+
+  if (loaderToast) loaderToast.textContent = `Memuat [${spec.folder.slice(0, 2)}]: ${spec.file}...`;
   pendingLoads++;
-  loaderToast.classList.remove('hidden');
+  if (loaderToast) loaderToast.classList.remove('hidden');
 
   try {
-    if (!geojsonCache[cacheKey]) {
-      let rawData;
-      if (useDirectDriveAPI() && item.fileId) {
-        const directUrl = `https://www.googleapis.com/drive/v3/files/${item.fileId}?alt=media&key=${encodeURIComponent(DRIVE_API_KEY)}`;
-        rawData = await fetchJSONSafe(directUrl);
-      } else {
-        if (DRIVE_API_URL.includes('PASTE_ID_DEPLOYMENT') || !DRIVE_API_URL.includes('/exec')) {
-          throw new Error('Isi DRIVE_FOLDER_ID & DRIVE_API_KEY di baris 4–5 app.js untuk memuat seluruh GeoJSON.');
-        }
-        const apiUrl = `${DRIVE_API_URL}?action=getFile&folder=${encodeURIComponent(item.folder)}&file=${encodeURIComponent(item.filename)}`;
-        rawData = await fetchJSONSafe(apiUrl);
-        if (rawData.error) throw new Error(rawData.error);
-      }
-
-      // Kompresi geometri & atribut otomatis di memori browser sebelum dirender ke peta
-      geojsonCache[cacheKey] = compressGeoJSONInMemory(rawData);
-    }
-
-    const gjData = geojsonCache[cacheKey];
-    const interactive = options.interactive !== false;
-    const layer = L.geoJSON(gjData, {
-      interactive,
-      style: (feature) => {
-        const p = feature.properties || {};
-        return {
-          fillColor: options.fillColor || p.Warna_Hex || '#15803d',
-          color: options.strokeColor || '#334155',
-          weight: options.weight !== undefined ? options.weight : 0.7,
-          fillOpacity: options.fillOpacity !== undefined ? options.fillOpacity : 0.75,
-          dashArray: options.dashArray || null
-        };
-      },
-      pointToLayer: (feature, latlng) => {
-        const p = feature.properties || {};
-        return L.circleMarker(latlng, {
-          radius: 5,
-          fillColor: p.Warna_Hex || '#0d9488',
-          color: '#ffffff',
-          weight: 1.2,
-          fillOpacity: 0.92
-        });
-      },
-      onEachFeature: (feature, lyr) => {
-        if (interactive && feature.properties) {
-          lyr.bindPopup(buildPopupHTML(feature.properties), { maxWidth: 300 });
-        }
-      }
-    });
-
-    layerInstances[cacheKey] = layer;
+    const gjData = await loadGeoJSON(spec);
+    const layer = makeLayer(gjData, options);
     layer._rawGeoJSON = gjData;
+    layerInstances[key] = layer;
+    clearDataError();
     return layer;
   } catch (err) {
-    setApiStatusError('KONEKSI DRIVE TERKENDALA', err.message);
+    console.error('[Data]', err);
+    setDataError('DATA GAGAL DIMUAT', err.message);
     return null;
   } finally {
     pendingLoads = Math.max(0, pendingLoads - 1);
-    if (pendingLoads === 0) loaderToast.classList.add('hidden');
+    if (pendingLoads === 0 && loaderToast) loaderToast.classList.add('hidden');
   }
 }
 
-async function listDriveFilesViaApiV3(parentId) {
-  const q = encodeURIComponent(`'${parentId}' in parents and trashed = false`);
-  const fields = encodeURIComponent('files(id,name,mimeType,size,modifiedTime)');
-  const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&pageSize=200&key=${encodeURIComponent(DRIVE_API_KEY)}`;
-  const data = await fetchJSONSafe(url);
-  return data.files || [];
+// Daftar semua file (termasuk varian tahun) untuk kontrol layer bebas di peta
+function allSpecs() {
+  const out = [];
+  Object.values(DATA_SPECS).forEach((s) => {
+    if (typeof s === 'function') ['2019', '2021', '2025'].forEach((yr) => out.push(s(yr)));
+    else out.push(s);
+  });
+  return out;
 }
 
-async function syncDriveCatalog() {
-  try {
-    let filesList = [];
-
-    if (useDirectDriveAPI()) {
-      const topItems = await listDriveFilesViaApiV3(DRIVE_FOLDER_ID);
-
-      // Baca isi semua subfolder secara paralel
-      const folders = topItems.filter((e) => e.mimeType === 'application/vnd.google-apps.folder');
-      const results = await Promise.all(
-        folders.map((f) => listDriveFilesViaApiV3(f.id).then((files) => ({ folder: f.name, files })))
-      );
-
-      results.forEach(({ folder, files }) => {
-        files.forEach((f) => {
-          if (f.name.toLowerCase().endsWith('.geojson')) {
-            filesList.push({
-              folder,
-              filename: f.name,
-              fileId: f.id,
-              lastUpdated: f.modifiedTime || new Date().toISOString(),
-              sizeKB: Math.round(Number(f.size || 0) / 1024)
-            });
-          }
-        });
-      });
-
-      // File .geojson yang langsung berada di folder induk
-      topItems.forEach((e) => {
-        if (e.mimeType !== 'application/vnd.google-apps.folder' && e.name.toLowerCase().endsWith('.geojson')) {
-          filesList.push({
-            folder: '',
-            filename: e.name,
-            fileId: e.id,
-            lastUpdated: e.modifiedTime || new Date().toISOString(),
-            sizeKB: Math.round(Number(e.size || 0) / 1024)
-          });
-        }
-      });
-
-      filesList.sort((a, b) => (a.folder + a.filename).localeCompare(b.folder + b.filename));
-    } else {
-      if (DRIVE_API_URL.includes('PASTE_ID_DEPLOYMENT') || !DRIVE_API_URL.includes('/exec')) {
-        setApiStatusError(
-          'KONFIGURASI DRIVE BELUM DIISI',
-          'Isi DRIVE_FOLDER_ID & DRIVE_API_KEY di baris 4–5 file app.js di GitHub untuk memuat seluruh file GeoJSON besar tanpa batas ukuran.'
-        );
-        return;
+function registerOverlays() {
+  allSpecs().forEach((spec) => {
+    const group = L.layerGroup();
+    const label = `[${spec.folder.slice(0, 2)}] ${spec.file.replace('.geojson', '').replace(/_/g, ' ')}`;
+    group.on('add', async () => {
+      try {
+        const gj = await loadGeoJSON(spec);
+        if (!map.hasLayer(group)) return;     // sudah dimatikan sebelum selesai dimuat
+        group.clearLayers();
+        group.addLayer(makeLayer(gj, { fillOpacity: 0.75 }));   // instance baru, tidak berbagi dengan scene utama
+        updateLegendFromGeoJSON(gj);
+      } catch (err) {
+        console.error('[Data]', err);
+        setDataError('DATA GAGAL DIMUAT', err.message);
+        updateLegendFromGeoJSON(null);
       }
-      const meta = await fetchJSONSafe(`${DRIVE_API_URL}?action=catalog`);
-      if (meta.error) throw new Error(meta.error);
-      if (meta.status === 'ok' && meta.files) filesList = meta.files;
-    }
-
-    if (filesList.length === 0) {
-      setApiStatusError('DRIVE KOSONG', 'Tidak ada file .geojson ditemukan. Periksa DRIVE_FOLDER_ID dan pastikan folder dibagikan publik (Anyone with the link).');
-      return;
-    }
-
-    apiDiagnosticError = null;
-    filesList.forEach((item) => {
-      if (!catalogByFolder[item.folder]) catalogByFolder[item.folder] = [];
-      catalogByFolder[item.folder].push(item);
-
-      const proxyLayer = L.layerGroup();
-      const prefix = item.folder ? `[${item.folder.slice(0, 2)}] ` : '';
-      const sizeTag = item.sizeKB ? ` (${(item.sizeKB / 1024).toFixed(1)} MB)` : '';
-      const label = `${prefix}${item.filename.replace('.geojson', '').replace(/_/g, ' ')}${sizeTag}`;
-      proxyLayer.on('add', async () => {
-        const realLayer = await getDriveGeoJSONLayer([item.folder, item.filename], { fillOpacity: 0.75 });
-        if (realLayer) {
-          realLayer.addTo(proxyLayer);
-          updateLegendFromGeoJSON(realLayer._rawGeoJSON);
-        }
-      });
-      layerControl.addOverlay(proxyLayer, label);
     });
-
-    const latestDate = filesList
-      .map((f) => new Date(f.lastUpdated))
-      .sort((a, b) => b - a)[0]
-      .toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })
-      .toUpperCase();
-
-    document.getElementById('brand-title').textContent = `STORYMAP TNGL • DRIVE SYNC (${filesList.length} FILE • ${latestDate})`;
-  } catch (err) {
-    setApiStatusError('KONEKSI DRIVE TERKENDALA', err.message);
-  }
+    layerControl.addOverlay(group, label);
+  });
 }
 
 // ============================================================================
@@ -522,7 +407,7 @@ async function syncDriveCatalog() {
 // ============================================================================
 function initChartsAndLightbox() {
   const ctxKomp = document.getElementById('chartKomparasi');
-  if (ctxKomp) {
+  if (ctxKomp && typeof Chart !== 'undefined') {
     new Chart(ctxKomp, {
       type: 'bar',
       data: {
@@ -544,7 +429,7 @@ function initChartsAndLightbox() {
   }
 
   const ctxDin = document.getElementById('chartDinamika');
-  if (ctxDin) {
+  if (ctxDin && typeof Chart !== 'undefined') {
     new Chart(ctxDin, {
       type: 'bar',
       data: {
@@ -569,6 +454,7 @@ function initChartsAndLightbox() {
   const modal = document.getElementById('lightbox-modal');
   const modalImg = document.getElementById('lightbox-img');
   const modalCap = document.getElementById('lightbox-caption');
+  if (!modal || !modalImg || !modalCap) return;   // lightbox tidak ada di HTML
 
   document.querySelectorAll('.figure-box').forEach((box) => {
     box.addEventListener('click', () => {
@@ -607,10 +493,11 @@ function initChartsAndLightbox() {
 // 7. LEGENDA DINAMIS & KONTROL SCENE BAB STORYMAP
 // ============================================================================
 function updateLegendFromGeoJSON(gjData, fallbackTitle = 'Legenda Peta') {
-  const box = document.getElementById('map-legend');
+  const box = $('map-legend');
+  if (!box) return;
   if (!gjData || !gjData.features || gjData.features.length === 0) {
-    if (apiDiagnosticError) {
-      box.innerHTML = `<h4 style="color:#dc2626">Status Koneksi Drive API</h4><small style="color:#334155;line-height:1.45">${esc(apiDiagnosticError)}</small>`;
+    if (dataError) {
+      box.innerHTML = `<h4 style="color:#dc2626">Status Pemuatan Data</h4><small style="color:#334155;line-height:1.45">${esc(dataError)}</small>`;
     } else {
       box.innerHTML = `<h4>${fallbackTitle}</h4><small>Pilih layer dari ikon kontrol kanan atas peta.</small>`;
     }
@@ -668,6 +555,15 @@ function clearActiveLayers() {
 let renderToken = 0;
 
 async function renderScene(opts = {}) {
+  try {
+    await renderSceneInner(opts);
+  } catch (err) {
+    console.error('[renderScene]', err);
+    setDataError('TAMPILAN GAGAL', err.message);
+  }
+}
+
+async function renderSceneInner(opts = {}) {
   const cfg = chapterMeta[currentChapter];
   if (!cfg) return;
 
@@ -675,14 +571,12 @@ async function renderScene(opts = {}) {
   const token = ++renderToken;
   const stale = () => token !== renderToken;
 
-  document.getElementById('chapter-label').textContent = cfg.label;
-  document.getElementById('chapter-counter').textContent = cfg.count;
+  const lbl = $('chapter-label'), cnt = $('chapter-counter');
+  if (lbl) lbl.textContent = cfg.label;
+  if (cnt) cnt.textContent = cfg.count;
   map.invalidateSize();
 
-  await catalogReady;                    // katalog Drive harus siap dulu
-  if (stale()) return;
-
-  const lyrTngl = await getDriveGeoJSONLayer(DRIVE_SPECS.batas_tngl, {
+  const lyrTngl = await getGeoJSONLayer(DATA_SPECS.batas_tngl, {
     fillColor: '#15803d',
     strokeColor: '#0f4c3a',
     weight: 2.5,
@@ -691,47 +585,47 @@ async function renderScene(opts = {}) {
   });
   if (stale()) return;
 
-  const load = (spec, fillOpacity = 0.78) => getDriveGeoJSONLayer(spec, { fillOpacity });
+  const load = (spec, fillOpacity = 0.78) => getGeoJSONLayer(spec, { fillOpacity });
   let primaryLayer = null;
   let extraLayers = [];
   let customLegend = null;
 
   if (currentChapter === 'sampul' || currentChapter === 'deliniasi') {
     const mode = currentSublayer || 'zonasi';
-    const target = mode === 'elevasi' ? DRIVE_SPECS.elevasi : mode === 'lereng' ? DRIVE_SPECS.lereng : DRIVE_SPECS.zonasi_jarak;
+    const target = mode === 'elevasi' ? DATA_SPECS.elevasi : mode === 'lereng' ? DATA_SPECS.lereng : DATA_SPECS.zonasi_jarak;
     primaryLayer = await load(target, 0.72);
   } else if (currentChapter === 'hutan') {
     const mode = currentSublayer || 'dinamika_hutan';
-    primaryLayer = await load(mode === 'status_hutan' ? DRIVE_SPECS.status_hutan(currentYear) : DRIVE_SPECS.dinamika_hutan);
+    primaryLayer = await load(mode === 'status_hutan' ? DATA_SPECS.status_hutan(currentYear) : DATA_SPECS.dinamika_hutan);
   } else if (currentChapter === 'karbon') {
     const mode = currentSublayer || 'carbon_stock';
-    primaryLayer = await load(mode === 'agb' ? DRIVE_SPECS.agb(currentYear) : mode === 'carbon_rate' ? DRIVE_SPECS.carbon_rate : DRIVE_SPECS.carbon_stock(currentYear));
+    primaryLayer = await load(mode === 'agb' ? DATA_SPECS.agb(currentYear) : mode === 'carbon_rate' ? DATA_SPECS.carbon_rate : DATA_SPECS.carbon_stock(currentYear));
   } else if (currentChapter === 'termal') {
     const mode = currentSublayer || 'lst';
     const targetMap = {
-      lst: DRIVE_SPECS.lst(currentYear),
-      uhi: DRIVE_SPECS.uhi(currentYear),
-      utfvi: DRIVE_SPECS.utfvi(currentYear),
-      ndbi: DRIVE_SPECS.ndbi(currentYear)
+      lst: DATA_SPECS.lst(currentYear),
+      uhi: DATA_SPECS.uhi(currentYear),
+      utfvi: DATA_SPECS.utfvi(currentYear),
+      ndbi: DATA_SPECS.ndbi(currentYear)
     };
     primaryLayer = await load(targetMap[mode]);
   } else if (currentChapter === 'delta') {
     const mode = currentSublayer || 'delta_carbon';
     const mapDelta = {
-      delta_carbon: DRIVE_SPECS.delta_carbon,
-      delta_lst: DRIVE_SPECS.delta_lst,
-      delta_ndvi: DRIVE_SPECS.delta_ndvi,
-      delta_ndbi: DRIVE_SPECS.delta_ndbi
+      delta_carbon: DATA_SPECS.delta_carbon,
+      delta_lst: DATA_SPECS.delta_lst,
+      delta_ndvi: DATA_SPECS.delta_ndvi,
+      delta_ndbi: DATA_SPECS.delta_ndbi
     };
     primaryLayer = await load(mapDelta[mode]);
   } else if (currentChapter === 'validasi') {
     const mode = currentSublayer || 'sampel';
     if (mode === 'sar') {
-      primaryLayer = await load(DRIVE_SPECS.sar(currentYear));
+      primaryLayer = await load(DATA_SPECS.sar(currentYear));
     } else {
       const [lyrIn, lyrOut] = await Promise.all([
-        getDriveGeoJSONLayer(DRIVE_SPECS.sampel_dalam),
-        getDriveGeoJSONLayer(DRIVE_SPECS.sampel_luar)
+        getGeoJSONLayer(DATA_SPECS.sampel_dalam),
+        getGeoJSONLayer(DATA_SPECS.sampel_luar)
       ]);
       extraLayers = [lyrIn, lyrOut].filter(Boolean);
       customLegend = {
@@ -742,7 +636,7 @@ async function renderScene(opts = {}) {
       };
     }
   } else if (currentChapter === 'dampak') {
-    primaryLayer = await load(DRIVE_SPECS.delta_lst, 0.75);
+    primaryLayer = await load(DATA_SPECS.delta_lst, 0.75);
   }
 
   if (stale()) return;                   // render yang lebih baru sudah berjalan, batalkan yang ini
@@ -785,7 +679,8 @@ async function renderScene(opts = {}) {
 window.addEventListener('scroll', () => {
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
   const pct = docHeight > 0 ? Math.min(100, Math.max(0, (window.scrollY / docHeight) * 100)) : 0;
-  document.getElementById('scroll-progress-fill').style.width = `${pct}%`;
+  const fill = $('scroll-progress-fill');
+  if (fill) fill.style.width = `${pct}%`;
 });
 
 document.querySelectorAll('.year-btn').forEach((btn) => {
@@ -818,9 +713,13 @@ document.querySelectorAll('.tab-btn').forEach((tab) => {
   });
 });
 
-const catalogReady = syncDriveCatalog();   // dijalankan sekali; tidak pernah reject (error ditangani di dalam)
+try {
+  registerOverlays();
+} catch (err) {
+  console.error('Gagal membuat daftar layer:', err);
+}
 
-const observer = new IntersectionObserver((entries) => {
+const observer = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
       const newChapter = entry.target.dataset.step || (entry.target.classList.contains('hero-cover') ? 'sampul' : null);
@@ -841,13 +740,15 @@ const observer = new IntersectionObserver((entries) => {
       renderScene();
     }
   });
-}, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+}, { rootMargin: '-45% 0px -45% 0px', threshold: 0 }) : null;
 
-document.querySelectorAll('.step, .hero-cover').forEach((sec) => observer.observe(sec));
+if (observer) document.querySelectorAll('.step, .hero-cover').forEach((sec) => observer.observe(sec));
 
 try {
   initChartsAndLightbox();
 } catch (err) {
   console.error('Gagal inisialisasi grafik/lightbox:', err);
 }
-catalogReady.then(() => renderScene());
+renderScene();
+
+window.addEventListener('resize', () => map.invalidateSize());
