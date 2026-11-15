@@ -6,7 +6,7 @@
   <title>Benteng Ekologis TNGL (2019–2025) • TIM High Ground Solid</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Merriweather:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Merriweather:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
   <style>
@@ -88,21 +88,15 @@
     <div class="scroll-track"><i id="scroll-progress-fill"></i></div>
   </div>
 
-  <!-- NOTIFIKASI SINKRONISASI GOOGLE DRIVE -->
-  <div id="loader-toast" class="hidden">Menyinkronkan GeoJSON dari Google Drive...</div>
+  <!-- NOTIFIKASI PEMUATAN DATA -->
+  <div id="loader-toast" class="hidden">Memuat data peta...</div>
 
   <!-- SAMPUL PEMBUKA LAYAR PENUH (HERO HEADER + FOTO BACKGROUND + LOGO GANDA + TIM + PENYUSUN) -->
   <header class="hero-cover" id="bab-0" data-step="sampul">
-    <!-- FOTO BACKGROUND HEADER DARI FOLDER ASSETS GITHUB -->
-    <div class="hero-bg-media" aria-hidden="true">
-      <img
-        src="assets/hero-bg.jpg"
-        alt="Lanskap Hutan Taman Nasional Gunung Leuser"
-        class="hero-bg-img"
-        onerror="this.style.display='none'"
-      />
-      <div class="hero-bg-overlay"></div>
-    </div>
+    <!-- LATAR CITRA SATELIT (Esri World Imagery) + OVERLAY HIJAU GELAP -->
+    <div id="hero-sat" class="sat-bg" aria-hidden="true"></div>
+    <div class="hero-sat-overlay" aria-hidden="true"></div>
+    <span class="sat-credit">Citra: Esri World Imagery, Maxar, Earthstar Geographics</span>
 
     <div class="hero-grid-pattern" aria-hidden="true"></div>
     <div class="hero-content">
@@ -135,7 +129,7 @@
         <span class="hero-kicker">LEUSER GEOSTORY CHALLENGE • FESTIVAL RIMBA LEUSER 2026</span>
       </div>
 
-      <h1>Benteng Ekologis Taman Nasional Gunung Leuser</h1>
+      <h1>Benteng Ekologis <span class="h1-accent">Taman Nasional Gunung Leuser</span></h1>
       <p class="hero-subtitle">
         Evaluasi Efektivitas Kawasan Inti TNGL sebagai Benteng Penyerapan Karbon dan Penyangga Perubahan Iklim Mikro Lokal (2019–2025)
       </p>
@@ -188,6 +182,12 @@
 
     <!-- KOLOM KIRI: NASKAH PEMBAHASAN LENGKAP -->
     <article class="narrative-column">
+
+      <!-- LATAR CITRA SATELIT STICKY UNTUK SELURUH BAGIAN PEMBAHASAN -->
+      <div class="narr-bg" aria-hidden="true">
+        <div id="narr-sat" class="sat-bg"></div>
+        <div class="narr-bg-overlay"></div>
+      </div>
 
       <!-- BAB 01: KONTEKS HISTORIS, GEOMETRI WILAYAH & ARSITEKTUR MULTI-SENSOR -->
       <section class="step active" id="bab-1" data-step="deliniasi">
@@ -841,6 +841,28 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    /* Latar citra satelit dekoratif (non-interaktif). Tidak memengaruhi peta utama. */
+    (function () {
+      if (typeof L === 'undefined') return;
+      var TILE = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+      function makeBg(id, center, zoom) {
+        var el = document.getElementById(id);
+        if (!el) return null;
+        var m = L.map(el, {
+          zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
+          doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, zoomAnimation: false,
+          fadeAnimation: false, inertia: false
+        }).setView(center, zoom);
+        L.tileLayer(TILE, { maxZoom: 12, maxNativeZoom: 12 }).addTo(m);
+        return m;
+      }
+      var maps = [makeBg('hero-sat', [3.75, 97.35], 9), makeBg('narr-sat', [3.55, 97.6], 10)].filter(Boolean);
+      window.addEventListener('load', function () {
+        setTimeout(function () { maps.forEach(function (m) { m.invalidateSize(); }); }, 300);
+      });
+    })();
+  </script>
   <script src="app.js"></script>
 </body>
 </html>
