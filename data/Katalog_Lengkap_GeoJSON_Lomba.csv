@@ -1,0 +1,74 @@
+Folder,Nama_File,Parameter,Periode,Jumlah_Kelas_Fitur,Total_Luas_Ha,Ukuran_MB
+01_Batas_Dan_Data_Pendukung,01_Batas_Kawasan_Inti_TNGL.geojson,Batas Inti TNGL,2019–2025,0,0.0,0.0
+01_Batas_Dan_Data_Pendukung,02_Zona_Buffer_100km_Luar_TNGL.geojson,Buffer 100 km Luar TNGL,2019–2025,0,0.0,0.0
+01_Batas_Dan_Data_Pendukung,03_Batas_Total_Studi_100km.geojson,Batas Total Studi,2019–2025,1,14066340.11,0.008
+01_Batas_Dan_Data_Pendukung,04_Jaringan_Jalan_Utama.geojson,Jaringan Jalan Utama,Referensi,70,0.0,0.267
+01_Batas_Dan_Data_Pendukung,06_Klasifikasi_Elevasi_DEM.geojson,Elevasi (DEM NASADEM),Statis,5,13801754.1,5.621
+01_Batas_Dan_Data_Pendukung,07_Klasifikasi_Kemiringan_Lereng.geojson,Kemiringan Lereng (Slope),Statis,5,13787621.24,29.163
+01_Batas_Dan_Data_Pendukung,08_Klasifikasi_Jarak_Dari_Jalan.geojson,Jarak dari Jalan Utama,Statis,5,14066172.39,2.902
+01_Batas_Dan_Data_Pendukung,09_Klasifikasi_Jarak_Dari_Fasilitas.geojson,Jarak dari Fasilitas/Ibukota,Statis,5,14066172.38,6.272
+01_Batas_Dan_Data_Pendukung,10_Klasifikasi_Zonasi_Jarak_TNGL.geojson,Zonasi Jarak dari TNGL,Statis,5,14066172.38,0.984
+01_Batas_Dan_Data_Pendukung,11_Klasifikasi_Cahaya_Malam_VIIRS_2019.geojson,Cahaya Malam VIIRS (2019),2019,5,14066172.36,1.574
+01_Batas_Dan_Data_Pendukung,11_Klasifikasi_Cahaya_Malam_VIIRS_2021.geojson,Cahaya Malam VIIRS (2021),2021,5,14066172.37,2.693
+01_Batas_Dan_Data_Pendukung,11_Klasifikasi_Cahaya_Malam_VIIRS_2025.geojson,Cahaya Malam VIIRS (2025),2025,5,14066172.41,2.812
+02_Tutupan_Hutan_Dan_Permukiman,01_Status_Tutupan_Hutan_2019.geojson,Status Tutupan Hutan 2019,2019,3,14066408.31,5.114
+02_Tutupan_Hutan_Dan_Permukiman,01_Status_Tutupan_Hutan_2021.geojson,Status Tutupan Hutan 2021,2021,3,14066408.31,5.332
+02_Tutupan_Hutan_Dan_Permukiman,01_Status_Tutupan_Hutan_2025.geojson,Status Tutupan Hutan 2025,2025,3,14066408.31,5.436
+02_Tutupan_Hutan_Dan_Permukiman,02_Dinamika_Perubahan_Hutan_2019_2025.geojson,Dinamika Hutan 2019–2025,2019–2025,3,2710126.84,3.312
+02_Tutupan_Hutan_Dan_Permukiman,03_Zona_Permukiman_Buffer_2019.geojson,Zona Permukiman Buffer 2019,2019,1,10897808.03,1.237
+02_Tutupan_Hutan_Dan_Permukiman,03_Zona_Permukiman_Buffer_2021.geojson,Zona Permukiman Buffer 2021,2021,1,10907270.88,1.26
+02_Tutupan_Hutan_Dan_Permukiman,03_Zona_Permukiman_Buffer_2025.geojson,Zona Permukiman Buffer 2025,2025,1,10928396.38,1.339
+03_Parameter_2019,01_Cadangan_Karbon_2019.geojson,Cadangan Karbon (Ton/Ha) (2019),2019,2,14066172.37,8.027
+03_Parameter_2019,02_Biomassa_AGB_2019.geojson,Biomassa Atas Permukaan AGB (Ton/Ha) (2019),2019,2,14066172.37,8.029
+03_Parameter_2019,03_Suhu_Permukaan_LST_2019.geojson,Suhu Permukaan LST (°C) (2019),2019,5,13906811.25,41.925
+03_Parameter_2019,04_Pulau_Bahang_UHI_2019.geojson,Urban Heat Island (UHI) (2019),2019,5,13906810.87,45.352
+03_Parameter_2019,05_Stres_Termal_UTFVI_2019.geojson,Indeks Stres Termal (UTFVI) (2019),2019,6,13906810.89,53.617
+03_Parameter_2019,06_Vegetasi_NDVI_2019.geojson,Indeks Vegetasi (NDVI) (2019),2019,5,14066172.36,16.831
+03_Parameter_2019,07_Vegetasi_EVI_2019.geojson,Enhanced Vegetation Index (EVI) (2019),2019,5,14066172.34,16.933
+03_Parameter_2019,08_Vegetasi_SAVI_2019.geojson,Soil-Adjusted Vegetation Index (SAVI) (2019),2019,4,14066172.36,11.178
+03_Parameter_2019,09_Kelembapan_Kanopi_NDMI_2019.geojson,Kelembapan Kanopi (NDMI) (2019),2019,5,14066172.09,36.995
+03_Parameter_2019,10_Indeks_Air_NDWI_2019.geojson,Indeks Kebasahan / Air (NDWI) (2019),2019,4,14066172.39,14.906
+03_Parameter_2019,11_Air_Permukaan_MNDWI_2019.geojson,Modified NDWI (MNDWI) (2019),2019,4,14066172.23,13.973
+03_Parameter_2019,12_Kawasan_Terbangun_NDBI_2019.geojson,Indeks Terbangun (NDBI) (2019),2019,4,14045664.89,5.161
+03_Parameter_2019,13_Tanah_Terbuka_BSI_2019.geojson,Bare Soil Index (BSI) (2019),2019,4,14066171.97,11.801
+03_Parameter_2019,14_Radar_Kanopi_SAR_VH_2019.geojson,Sentinel-1 SAR Backscatter VH (dB) (2019),2019,4,14066172.36,22.093
+04_Parameter_2021,01_Cadangan_Karbon_2021.geojson,Cadangan Karbon (Ton/Ha) (2021),2021,2,14066055.95,7.863
+04_Parameter_2021,02_Biomassa_AGB_2021.geojson,Biomassa Atas Permukaan AGB (Ton/Ha) (2021),2021,2,14066055.95,7.865
+04_Parameter_2021,03_Suhu_Permukaan_LST_2021.geojson,Suhu Permukaan LST (°C) (2021),2021,5,13922004.67,43.736
+04_Parameter_2021,04_Pulau_Bahang_UHI_2021.geojson,Urban Heat Island (UHI) (2021),2021,5,13922005.01,42.311
+04_Parameter_2021,05_Stres_Termal_UTFVI_2021.geojson,Indeks Stres Termal (UTFVI) (2021),2021,6,13922004.67,53.188
+04_Parameter_2021,06_Vegetasi_NDVI_2021.geojson,Indeks Vegetasi (NDVI) (2021),2021,5,14066055.93,16.45
+04_Parameter_2021,07_Vegetasi_EVI_2021.geojson,Enhanced Vegetation Index (EVI) (2021),2021,5,14066055.93,16.591
+04_Parameter_2021,08_Vegetasi_SAVI_2021.geojson,Soil-Adjusted Vegetation Index (SAVI) (2021),2021,4,14066055.94,12.591
+04_Parameter_2021,09_Kelembapan_Kanopi_NDMI_2021.geojson,Kelembapan Kanopi (NDMI) (2021),2021,5,14066055.64,38.826
+04_Parameter_2021,10_Indeks_Air_NDWI_2021.geojson,Indeks Kebasahan / Air (NDWI) (2021),2021,4,14066055.96,13.071
+04_Parameter_2021,11_Air_Permukaan_MNDWI_2021.geojson,Modified NDWI (MNDWI) (2021),2021,4,14066055.94,15.067
+04_Parameter_2021,12_Kawasan_Terbangun_NDBI_2021.geojson,Indeks Terbangun (NDBI) (2021),2021,4,14064102.89,5.579
+04_Parameter_2021,13_Tanah_Terbuka_BSI_2021.geojson,Bare Soil Index (BSI) (2021),2021,4,14066055.89,13.456
+04_Parameter_2021,14_Radar_Kanopi_SAR_VH_2021.geojson,Sentinel-1 SAR Backscatter VH (dB) (2021),2021,4,14066172.34,22.769
+05_Parameter_2025,01_Cadangan_Karbon_2025.geojson,Cadangan Karbon (Ton/Ha) (2025),2025,2,14066172.37,8.614
+05_Parameter_2025,02_Biomassa_AGB_2025.geojson,Biomassa Atas Permukaan AGB (Ton/Ha) (2025),2025,2,14066172.37,8.612
+05_Parameter_2025,03_Suhu_Permukaan_LST_2025.geojson,Suhu Permukaan LST (°C) (2025),2025,5,13909695.31,42.947
+05_Parameter_2025,04_Pulau_Bahang_UHI_2025.geojson,Urban Heat Island (UHI) (2025),2025,5,13909695.1,45.458
+05_Parameter_2025,05_Stres_Termal_UTFVI_2025.geojson,Indeks Stres Termal (UTFVI) (2025),2025,6,13909695.09,51.486
+05_Parameter_2025,06_Vegetasi_NDVI_2025.geojson,Indeks Vegetasi (NDVI) (2025),2025,5,14066172.38,18.581
+05_Parameter_2025,07_Vegetasi_EVI_2025.geojson,Enhanced Vegetation Index (EVI) (2025),2025,5,14066172.33,17.383
+05_Parameter_2025,08_Vegetasi_SAVI_2025.geojson,Soil-Adjusted Vegetation Index (SAVI) (2025),2025,4,14066172.33,13.758
+05_Parameter_2025,09_Kelembapan_Kanopi_NDMI_2025.geojson,Kelembapan Kanopi (NDMI) (2025),2025,5,14066172.03,42.471
+05_Parameter_2025,10_Indeks_Air_NDWI_2025.geojson,Indeks Kebasahan / Air (NDWI) (2025),2025,4,14066172.34,11.495
+05_Parameter_2025,11_Air_Permukaan_MNDWI_2025.geojson,Modified NDWI (MNDWI) (2025),2025,4,14066172.2,15.331
+05_Parameter_2025,12_Kawasan_Terbangun_NDBI_2025.geojson,Indeks Terbangun (NDBI) (2025),2025,3,14050207.3,4.94
+05_Parameter_2025,13_Tanah_Terbuka_BSI_2025.geojson,Bare Soil Index (BSI) (2025),2025,4,14066172.02,16.086
+05_Parameter_2025,14_Radar_Kanopi_SAR_VH_2025.geojson,Sentinel-1 SAR Backscatter VH (dB) (2025),2025,4,14066172.34,21.437
+05_Parameter_2025,15_Laju_Carbon_Rate_2019_2025.geojson,Laju Carbon Rate (Ton/Ha/Tahun),2019–2025,5,14066172.37,34.697
+06_Delta_Perubahan_2019_2025,01_Delta_Carbon_Stock_2025_vs_2019.geojson,Delta Cadangan Karbon (2025–2019),2025 vs 2019,5,14066172.38,37.045
+06_Delta_Perubahan_2019_2025,02_Delta_Suhu_LST_2025_vs_2019.geojson,Delta Suhu Permukaan LST (2025–2019),2025 vs 2019,5,13886144.53,73.056
+06_Delta_Perubahan_2019_2025,03_Delta_UHI_2025_vs_2019.geojson,Delta Intensitas UHI (2025–2019),2025 vs 2019,3,13886144.51,47.006
+06_Delta_Perubahan_2019_2025,04_Delta_UTFVI_2025_vs_2019.geojson,Delta Stres Termal UTFVI (2025–2019),2025 vs 2019,3,13886144.53,46.73
+06_Delta_Perubahan_2019_2025,05_Delta_Vegetasi_NDVI_2025_vs_2019.geojson,Delta Kehijauan Vegetasi NDVI (2025–2019),2025 vs 2019,5,14066172.15,69.287
+06_Delta_Perubahan_2019_2025,06_Delta_EVI_2025_vs_2019.geojson,Delta EVI (2025–2019),2025 vs 2019,3,14066172.38,29.333
+06_Delta_Perubahan_2019_2025,07_Delta_Kelembapan_NDMI_2025_vs_2019.geojson,Delta Kelembapan Kanopi NDMI (2025–2019),2025 vs 2019,3,14066172.02,49.018
+06_Delta_Perubahan_2019_2025,08_Delta_Terbangun_NDBI_2025_vs_2019.geojson,Delta Kawasan Terbangun NDBI (2025–2019),2025 vs 2019,5,14030273.51,30.179
+06_Delta_Perubahan_2019_2025,09_Delta_Tanah_Terbuka_BSI_2025_vs_2019.geojson,Delta Tanah Terbuka BSI (2025–2019),2025 vs 2019,3,14066172.18,44.641
+07_Titik_Sampel_Dan_Ringkasan,01_Titik_Sampel_Dalam_TNGL.geojson,Titik Sampel Dalam TNGL,2025,298,0.0,0.184
+07_Titik_Sampel_Dan_Ringkasan,02_Titik_Sampel_Permukiman_Buffer.geojson,Titik Sampel Buffer Luar,2025,276,0.0,0.164
