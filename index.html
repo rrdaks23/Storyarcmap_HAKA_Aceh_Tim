@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Merriweather:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="jawaban-footer.css" />
   <style>
     .stat-fig-header {
       display: flex;
@@ -770,6 +771,96 @@
 
   <!-- BAGIAN PENUTUP EDITORIAL 3 KOLOM + BILAH KREDIT BAWAH -->
   <footer class="editorial-closing">
+    <!-- ================= JAWABAN ATAS TAGLINE POSTER ================= -->
+    <section class="answer-section" id="jawaban" aria-labelledby="answer-title">
+      <div class="answer-inner">
+        <span class="answer-kicker">Jawaban Berbasis Data • 2019–2025</span>
+        <h2 class="answer-hook" id="answer-title">“Alam Terus Memberi, <em>Mengapa Terus Dirusak?</em>”</h2>
+        <p class="answer-lead">
+          Jawaban kami dirangkum dari analisis pada peta ini. Bagian <span class="tag-data">DATA</span> berasal langsung dari hasil analisis;
+          bagian <span class="tag-interp">INTERPRETASI</span> adalah penalaran tim yang belum diuji secara statistik.
+        </p>
+
+        <div class="answer-grid">
+          <!-- YANG ALAM BERI -->
+          <article class="answer-card give">
+            <h3>Yang alam terus beri</h3>
+            <p class="sub">Perbandingan 1.500 titik di dalam Kawasan Ekosistem Leuser vs. 1.500 titik di luarnya</p>
+            <div class="answer-stats">
+              <div class="answer-stat"><strong>+7,38 Ton/Ha</strong><span>Cadangan karbon lebih tinggi (64,48 vs. 57,10; +12,9%)</span></div>
+              <div class="answer-stat"><strong>−5,29 °C</strong><span>Suhu permukaan lebih sejuk (22,61 vs. 27,90 °C)</span></div>
+              <div class="answer-stat"><strong>−0,0273</strong><span>Indeks lahan terbangun (NDBI) lebih rendah, tekanan konversi lebih kecil</span></div>
+              <div class="answer-stat"><strong>±690.000 jiwa</strong><span>Tinggal di dalam atau berdekatan dengan kawasan</span></div>
+            </div>
+            <p class="answer-note">
+              Catatan jujur: selisih suhu sebagian besar searah dengan perbedaan elevasi (±800 m × 6,5 °C/km ≈ 5,2 °C),
+              sehingga peran murni hutan belum dapat dipisahkan tanpa kontrol elevasi.
+            </p>
+          </article>
+
+          <!-- YANG HILANG -->
+          <article class="answer-card lose">
+            <h3>Yang terus hilang</h3>
+            <p class="sub">Perubahan 2019–2025 pada lanskap sekitar kawasan</p>
+            <div class="answer-stats">
+              <div class="answer-stat"><strong>31.745,90 Ha</strong><span>Hutan hilang, ±4.500–5.300 Ha/tahun (pembanding historis 2000–2009: ±5.500 Ha/tahun)</span></div>
+              <div class="answer-stat"><strong>51,4 %</strong><span>Area analisis karbon berstatus defisit (3,60 juta Ha) vs. 48,6 % surplus</span></div>
+              <div class="answer-stat"><strong>43,1 %</strong><span>Area mengalami pemanasan permukaan (5,92 juta Ha)</span></div>
+              <div class="answer-stat"><strong>±3,8 %</strong><span>Batas atas teoretis kehilangan hutan terhadap luas inti (830.268,95 Ha)</span></div>
+            </div>
+            <p class="answer-note">
+              Kehilangan hutan belum dipisahkan antara dalam dan luar batas inti, sehingga klaim “perlindungan mencegah deforestasi”
+              belum dapat dinilai. Persentase karbon adalah proporsi luas, bukan neraca massa karbon.
+            </p>
+          </article>
+        </div>
+
+        <!-- MENGAPA -->
+        <div class="answer-why">
+          <h3>Mengapa kerusakan terus berlanjut? Yang bisa dijawab data</h3>
+          <ol>
+            <li><span class="tag-data">DATA</span><strong>Tekanan bergerak dari tepi.</strong>
+              Zona di luar inti berada pada <em>tahap awal konversi lahan</em> (NDBI masih negatif tetapi lebih tinggi daripada di dalam),
+              dan variabel akses seperti jarak ke jalan dan fasilitas (<code>Dist_Road</code>, <code>Dist_Facility</code>) menjadi prediktor yang kami uji.</li>
+            <li><span class="tag-data">DATA</span><strong>Pola lama belum berhenti.</strong>
+              Laju kehilangan 2019–2025 masih sebanding dengan laju historis ±5.500 Ha/tahun yang dicatat proyek REDD KEL pada 2000–2009,
+              yang dikaitkan dengan jalan, jaringan listrik, bendungan, pertambangan, dan perluasan perkebunan sawit.</li>
+            <li><span class="tag-interp">INTERPRETASI</span><strong>Manfaat hutan tidak terasa sebagai pendapatan.</strong>
+              Karbon, kesejukan, dan penyangga air bersifat tidak langsung, sedangkan kebun dan lahan terbuka memberi hasil nyata dan cepat.
+              Studi Tripa (Tata et al. 2014) menunjukkan penegakan hukum dan pembayaran karbon saja tidak cukup tanpa mata pencaharian alternatif.</li>
+            <li><span class="tag-interp">INTERPRETASI</span><strong>Biaya ditanggung hilir.</strong>
+              Pemanasan, risiko banjir bandang dan longsor, serta stres panas dan zoonosis dirasakan warga penyangga, bukan oleh pembuka lahan.
+              Dampak ini kami simpulkan dari literatur, bukan diukur langsung pada peta ini.</li>
+          </ol>
+        </div>
+
+        <!-- JAWABAN SINGKAT -->
+        <div class="answer-verdict">
+          <span class="verdict-label">JAWABAN SINGKAT</span>
+          <p>
+            Alam terus memberi karena inti Kawasan Ekosistem Leuser masih <strong>menyimpan lebih banyak karbon dan lebih sejuk</strong>.
+            Ia terus dirusak karena tekanan konversi <strong>masuk lewat tepi dan akses jalan</strong> sementara manfaat hutan
+            <strong>tidak tercatat sebagai penghasilan warga</strong>. Selama itu belum berubah,
+            “benteng” hanya berlaku bagi intinya, bukan bagi lanskap di sekelilingnya.
+          </p>
+        </div>
+
+        <div class="answer-actions-title">Apa yang bisa dilakukan</div>
+        <ul class="answer-actions">
+          <li><b>1</b>Perkuat patroli di zona transisi tempat NDBI mulai meningkat.</li>
+          <li><b>2</b>Hubungkan peringatan dini berbasis model tervalidasi dengan patroli lapangan.</li>
+          <li><b>3</b>Dorong agroforestri, perhutanan sosial, ekowisata, dan pembayaran jasa lingkungan bagi desa penyangga.</li>
+          <li><b>4</b>Jadikan peta defisit karbon dan pemanasan sebagai dasar tata ruang dan adaptasi kesehatan.</li>
+        </ul>
+
+        <p class="answer-source">
+          Sumber: analisis Tim High Ground Solid (Sentinel-1/2, Landsat 8/9, NASADEM, NASA GEDI L4B; uji Welch, OLS) · Tata et al. 2014 · proyek REDD KEL.
+          Angka bersifat indikatif dan masih menunggu validasi lapangan serta pemisahan statistik dalam–luar batas inti.
+        </p>
+        <a class="answer-cta" href="#story-main">Telusuri buktinya di peta ↑</a>
+      </div>
+    </section>
+
     <div class="closing-grid">
 
       <!-- KOLOM KIRI: KEGIATAN, SUBTEMA & SLOGAN KLASIK -->
